@@ -20,10 +20,9 @@ Fills a gap in `onchain-monitor`, which does not support Robinhood Chain. Reads 
 
 ## Network note
 
-Public, unauthenticated reads only, with plain `curl`. `./secretcurl` is not needed because no secret is involved.
+One data source: the official public RPC `https://rpc.mainnet.chain.robinhood.com`, called with plain `curl`. `./secretcurl` is not needed because no secret is involved. The watch list is sent to that RPC and nowhere else.
 
-- **Primary:** the Sentinel API, `GET https://sentinelhood.com/api/service`. It is open source at [sentinelhood/robinhood-sentinel](https://github.com/sentinelhood/robinhood-sentinel) (`api/service.js`), rejects every non-GET method and unknown action, and checks the chain ID on every call.
-- **Fallback:** the official public RPC `https://rpc.mainnet.chain.robinhood.com`, using only the read methods `eth_chainId`, `eth_blockNumber`, `eth_getBalance`, `eth_getTransactionCount` and `eth_getCode`. Use it when the primary fails, so that the skill keeps working if sentinelhood.com is down.
+Use only these read methods: `eth_chainId`, `eth_blockNumber`, `eth_getBalance`, `eth_getTransactionCount` and `eth_getCode`. Never call a method that sends or signs anything.
 
 ```bash
 rpc() { curl -sf -X POST https://rpc.mainnet.chain.robinhood.com -H 'Content-Type: application/json' \
@@ -46,19 +45,21 @@ Skip any watch whose `address` does not match `^0x[0-9a-fA-F]{40}$` and name it 
 
 ## Steps
 
-1. **Pin the block.** Call `curl -sf "https://sentinelhood.com/api/service?action=network"`.
-   - If it fails, call `rpc eth_chainId '[]'` and `rpc eth_blockNumber '[]'` instead, and record `source: public-rpc`.
-   - If both paths fail, or the chain ID is not `4663` (`0x1237`), log `RH_RPC_DOWN` and exit without alerting. A broken RPC must never look like "no activity".
+1. **Pin the block.** Run `rpc eth_chainId '[]'` and `rpc eth_blockNumber '[]'`.
+   - If either call fails, or the chain ID is not `0x1237` (4663), log `RH_RPC_DOWN` and exit without alerting. A broken RPC must never look like "no activity".
+   - Keep the returned block number as `<blockHex>`. Every read below uses it, so that all watches are compared at the same block.
 2. **Snapshot each watch** (apply the `${var}` filter if set):
-   - Primary: `curl -sf "https://sentinelhood.com/api/service?action=address&value=<address>"` returns `balanceWei`, `nonce`, `codeBytes` and `block`.
-   - Fallback: `rpc eth_getBalance '["<address>","<blockHex>"]'`, `rpc eth_getTransactionCount '["<address>","<blockHex>"]'` and `rpc eth_getCode '["<address>","<blockHex>"]'`. `codeBytes` is `(len(code) - 2) / 2`.
-   - Wait at least 1 second between addresses, because both endpoints are shared.
+   - `rpc eth_getBalance '["<address>","<blockHex>"]'` → `balanceWei`
+   - `rpc eth_getTransactionCount '["<address>","<blockHex>"]'` → `nonce`
+   - `rpc eth_getCode '["<address>","<blockHex>"]'` → `codeBytes` = `(len(code) - 2) / 2`
+   - Values come back as hex; convert them to integers. A response with an `error` field counts as a failed read for that watch.
+   - Wait at least 1 second between addresses, because the RPC is shared.
 3. **Diff** each snapshot against `memory/robinhood-state.json` (keyed by lowercase address):
    - `nonce` increased → the address sent that many transactions.
    - `|balanceWei delta| >= min_change_eth` → the balance moved. Report the delta in ETH with 6 decimals.
    - `codeBytes` changed → **high priority**: bytecode appeared, disappeared or changed size.
    - On the first sighting, store a baseline only. Do not alert.
-4. **Persist** the new snapshots, including `block` and `checkedAt`, to `memory/robinhood-state.json`, but only for watches that were read successfully. Write a tempfile first and then `mv` it into place, so that a failed run cannot corrupt state.
+4. **Persist** the new snapshots, including `block` and `checkedAt` (from `date -u +%FT%TZ`), to `memory/robinhood-state.json`, but only for watches that were read successfully. Write a tempfile first and then `mv` it into place, so that a failed run cannot corrupt state.
 5. **Notify** through `./notify` only when at least one watch changed. Never call a channel API directly. Format:
    ```
    Robinhood Chain · block <n>
@@ -66,11 +67,11 @@ Skip any watch whose `address` does not match `^0x[0-9a-fA-F]{40}$` and name it 
      https://robinhoodchain.blockscout.com/address/<address>
    ```
    If nothing changed, do not notify.
-6. **Log** to `memory/logs/YYYY-MM-DD.md` under `### robinhood-chain-monitor`, as bullet points: the outcome (`RH_CHANGED`, `RH_QUIET`, `RH_NO_CONFIG` or `RH_RPC_DOWN`), followed by `source: <sentinel-api|public-rpc> · block <n> · <ok>/<total> watches read`.
+6. **Log** to `memory/logs/YYYY-MM-DD.md` under `### robinhood-chain-monitor`, as bullet points: the outcome (`RH_CHANGED`, `RH_QUIET`, `RH_NO_CONFIG` or `RH_RPC_DOWN`), followed by `block <n> · <ok>/<total> watches read`.
 
 ## Hard limits
 
 - Read-only on chain. Never sign, never broadcast, never ask for or store a key.
-- Native ETH only. Do not report token balances or USD values: neither source indexes them.
+- Native ETH only. Do not report token balances or USD values: these RPC reads do not provide them.
 - Never describe an address or contract as "safe". Bytecode presence is not an audit.
 - Every reported number carries the block it was read at.
