@@ -1,0 +1,332 @@
+import './app.css';
+
+type Watch = { address: string; label: string };
+
+const ADDRESS = /^0x[\da-f]{40}$/i;
+const TX_HASH = /^0x[\da-f]{64}$/i;
+const EXAMPLE = '0x7eD598BcEf8bd9Edd8C97A195C6d13f40801EC7e';
+const INSTALL = 'bin/install-skill-pack sentinelhood/robinhood-sentinel';
+const STORE = 'sentinel.watch.v1';
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const escape = (value: unknown) =>
+  String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+const short = (a: string) => `${a.slice(0, 6)}…${a.slice(-4)}`;
+const eth = (wei: string) => {
+  const n = BigInt(wei);
+  return `${n / 10n ** 18n}.${(n % 10n ** 18n).toString().padStart(18, '0').slice(0, 6)}`;
+};
+const row = (k: string, v: string) => `<div><dt>${escape(k)}</dt><dd>${v}</dd></div>`;
+
+let watches: Watch[] = [];
+try {
+  const stored = JSON.parse(localStorage.getItem(STORE) || '[]');
+  if (Array.isArray(stored)) watches = stored.filter((x) => typeof x?.label === 'string' && ADDRESS.test(x?.address)).slice(0, 30);
+} catch {
+  /* Corrupt storage is ignored. */
+}
+
+const mark = `<svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 37 20 20 37 3 20Z" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M20 11 29 20 20 29 11 20Z" fill="none" stroke="#f5f1e9" stroke-width="1.2"/><path d="M20 16.5 23.5 20 20 23.5 16.5 20Z" fill="currentColor"/></svg>`;
+const arrow = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>`;
+
+document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
+<header class="top">
+  <a class="brand" href="#" aria-label="Sentinel home">${mark}<span><strong>SENTINEL</strong><small>ROBINHOOD CHAIN · 4663</small></span></a>
+  <nav aria-label="Sections">
+    <a href="#inspect">Inspect</a><a href="#watch">Watchlist</a><a href="#aeon">Aeon</a>
+    <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">X ${arrow}</a>
+  </nav>
+  <span class="pill">READ-ONLY · NO KEYS</span>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="kicker reveal" style="--d:0">ON-CHAIN EVIDENCE · NOT A SAFETY CERTIFICATE</p>
+      <h1 class="reveal" style="--d:1">Less guessing.<br><em>More evidence.</em></h1>
+      <p class="lede reveal" style="--d:2">Inspect real transactions and addresses on Robinhood Chain, keep a quiet watchlist, and give your Aeon agent a keyless monitor for chain 4663. No wallet connection. Nothing to sign.</p>
+      <div class="hero-cta reveal" style="--d:3"><a class="btn primary" href="#inspect">Inspect an address</a><a class="btn ghost" href="#aeon">Aeon skill pack</a></div>
+    </div>
+
+    <aside class="hero-side">
+      <article class="card net reveal" style="--d:2" aria-labelledby="netTitle">
+        <header class="card-head"><span id="netTitle" class="tag"><i class="dot" id="netDot"></i>NETWORK</span><button id="refresh" class="link">Refresh</button></header>
+        <dl class="stats">
+          <div><dt>Block</dt><dd id="statBlock">…</dd></div>
+          <div><dt>Gas</dt><dd id="statGas">…</dd></div>
+          <div><dt>Chain</dt><dd>4663</dd></div>
+          <div><dt>Checked</dt><dd id="statTime">…</dd></div>
+        </dl>
+        <p id="network" class="status" role="status">Checking RPC…</p>
+      </article>
+
+      <article class="card notice reveal" style="--d:3" aria-labelledby="tokenTitle">
+        <span class="tag gold" id="tokenTitle">OFFICIAL TOKEN</span>
+        <p class="notice-big">Not live yet.</p>
+        <p>Sentinel has no token today. Any contract address that claims to be Sentinel is not ours. Announcements come only from <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">@sentinelhood</a>.</p>
+      </article>
+    </aside>
+  </section>
+
+  <section class="grid">
+    <article class="card tool reveal" id="inspect" aria-labelledby="inspectTitle">
+      <span class="tag gold">01 · INSPECTOR</span>
+      <h2 id="inspectTitle">Read the receipt.</h2>
+      <p class="muted">Paste an address (42 characters) or a transaction hash (66 characters). This reads what already happened on chain. It does not simulate a transaction.</p>
+      <form id="inspectForm" class="field">
+        <label for="lookup">Address or transaction hash</label>
+        <div class="input-row"><input id="lookup" required maxlength="66" placeholder="0x…" autocomplete="off" spellcheck="false"><button class="btn primary">Inspect</button></div>
+      </form>
+      <button class="link" id="example">Try the Pons factory address</button>
+      <div id="inspection" class="result" aria-live="polite"></div>
+    </article>
+
+    <article class="card tool reveal" id="watch" aria-labelledby="watchTitle">
+      <span class="tag gold">02 · WATCHLIST</span>
+      <h2 id="watchTitle">Keep a quiet eye.</h2>
+      <p class="muted">Saved only in this browser. Native ETH balances are read when you ask. No background alerts, no prices.</p>
+      <form id="watchForm" class="field two">
+        <div><label for="watchLabel">Label</label><input id="watchLabel" required maxlength="40" placeholder="Treasury"></div>
+        <div><label for="watchAddress">Address</label><input id="watchAddress" required pattern="0x[0-9a-fA-F]{40}" maxlength="42" placeholder="0x…" spellcheck="false"></div>
+        <button class="btn primary">Save address</button>
+      </form>
+      <p id="watchStatus" class="hint" role="status"></p>
+      <ul id="watchRows" class="watchlist"></ul>
+      <button class="link" id="export">Export as an Aeon monitoring brief</button>
+    </article>
+  </section>
+
+  <section class="card aeon reveal" id="aeon" aria-labelledby="aeonTitle">
+    <div class="aeon-main">
+      <span class="tag gold">03 · AEON</span>
+      <h2 id="aeonTitle">The gap it fills.</h2>
+      <p class="muted">Aeon's <code>onchain-monitor</code> covers Ethereum, Base, Arbitrum, Optimism and Polygon, but not Robinhood Chain. The Sentinel Pack adds that. It watches addresses for nonce, balance and bytecode changes, reads only from the official Robinhood Chain RPC, and needs no keys.</p>
+      <div class="cmd"><code id="installCmd">${INSTALL}</code><button class="btn small" id="copyCmd">Copy</button></div>
+      <p class="links"><a href="https://github.com/sentinelhood/robinhood-sentinel" target="_blank" rel="noopener noreferrer">Source ${arrow}</a><a href="/skills/robinhood-chain-monitor.md" target="_blank" rel="noopener">SKILL.md ${arrow}</a><a href="/openapi.json" target="_blank" rel="noopener">OpenAPI ${arrow}</a><a href="/llms.txt" target="_blank" rel="noopener">llms.txt ${arrow}</a></p>
+    </div>
+    <div class="aeon-search">
+      <form id="aeonForm" class="field">
+        <label for="query">Search Aeon docs and skills</label>
+        <div class="input-row"><input id="query" required minlength="2" maxlength="200" value="onchain monitor"><button class="btn primary">Search</button></div>
+      </form>
+      <ul id="aeonResults" class="results" aria-live="polite"></ul>
+      <p class="hint">Results come live from aeon.fun/ask. To run an agent, <a href="https://www.aeon.fun/connect" target="_blank" rel="noopener noreferrer">sign in to Aeon Connect</a> with your own repo and model.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>${mark}Read-only · Server-side RPC · No funds moved</span>
+  <span><a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">@sentinelhood</a><a href="https://github.com/sentinelhood/robinhood-sentinel" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.aeon.fun/developers" target="_blank" rel="noopener noreferrer">Aeon docs</a></span>
+</footer>`;
+
+const el = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
+const value = (id: string) => el<HTMLInputElement>(id).value.trim();
+
+async function api(action: string, v = '') {
+  const response = await fetch(`/api/service?action=${action}&value=${encodeURIComponent(v)}`, { signal: AbortSignal.timeout(30000) });
+  if (!(response.headers.get('content-type') || '').includes('application/json')) throw new Error('API not available. Use the Vercel deployment or vercel dev.');
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+function busy(card: HTMLElement, on: boolean) {
+  card.classList.toggle('is-loading', on);
+}
+
+function show(target: HTMLElement, html: string) {
+  target.innerHTML = html;
+  target.classList.remove('appear');
+  void target.offsetWidth;
+  target.classList.add('appear');
+}
+
+// Animate a number change (block height) without fighting reduced-motion users.
+function countTo(node: HTMLElement, next: number) {
+  const prev = Number(node.dataset.n || 0);
+  node.dataset.n = String(next);
+  if (reduceMotion || !prev || prev === next || Math.abs(next - prev) > 5000) {
+    node.textContent = next.toLocaleString();
+  } else {
+    const start = performance.now();
+    const step = (t: number) => {
+      const k = Math.min(1, (t - start) / 700);
+      node.textContent = Math.round(prev + (next - prev) * (1 - (1 - k) ** 3)).toLocaleString();
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  node.classList.remove('tick');
+  void node.offsetWidth;
+  node.classList.add('tick');
+}
+
+async function network() {
+  const button = el<HTMLButtonElement>('refresh');
+  button.disabled = true;
+  try {
+    const data = await api('network');
+    countTo(el('statBlock'), data.block);
+    el('statGas').textContent = `${(Number(data.gasPriceWei) / 1e9).toFixed(3)} gwei`;
+    el('statTime').textContent = new Date(data.checkedAt).toLocaleTimeString();
+    el('network').textContent = 'Live. Chain ID verified as 4663 on this read.';
+    el('netDot').className = 'dot live';
+  } catch (e) {
+    el('network').textContent = `Unavailable: ${(e as Error).message}`;
+    el('netDot').className = 'dot down';
+  } finally {
+    button.disabled = false;
+  }
+}
+
+el('refresh').addEventListener('click', network);
+el('example').addEventListener('click', () => {
+  el<HTMLInputElement>('lookup').value = EXAMPLE;
+  el<HTMLInputElement>('lookup').focus();
+});
+
+el('inspectForm').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const v = value('lookup');
+  const out = el('inspection');
+  const action = ADDRESS.test(v) ? 'address' : TX_HASH.test(v) ? 'transaction' : '';
+  if (!action) return show(out, '<p class="error">Enter a valid 0x address (42 characters) or transaction hash (66 characters).</p>');
+  const card = el('inspect');
+  const button = el('inspectForm').querySelector('button')!;
+  button.disabled = true;
+  busy(card, true);
+  show(out, '<p class="hint">Reading chain…</p>');
+  try {
+    const data = await api(action, v);
+    const link = `<a class="link-out" href="https://robinhoodchain.blockscout.com/${action === 'address' ? 'address' : 'tx'}/${v}" target="_blank" rel="noopener noreferrer">Open in Blockscout ${arrow}</a>`;
+    if (action === 'address') {
+      const kind = data.codeBytes ? 'Contract' : 'Account';
+      show(out, `<h3><span class="badge">${kind}</span>${escape(short(v))}</h3><dl class="kv">${row('Balance', `${escape(eth(data.balanceWei))} ETH`)}${row('Bytecode', `${escape(Number(data.codeBytes).toLocaleString())} bytes`)}${row('Nonce', escape(data.nonce))}${row('Read at block', escape(Number(data.block).toLocaleString()))}</dl><p class="hint">${escape(data.warning)}</p>${link}`);
+    } else if (!data.transaction) {
+      show(out, '<p class="error">Transaction not found on chain 4663. Check the hash, or retry if it was just submitted.</p>');
+    } else {
+      const tx = data.transaction;
+      const r = data.receipt;
+      const state = r ? (r.status === '0x1' ? ['ok', 'Succeeded'] : ['bad', 'Reverted']) : ['wait', 'Pending'];
+      show(out, `<h3><span class="badge ${state[0]}">${state[1]}</span>${escape(short(v))}</h3><dl class="kv">${row('From', escape(short(tx.from)))}${row('To', escape(tx.to ? short(tx.to) : 'Contract creation'))}${row('Value', `${escape(eth(BigInt(tx.value).toString()))} ETH`)}${row('Gas used', escape(r ? BigInt(r.gasUsed).toLocaleString() : 'Pending'))}</dl><details><summary>Raw transaction and receipt</summary><pre>${escape(JSON.stringify(data, null, 2))}</pre></details><p class="hint">${escape(data.warning)}</p>${link}`);
+    }
+  } catch (e) {
+    show(out, `<p class="error">${escape((e as Error).message)}</p>`);
+  } finally {
+    button.disabled = false;
+    busy(card, false);
+  }
+});
+
+function renderWatch() {
+  el('watchRows').innerHTML =
+    watches
+      .map(
+        (w, i) => `<li class="watch-entry"><div class="who"><strong>${escape(w.label)}</strong><code title="${escape(w.address)}">${escape(short(w.address))}</code></div><span class="bal" id="balance${i}">—</span><div class="acts"><button class="btn small" data-check="${i}">Read</button><button class="btn small ghost" data-remove="${i}" aria-label="Remove ${escape(w.label)}">Remove</button></div></li>`,
+      )
+      .join('') || '<li class="empty">No watched addresses yet.</li>';
+}
+
+function saveWatch(next: Watch[], message: string) {
+  try {
+    localStorage.setItem(STORE, JSON.stringify(next));
+    watches = next;
+    renderWatch();
+    el('watchStatus').textContent = message;
+  } catch {
+    el('watchStatus').textContent = 'Storage is unavailable, so this was not saved.';
+  }
+}
+
+el('watchForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const address = value('watchAddress');
+  if (!ADDRESS.test(address)) return;
+  if (watches.length >= 30) return void (el('watchStatus').textContent = 'The watchlist holds up to 30 addresses.');
+  if (watches.some((w) => w.address.toLowerCase() === address.toLowerCase())) return void (el('watchStatus').textContent = 'That address is already on the watchlist.');
+  saveWatch([...watches, { address, label: value('watchLabel') }], 'Saved in this browser.');
+  el<HTMLFormElement>('watchForm').reset();
+});
+
+el('watchRows').addEventListener('click', async (e) => {
+  const button = (e.target as HTMLElement).closest('button');
+  if (!button) return;
+  if (button.dataset.remove !== undefined) return saveWatch(watches.filter((_, i) => i !== Number(button.dataset.remove)), 'Removed.');
+  const i = Number(button.dataset.check);
+  const address = watches[i]?.address;
+  if (!address) return;
+  const output = el(`balance${i}`);
+  button.disabled = true;
+  output.textContent = 'Reading…';
+  try {
+    const d = await api('address', address);
+    output.innerHTML = `${escape(eth(d.balanceWei))} ETH<small>block ${escape(Number(d.block).toLocaleString())}</small>`;
+    output.classList.remove('appear');
+    void output.offsetWidth;
+    output.classList.add('appear');
+  } catch (err) {
+    output.textContent = (err as Error).message;
+  } finally {
+    button.disabled = false;
+  }
+});
+
+el('export').addEventListener('click', () => {
+  const text = `# Robinhood Chain monitoring brief\n\nChain ID: 4663\nPublic RPC: https://rpc.mainnet.chain.robinhood.com\n\nRead-only monitoring request for an Aeon operator. Install the Sentinel Pack (${INSTALL}) and copy these into memory/robinhood-watches.yml. Report the block with each observation. Do not sign or broadcast transactions. No agent is activated by this export.\n\nWatched addresses:\n${watches.map((w) => `${w.address} (${w.label})`).join('\n')}\n`;
+  const url = URL.createObjectURL(new Blob([text], { type: 'text/markdown' }));
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'robinhood-monitoring-brief.md';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+
+el('copyCmd').addEventListener('click', async () => {
+  const button = el<HTMLButtonElement>('copyCmd');
+  try {
+    await navigator.clipboard.writeText(INSTALL);
+    button.textContent = 'Copied';
+  } catch {
+    getSelection()?.selectAllChildren(el('installCmd'));
+    button.textContent = 'Press Ctrl+C';
+  }
+  setTimeout(() => (button.textContent = 'Copy'), 1600);
+});
+
+el('aeonForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const button = el('aeonForm').querySelector('button')!;
+  const out = el('aeonResults');
+  button.disabled = true;
+  busy(el('aeon'), true);
+  show(out, '<li class="hint">Searching aeon.fun…</li>');
+  try {
+    const d = await api('aeon', value('query'));
+    show(
+      out,
+      d.results
+        .map(
+          (r: { url: string; name: string; description: string }, i: number) =>
+            `<li style="--d:${i}"><a href="${escape(r.url)}" target="_blank" rel="noopener noreferrer">${escape(r.name.replace(/^Skill:\s*/, ''))} ${arrow}</a><p>${escape(r.description)}</p></li>`,
+        )
+        .join('') || '<li class="hint">No matching resources.</li>',
+    );
+  } catch (err) {
+    show(out, `<li class="error">${escape((err as Error).message)}</li>`);
+  } finally {
+    button.disabled = false;
+    busy(el('aeon'), false);
+  }
+});
+
+// Reveal-on-scroll. Elements already in view animate in immediately with their stagger.
+const io = 'IntersectionObserver' in window && !reduceMotion
+  ? new IntersectionObserver((entries) => entries.forEach((en) => en.isIntersecting && (en.target.classList.add('in'), io?.unobserve(en.target))), { rootMargin: '0px 0px -8% 0px' })
+  : null;
+document.querySelectorAll('.reveal').forEach((n) => (io ? io.observe(n) : n.classList.add('in')));
+
+renderWatch();
+void network();
+// Keep the network card fresh while the tab is visible (one cheap read every 20s).
+setInterval(() => document.visibilityState === 'visible' && void network(), 20000);
