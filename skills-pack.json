@@ -1,0 +1,20 @@
+{
+  "name": "Sentinel Pack",
+  "version": "1.0.0",
+  "description": "Keyless Robinhood Chain (4663) monitoring for Aeon: block-stamped nonce, balance and bytecode diffs. Read-only, never signs.",
+  "author": "sentinelhood",
+  "license": "MIT",
+  "homepage": "https://sentinelhood.com",
+  "skills": [
+    {
+      "slug": "robinhood-chain-monitor",
+      "path": "skills/robinhood-chain-monitor",
+      "description": "Watch Robinhood Chain addresses for balance, nonce and bytecode changes - keyless, read-only, block-stamped",
+      "category": "crypto",
+      "schedule": "0 */6 * * *",
+      "default_enabled": false,
+      "secrets_required": [],
+      "capabilities": ["read_only", "sends_notifications"]
+    }
+  ]
+}

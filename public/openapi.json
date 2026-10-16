@@ -1,0 +1,27 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Sentinel - Robinhood Chain read-only API",
+    "version": "1.0.0",
+    "description": "Keyless, GET-only reads of Robinhood Chain (chainId 4663). Every response is block-stamped. No signing, no broadcasting, no safety verdicts."
+  },
+  "servers": [{ "url": "https://sentinelhood.com" }],
+  "paths": {
+    "/api/service": {
+      "get": {
+        "operationId": "sentinelRead",
+        "summary": "Read network status, an address snapshot, a transaction receipt, or search Aeon skills",
+        "parameters": [
+          { "name": "action", "in": "query", "required": true, "schema": { "type": "string", "enum": ["network", "address", "transaction", "aeon"] } },
+          { "name": "value", "in": "query", "required": false, "description": "address: 0x + 40 hex. transaction: 0x + 64 hex. aeon: query of 2-200 chars. Omit for network.", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Block-stamped result. Includes chainId, block, checkedAt, source." },
+          "400": { "description": "Invalid action or value", "content": { "application/json": { "schema": { "type": "object", "properties": { "error": { "type": "string" } } } } } },
+          "405": { "description": "Only GET is supported" },
+          "502": { "description": "Upstream RPC/Aeon unavailable, timed out, or chain mismatch" }
+        }
+      }
+    }
+  }
+}

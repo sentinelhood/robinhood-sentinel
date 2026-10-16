@@ -1,0 +1,6 @@
+{
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {"api/service.js": {"maxDuration": 30}}
+}
