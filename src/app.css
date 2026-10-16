@@ -47,7 +47,10 @@ code { font-family: var(--mono); font-size: .92em; color: var(--text); }
 .top {
   position: sticky; top: 0; z-index: 10;
   display: flex; align-items: center; gap: 28px;
-  height: 68px; padding: 0 clamp(18px, 4vw, 48px);
+  height: 68px;
+  /* Align with the content column: on wide screens the header hugs the same
+     1240px grid as <main> instead of stretching to the viewport edges. */
+  padding: 0 max(clamp(18px, 4vw, 48px), calc(50% - 572px));
   background: rgba(16, 17, 15, .78);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
@@ -76,6 +79,7 @@ code { font-family: var(--mono); font-size: .92em; color: var(--text); }
   transition: transform .45s var(--ease), width .45s var(--ease), opacity .3s;
 }
 .nav-ind.on { opacity: 1; }
+.nav-ind.instant { transition: none; }
 
 .pill-wrap { position: relative; }
 .pill {

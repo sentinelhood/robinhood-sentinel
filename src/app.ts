@@ -347,9 +347,20 @@ let scrollAnim = 0;
 
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 
-function moveIndicator(link: HTMLAnchorElement | null) {
+function moveIndicator(link: HTMLAnchorElement | null, instant = false) {
   sectionLinks.forEach((a) => a.classList.toggle('active', a === link));
   if (!link) return void indicator.classList.remove('on');
+  // On first placement (and on resize) jump without sliding, so a refresh
+  // doesn't show the bar gliding across the header from the left edge.
+  if (instant) {
+    indicator.classList.add('instant');
+    indicator.style.width = `${link.offsetWidth - 24}px`;
+    indicator.style.transform = `translateX(${link.offsetLeft + 12}px)`;
+    indicator.classList.add('on');
+    void indicator.offsetWidth;
+    indicator.classList.remove('instant');
+    return;
+  }
   indicator.style.width = `${link.offsetWidth - 24}px`;
   indicator.style.transform = `translateX(${link.offsetLeft + 12}px)`;
   indicator.classList.add('on');
@@ -412,7 +423,7 @@ document.addEventListener('click', (e) => {
 
 // Scroll-spy: the active section is the last one whose top has passed the header.
 let spyQueued = false;
-function spy() {
+function spy(instant = false) {
   spyQueued = false;
   header.classList.toggle('scrolled', scrollY > 8);
   if (lockedLink) return;
@@ -423,10 +434,10 @@ function spy() {
     if (s && s.getBoundingClientRect().top <= line) current = a;
   }
   if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) current = sectionLinks[sectionLinks.length - 1];
-  if (current !== sectionLinks.find((a) => a.classList.contains('active'))) moveIndicator(current);
+  if (current !== sectionLinks.find((a) => a.classList.contains('active'))) moveIndicator(current, instant);
 }
-addEventListener('scroll', () => { if (!spyQueued) { spyQueued = true; requestAnimationFrame(spy); } }, { passive: true });
-addEventListener('resize', () => moveIndicator(sectionLinks.find((a) => a.classList.contains('active')) ?? null));
+addEventListener('scroll', () => { if (!spyQueued) { spyQueued = true; requestAnimationFrame(() => spy()); } }, { passive: true });
+addEventListener('resize', () => moveIndicator(sectionLinks.find((a) => a.classList.contains('active')) ?? null, true));
 
 // ---------- read-only popover ----------
 const pill = el<HTMLButtonElement>('roPill');
@@ -440,11 +451,23 @@ pill.addEventListener('click', (e) => { e.stopPropagation(); setPop(!pop.classLi
 document.addEventListener('click', (e) => { if (!pop.contains(e.target as Node)) setPop(false); });
 addEventListener('keydown', (e) => { if (e.key === 'Escape') { setPop(false); pill.focus(); } });
 
-// Opening the page on #inspect etc. lands with the same glide.
-if (location.hash && document.querySelector(location.hash)) requestAnimationFrame(() => glideTo(document.querySelector<HTMLElement>(location.hash)!));
+// Let us own scroll position on reload: the browser's own restoration fights
+// the on-load glide and leaves the page landing in the wrong spot.
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
 renderWatch();
-spy();
+// Place the indicator in its final spot before first paint (no slide-in).
+spy(true);
 void network();
+
+// Opening/refreshing the page on #inspect etc. snaps straight to that section
+// (offset for the sticky header) — no glide on load, so a refresh looks settled.
+if (location.hash && document.querySelector(location.hash)) {
+  const target = document.querySelector<HTMLElement>(location.hash)!;
+  requestAnimationFrame(() => {
+    scrollTo(0, Math.max(0, target.getBoundingClientRect().top + scrollY - header.offsetHeight - 16));
+    spy(true);
+  });
+}
 // Keep the network card fresh while the tab is visible (one cheap read every 20s).
 setInterval(() => document.visibilityState === 'visible' && void network(), 20000);
