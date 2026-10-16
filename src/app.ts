@@ -32,11 +32,23 @@ const arrow = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M6
 document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
 <header class="top">
   <a class="brand" href="#" aria-label="Sentinel home">${mark}<span><strong>SENTINEL</strong><small>ROBINHOOD CHAIN · 4663</small></span></a>
-  <nav aria-label="Sections">
-    <a href="#inspect">Inspect</a><a href="#watch">Watchlist</a><a href="#aeon">Aeon</a>
+  <nav aria-label="Sections" id="nav">
+    <a href="#inspect" data-section>Inspect</a><a href="#watch" data-section>Watchlist</a><a href="#aeon" data-section>Aeon</a>
     <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">X ${arrow}</a>
+    <span class="nav-ind" aria-hidden="true"></span>
   </nav>
-  <span class="pill">READ-ONLY · NO KEYS</span>
+  <div class="pill-wrap">
+    <button class="pill" id="roPill" aria-expanded="false" aria-controls="roPop"><i class="dot live"></i>READ-ONLY · NO KEYS</button>
+    <div class="pop" id="roPop" role="dialog" aria-label="What read-only means" aria-hidden="true">
+      <strong>What read-only means here</strong>
+      <ul>
+        <li>No wallet connection, nothing to sign.</li>
+        <li>The site only reads chain data. It never sends a transaction.</li>
+        <li>Your watchlist stays in this browser.</li>
+        <li>The RPC URL stays on the server.</li>
+      </ul>
+    </div>
+  </div>
 </header>
 
 <main>
@@ -326,7 +338,113 @@ const io = 'IntersectionObserver' in window && !reduceMotion
   : null;
 document.querySelectorAll('.reveal').forEach((n) => (io ? io.observe(n) : n.classList.add('in')));
 
+// ---------- navigation: eased scroll, active indicator, arrival flash ----------
+const header = document.querySelector<HTMLElement>('.top')!;
+const nav = el('nav');
+const indicator = nav.querySelector<HTMLElement>('.nav-ind')!;
+const sectionLinks = [...nav.querySelectorAll<HTMLAnchorElement>('a[data-section]')];
+let scrollAnim = 0;
+
+const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+
+function moveIndicator(link: HTMLAnchorElement | null) {
+  sectionLinks.forEach((a) => a.classList.toggle('active', a === link));
+  if (!link) return void indicator.classList.remove('on');
+  indicator.style.width = `${link.offsetWidth - 24}px`;
+  indicator.style.transform = `translateX(${link.offsetLeft + 12}px)`;
+  indicator.classList.add('on');
+  // On mobile the nav scrolls sideways: keep the active item in view.
+  if (nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: link.offsetLeft - 24, behavior: reduceMotion ? 'auto' : 'smooth' });
+}
+
+function flash(target: HTMLElement) {
+  if (!target.classList.contains('card')) return;
+  target.classList.remove('flash');
+  void target.offsetWidth;
+  target.classList.add('flash');
+}
+
+function glideTo(target: HTMLElement) {
+  const to = Math.max(0, target.getBoundingClientRect().top + scrollY - header.offsetHeight - 16);
+  const from = scrollY;
+  const distance = to - from;
+  cancelAnimationFrame(scrollAnim);
+  if (reduceMotion || Math.abs(distance) < 2) {
+    scrollTo(0, to);
+    return flash(target);
+  }
+  const duration = Math.min(900, Math.max(420, Math.abs(distance) * 0.45));
+  const start = performance.now();
+  const step = (now: number) => {
+    const k = Math.min(1, (now - start) / duration);
+    scrollTo(0, from + distance * easeInOut(k));
+    if (k < 1) scrollAnim = requestAnimationFrame(step);
+    else flash(target);
+  };
+  scrollAnim = requestAnimationFrame(step);
+}
+// After a nav click the chosen item stays active (Inspect and Watchlist sit side by side,
+// so position alone can't tell them apart) until the user scrolls by hand.
+let lockedLink: HTMLAnchorElement | null = null;
+// A wheel, touch or key from the user always wins over an in-flight glide.
+['wheel', 'touchstart', 'keydown'].forEach((ev) =>
+  addEventListener(ev, () => { cancelAnimationFrame(scrollAnim); lockedLink = null; }, { passive: true }),
+);
+
+document.addEventListener('click', (e) => {
+  const link = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
+  if (!link) return;
+  const id = link.getAttribute('href')!.slice(1);
+  const target = id ? document.getElementById(id) : null;
+  e.preventDefault();
+  if (!target) {
+    lockedLink = null;
+    history.replaceState(null, '', location.pathname);
+    moveIndicator(null);
+    return glideTo(document.body);
+  }
+  const navLink = sectionLinks.find((a) => a.getAttribute('href') === `#${id}`) ?? null;
+  lockedLink = navLink;
+  moveIndicator(navLink);
+  history.replaceState(null, '', `#${id}`);
+  glideTo(target);
+});
+
+// Scroll-spy: the active section is the last one whose top has passed the header.
+let spyQueued = false;
+function spy() {
+  spyQueued = false;
+  header.classList.toggle('scrolled', scrollY > 8);
+  if (lockedLink) return;
+  const line = header.offsetHeight + innerHeight * 0.3;
+  let current: HTMLAnchorElement | null = null;
+  for (const a of sectionLinks) {
+    const s = document.querySelector(a.getAttribute('href')!);
+    if (s && s.getBoundingClientRect().top <= line) current = a;
+  }
+  if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) current = sectionLinks[sectionLinks.length - 1];
+  if (current !== sectionLinks.find((a) => a.classList.contains('active'))) moveIndicator(current);
+}
+addEventListener('scroll', () => { if (!spyQueued) { spyQueued = true; requestAnimationFrame(spy); } }, { passive: true });
+addEventListener('resize', () => moveIndicator(sectionLinks.find((a) => a.classList.contains('active')) ?? null));
+
+// ---------- read-only popover ----------
+const pill = el<HTMLButtonElement>('roPill');
+const pop = el('roPop');
+function setPop(open: boolean) {
+  pill.setAttribute('aria-expanded', String(open));
+  pop.setAttribute('aria-hidden', String(!open));
+  pop.classList.toggle('open', open);
+}
+pill.addEventListener('click', (e) => { e.stopPropagation(); setPop(!pop.classList.contains('open')); });
+document.addEventListener('click', (e) => { if (!pop.contains(e.target as Node)) setPop(false); });
+addEventListener('keydown', (e) => { if (e.key === 'Escape') { setPop(false); pill.focus(); } });
+
+// Opening the page on #inspect etc. lands with the same glide.
+if (location.hash && document.querySelector(location.hash)) requestAnimationFrame(() => glideTo(document.querySelector<HTMLElement>(location.hash)!));
+
 renderWatch();
+spy();
 void network();
 // Keep the network card fresh while the tab is visible (one cheap read every 20s).
 setInterval(() => document.visibilityState === 'visible' && void network(), 20000);
