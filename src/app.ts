@@ -375,22 +375,57 @@ function flash(target: HTMLElement) {
   target.classList.add('flash');
 }
 
+// Web fonts load without blocking render, so document.fonts.ready can resolve before
+// the font stylesheet is even applied (nothing is pending yet). Real readiness is: the
+// stylesheet is in place, layout has used it once, and the faces it asked for loaded.
+const fontsReady: Promise<void> = (async () => {
+  const link = document.querySelector<HTMLLinkElement>('link[href*="fonts.googleapis.com/css2"]');
+  if (link) {
+    await new Promise<void>((resolve) => {
+      const timer = window.setInterval(() => { if (link.rel === 'stylesheet' && link.sheet) finish(); }, 50);
+      const giveUp = window.setTimeout(() => finish(), 6000);
+      function finish() { clearInterval(timer); clearTimeout(giveUp); resolve(); }
+      link.addEventListener('error', finish, { once: true });
+    });
+  }
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  await document.fonts?.ready;
+})();
+let fontsDone = false;
+void fontsReady.then(() => { fontsDone = true; });
+
+// Document-space top of an element, from layout only. getBoundingClientRect() includes
+// CSS transforms, and cards still sliding in (translateY on .reveal) would read up to
+// 14px off; offsetTop ignores transforms, so every landing uses the settled layout.
+function docTop(node: HTMLElement) {
+  let y = 0;
+  for (let n: HTMLElement | null = node; n; n = n.offsetParent as HTMLElement | null) y += n.offsetTop;
+  return y;
+}
+
 function glideTo(target: HTMLElement) {
-  const to = Math.max(0, target.getBoundingClientRect().top + scrollY - header.offsetHeight - 16);
+  // Recomputed every frame, so a layout shift mid-glide (font swap, live data) still ends on target.
+  const goal = () => (target === document.body ? 0 : Math.max(0, docTop(target) - header.offsetHeight - 16));
+  const anchor = target === document.body ? { anchor: 'top', offset: 0 } : { anchor: `#${target.id}`, offset: -16 };
+  const land = () => {
+    flash(target);
+    // If fonts are still on their way, hold this landing until they swap in.
+    if (!fontsDone) settleOn(anchor);
+  };
   const from = scrollY;
-  const distance = to - from;
+  const distance = goal() - from;
   cancelAnimationFrame(scrollAnim);
   if (reduceMotion || Math.abs(distance) < 2) {
-    scrollTo(0, to);
-    return flash(target);
+    scrollTo(0, goal());
+    return land();
   }
   const duration = Math.min(900, Math.max(420, Math.abs(distance) * 0.45));
   const start = performance.now();
   const step = (now: number) => {
     const k = Math.min(1, (now - start) / duration);
-    scrollTo(0, from + distance * easeInOut(k));
+    scrollTo(0, from + (goal() - from) * easeInOut(k));
     if (k < 1) scrollAnim = requestAnimationFrame(step);
-    else flash(target);
+    else land();
   };
   scrollAnim = requestAnimationFrame(step);
 }
@@ -398,13 +433,20 @@ function glideTo(target: HTMLElement) {
 // so position alone can't tell them apart) until the user scrolls by hand.
 let lockedLink: HTMLAnchorElement | null = null;
 // A wheel, touch or key from the user always wins over an in-flight glide.
+// Once they scroll by hand, an old #section in the URL no longer describes where
+// they are, so drop it (otherwise a refresh would yank them back to that section).
 ['wheel', 'touchstart', 'keydown'].forEach((ev) =>
-  addEventListener(ev, () => { cancelAnimationFrame(scrollAnim); lockedLink = null; }, { passive: true }),
+  addEventListener(ev, () => {
+    cancelAnimationFrame(scrollAnim);
+    lockedLink = null;
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  }, { passive: true }),
 );
 
 document.addEventListener('click', (e) => {
   const link = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
   if (!link) return;
+  stopSettle?.();
   const id = link.getAttribute('href')!.slice(1);
   const target = id ? document.getElementById(id) : null;
   e.preventDefault();
@@ -451,23 +493,93 @@ pill.addEventListener('click', (e) => { e.stopPropagation(); setPop(!pop.classLi
 document.addEventListener('click', (e) => { if (!pop.contains(e.target as Node)) setPop(false); });
 addEventListener('keydown', (e) => { if (e.key === 'Escape') { setPop(false); pill.focus(); } });
 
-// Let us own scroll position on reload: the browser's own restoration fights
-// the on-load glide and leaves the page landing in the wrong spot.
+// ---------- precise scroll restore on refresh ----------
+// The position is saved relative to the nearest section ("12px into #watch"), not as a
+// raw scrollY. Web fonts and live data change heights after load, so a raw pixel value
+// lands in the wrong place; an anchor + offset still points at the same content.
+const ANCHORS = ['.hero', '#inspect', '#watch', '#aeon', '.foot'];
+const SCROLL_KEY = 'sentinel.scroll.v1';
+type Saved = { path: string; anchor: string; offset: number };
+
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+function currentAnchor(): Saved {
+  const line = header.offsetHeight;
+  let best: { anchor: string; top: number } = { anchor: '.hero', top: -Infinity };
+  for (const sel of ANCHORS) {
+    const node = document.querySelector<HTMLElement>(sel);
+    if (!node) continue;
+    const top = docTop(node) - scrollY;
+    // The last anchor whose top is at or above the header line is the one being read.
+    if (top <= line + 1 && top > best.top) best = { anchor: sel, top };
+  }
+  if (best.top === -Infinity) best = { anchor: '.hero', top: docTop(document.querySelector<HTMLElement>('.hero')!) - scrollY };
+  return { path: location.pathname, anchor: best.anchor, offset: Math.round(line - best.top) };
+}
+
+let restoring = false;
+let saveQueued = false;
+function saveScroll() {
+  saveQueued = false;
+  if (restoring) return;
+  try { sessionStorage.setItem(SCROLL_KEY, JSON.stringify(scrollY < 2 ? { path: location.pathname, anchor: 'top', offset: 0 } : currentAnchor())); } catch { /* storage unavailable */ }
+}
+addEventListener('scroll', () => { if (!saveQueued) { saveQueued = true; requestAnimationFrame(saveScroll); } }, { passive: true });
+addEventListener('pagehide', saveScroll);
+
+function applyAnchor(target: { anchor: string; offset: number }) {
+  if (target.anchor === 'top') return scrollTo(0, 0);
+  const node = document.querySelector<HTMLElement>(target.anchor);
+  if (!node) return;
+  scrollTo(0, Math.max(0, docTop(node) - header.offsetHeight + target.offset));
+}
+
+// Apply now, then re-apply whenever layout shifts (fonts swap in, live data fills),
+// until fonts are ready AND the layout has been still for 400ms, or the user takes
+// over. Anchor-relative re-applies keep the same content in view, so a late font swap
+// (or a page that was too short to scroll that far) still ends on the saved spot.
+let stopSettle: (() => void) | null = null;
+function settleOn(target: { anchor: string; offset: number }) {
+  stopSettle?.();
+  restoring = true;
+  const apply = () => { applyAnchor(target); spy(true); };
+  let stopped = false;
+  let fontsSettled = fontsDone;
+  let quiet = 0;
+  const inputs = ['wheel', 'touchstart', 'keydown', 'pointerdown'];
+  const stop = () => {
+    if (stopped) return;
+    stopped = true; restoring = false; ro.disconnect(); clearTimeout(quiet); clearTimeout(cap);
+    inputs.forEach((ev) => removeEventListener(ev, stop));
+    if (stopSettle === stop) stopSettle = null;
+  };
+  stopSettle = stop;
+  const armQuiet = () => { clearTimeout(quiet); if (fontsSettled) quiet = window.setTimeout(stop, 400); };
+  const ro = new ResizeObserver(() => { if (!stopped) { apply(); armQuiet(); } });
+  inputs.forEach((ev) => addEventListener(ev, stop, { passive: true }));
+  apply();
+  ro.observe(document.body);
+  void fontsReady.then(() => { fontsSettled = true; if (!stopped) { apply(); armQuiet(); } });
+  armQuiet();
+  const cap = window.setTimeout(stop, 8000);
+}
 
 renderWatch();
 // Place the indicator in its final spot before first paint (no slide-in).
 spy(true);
 void network();
 
-// Opening/refreshing the page on #inspect etc. snaps straight to that section
-// (offset for the sticky header) — no glide on load, so a refresh looks settled.
-if (location.hash && document.querySelector(location.hash)) {
-  const target = document.querySelector<HTMLElement>(location.hash)!;
-  requestAnimationFrame(() => {
-    scrollTo(0, Math.max(0, target.getBoundingClientRect().top + scrollY - header.offsetHeight - 16));
-    spy(true);
-  });
+// Which position to land on:
+//  - refresh / back-forward in this tab: exactly where the reader was;
+//  - opened with #section: that section, 16px under the header;
+//  - otherwise: the top.
+const navType = (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined)?.type;
+let saved: Saved | null = null;
+try { saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY) || 'null'); } catch { saved = null; }
+if ((navType === 'reload' || navType === 'back_forward') && saved && saved.path === location.pathname && (saved.anchor === 'top' || ANCHORS.includes(saved.anchor))) {
+  settleOn(saved);
+} else if (location.hash && /^#[\w-]+$/.test(location.hash) && document.querySelector(location.hash)) {
+  settleOn({ anchor: location.hash, offset: -16 });
 }
 // Keep the network card fresh while the tab is visible (one cheap read every 20s).
 setInterval(() => document.visibilityState === 'visible' && void network(), 20000);

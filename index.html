@@ -12,6 +12,11 @@
     <meta property="og:image" content="https://sentinelhood.com/og.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@sentinelhood" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Non-blocking: the app renders with fallback fonts and swaps when these arrive. -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,500&display=swap" /></noscript>
   </head>
   <body>
     <div id="root"></div>
