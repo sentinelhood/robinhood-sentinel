@@ -17,6 +17,7 @@ bin/install-skill-pack sentinelhood/robinhood-sentinel
 | Skill | What it does | Secrets | Capabilities | Default schedule |
 |---|---|---|---|---|
 | `robinhood-chain-monitor` | Diffs nonce, native balance and bytecode for watched addresses against `memory/robinhood-state.json`. Alerts only on change, through `./notify`. | none | `read_only`, `sends_notifications` | `0 */6 * * *`, disabled until you enable it |
+| `hook-usage` | For every hook in `aeonfun/univ4-hooks` with a Robinhood Chain address, counts the v4 pools created with it and the swaps through them in the last N days. Incremental. Ships `hook_usage.py` (standard library only). | none | `read_only`, `sends_notifications` | `0 9 * * 1`, disabled until you enable it |
 
 Configure it with `memory/robinhood-watches.yml` (see the skill file). The skill reads only from the official RPC, `rpc.mainnet.chain.robinhood.com`, so your watch list is never sent to sentinelhood.com or any other third party. The pack passes Aeon's `scripts/validate-pack.sh` and `scripts/skill-scan.sh`.
 
