@@ -1,7 +1,7 @@
 {
   "name": "Sentinel Pack",
-  "version": "1.0.0",
-  "description": "Keyless Robinhood Chain (4663) monitoring for Aeon: block-stamped nonce, balance and bytecode diffs. Read-only, never signs.",
+  "version": "1.1.0",
+  "description": "Keyless Robinhood Chain (4663) monitoring for Aeon: address diffs and real usage of Aeon's v4 hooks. Read-only, never signs.",
   "author": "sentinelhood",
   "license": "MIT",
   "homepage": "https://sentinelhood.com",
@@ -12,6 +12,16 @@
       "description": "Watch Robinhood Chain addresses for balance, nonce and bytecode changes - keyless, read-only, block-stamped",
       "category": "crypto",
       "schedule": "0 */6 * * *",
+      "default_enabled": false,
+      "secrets_required": [],
+      "capabilities": ["read_only", "sends_notifications"]
+    },
+    {
+      "slug": "hook-usage",
+      "path": "skills/hook-usage",
+      "description": "Measure real usage of Aeon's Uniswap v4 hooks on Robinhood Chain: pools per hook and recent swaps, keyless from the official RPC",
+      "category": "crypto",
+      "schedule": "0 9 * * 1",
       "default_enabled": false,
       "secrets_required": [],
       "capabilities": ["read_only", "sends_notifications"]
