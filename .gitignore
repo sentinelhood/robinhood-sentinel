@@ -5,3 +5,5 @@ dist/
 *.log
 brand/
 .vercel
+__pycache__/
+*.pyc
