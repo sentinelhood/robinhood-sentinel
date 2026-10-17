@@ -33,7 +33,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
 <header class="top">
   <a class="brand" href="#" aria-label="Sentinel home">${mark}<span><strong>SENTINEL</strong><small>ROBINHOOD CHAIN · 4663</small></span></a>
   <nav aria-label="Sections" id="nav">
-    <a href="#inspect" data-section>Inspect</a><a href="#watch" data-section>Watchlist</a><a href="#aeon" data-section>Aeon</a>
+    <a href="#inspect" data-section>Inspect</a><a href="#watch" data-section>Watchlist</a><a href="#aeon" data-section>Aeon</a><a href="#hooks" data-section>Hooks</a>
     <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">X ${arrow}</a>
     <span class="nav-ind" aria-hidden="true"></span>
   </nav>
@@ -72,10 +72,12 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
         <p id="network" class="status" role="status">Checking RPC…</p>
       </article>
 
-      <article class="card notice reveal" style="--d:3" aria-labelledby="tokenTitle">
+      <article class="card notice reveal" style="--d:3" aria-labelledby="tokenTitle" id="tokenCard">
         <span class="tag gold" id="tokenTitle">OFFICIAL TOKEN</span>
-        <p class="notice-big">Not live yet.</p>
-        <p>Sentinel has no token today. Any contract address that claims to be Sentinel is not ours. Announcements come only from <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">@sentinelhood</a>.</p>
+        <div id="tokenBody">
+          <p class="notice-big">Not live yet.</p>
+          <p>Sentinel has no token today. Any contract address that claims to be Sentinel is not ours. Announcements come only from <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">@sentinelhood</a>.</p>
+        </div>
       </article>
     </aside>
   </section>
@@ -124,6 +126,24 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
       <ul id="aeonResults" class="results" aria-live="polite"></ul>
       <p class="hint">Results come live from aeon.fun/ask. To run an agent, <a href="https://www.aeon.fun/connect" target="_blank" rel="noopener noreferrer">sign in to Aeon Connect</a> with your own repo and model.</p>
     </div>
+  </section>
+
+  <section class="card hooks reveal" id="hooks" aria-labelledby="hooksTitle">
+    <div class="hooks-head">
+      <div>
+        <span class="tag gold">04 · HOOK USAGE</span>
+        <h2 id="hooksTitle">Which Aeon hooks get used?</h2>
+        <p class="muted">Every Uniswap v4 pool on Robinhood Chain whose hook is in Aeon's <a href="https://github.com/aeonfun/univ4-hooks" target="_blank" rel="noopener noreferrer">univ4-hooks</a> registry, counted from the official RPC by the <code>hook-usage</code> skill.</p>
+      </div>
+      <dl class="stats hook-stats" id="hookStats">
+        <div><dt>Hooks with pools</dt><dd>…</dd></div>
+        <div><dt>Pools</dt><dd>…</dd></div>
+        <div><dt>Swaps</dt><dd>…</dd></div>
+      </dl>
+    </div>
+    <ul class="bars" id="hookBars" aria-live="polite"><li class="hint">Loading the latest snapshot…</li></ul>
+    <p class="hint" id="hookMeta"></p>
+    <p class="links"><a href="/hook-usage.json" target="_blank" rel="noopener">Raw JSON ${arrow}</a><a href="/skills/hook-usage.md" target="_blank" rel="noopener">SKILL.md ${arrow}</a></p>
   </section>
 </main>
 
@@ -497,7 +517,7 @@ addEventListener('keydown', (e) => { if (e.key === 'Escape') { setPop(false); pi
 // The position is saved relative to the nearest section ("12px into #watch"), not as a
 // raw scrollY. Web fonts and live data change heights after load, so a raw pixel value
 // lands in the wrong place; an anchor + offset still points at the same content.
-const ANCHORS = ['.hero', '#inspect', '#watch', '#aeon', '.foot'];
+const ANCHORS = ['.hero', '#inspect', '#watch', '#aeon', '#hooks', '.foot'];
 const SCROLL_KEY = 'sentinel.scroll.v1';
 type Saved = { path: string; anchor: string; offset: number };
 
@@ -564,7 +584,76 @@ function settleOn(target: { anchor: string; offset: number }) {
   const cap = window.setTimeout(stop, 8000);
 }
 
+// ---------- hook usage (static snapshot, refreshed by scripts/snapshot-hook-usage.sh) ----------
+type HookRow = { hook: string; pools: number; activePools: number; swaps: number; uniqueSenders: number };
+async function loadHookUsage() {
+  const bars = el('hookBars');
+  try {
+    const r = await (await fetch('/hook-usage.json', { signal: AbortSignal.timeout(15000) })).json();
+    if (r.chainId !== 4663 || !Array.isArray(r.hooks)) throw new Error('bad snapshot');
+    const t = r.totals;
+    const dd = el('hookStats').querySelectorAll('dd');
+    dd[0].textContent = `${t.hooksWithPools}/${t.hooks}`;
+    dd[1].textContent = Number(t.pools).toLocaleString();
+    dd[2].textContent = `${Number(t.swaps).toLocaleString()} / ${r.windowDays}d`;
+    const rows: HookRow[] = [...r.hooks].sort((a: HookRow, b: HookRow) => b.pools - a.pools || a.hook.localeCompare(b.hook));
+    const max = Math.max(1, ...rows.map((x) => x.pools));
+    bars.innerHTML = rows
+      .map((x, i) => `<li class="${x.pools ? 'on' : 'off'}" style="--d:${i};--w:${(x.pools / max) * 100}%">
+        <span class="name">${escape(x.hook)}</span>
+        <span class="track"><i></i></span>
+        <span class="num">${x.pools}</span>
+        <span class="sub">${x.pools ? `${x.activePools} active · ${x.swaps} swaps` : 'no pools yet'}</span>
+      </li>`)
+      .join('');
+    const when = r.generatedAt ? new Date(r.generatedAt).toLocaleString() : '';
+    el('hookMeta').textContent = `Read at block ${Number(r.block).toLocaleString()}${when ? ` · ${when}` : ''}. Pools = v4 Initialize events naming the hook. Callers are usually routers, not people. Not a quality score.`;
+  } catch {
+    bars.innerHTML = '<li class="error">Snapshot unavailable. Run the hook-usage skill to read it yourself.</li>';
+  }
+}
+
+// ---------- official token panel (driven by /token.json) ----------
+// The site only shows a contract address when token.json says live AND the address
+// has bytecode on chain 4663 right now. Anything else falls back to "not live".
+type TokenInfo = { live: boolean; name?: string; symbol?: string; address?: string; chainId?: number; announcement?: string; launchpad?: string };
+async function loadToken() {
+  let info: TokenInfo;
+  try {
+    info = await (await fetch(`/token.json?t=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(10000) })).json();
+  } catch {
+    return;
+  }
+  if (!info.live) return;
+  const body = el('tokenBody');
+  const ca = info.address || '';
+  const announcementOk = typeof info.announcement === 'string' && /^https:\/\/(x|twitter)\.com\/sentinelhood\/status\/\d+$/.test(info.announcement);
+  if (!ADDRESS.test(ca) || info.chainId !== 4663 || !announcementOk) {
+    body.innerHTML = '<p class="notice-big">Not live yet.</p><p class="error">The token config is incomplete, so no address is shown. Trust only announcements from @sentinelhood.</p>';
+    return;
+  }
+  body.innerHTML = '<p class="hint">Verifying the contract on chain…</p>';
+  try {
+    const d = await api('address', ca);
+    if (!d.codeBytes) throw new Error('no bytecode');
+    body.innerHTML = `
+      <p class="notice-big">${escape(info.symbol || 'Live')} <span class="badge ok">verified on chain</span></p>
+      <div class="cmd"><code id="tokenCa" title="${escape(ca)}">${escape(ca)}</code><button class="btn small" id="copyCa">Copy</button></div>
+      <p>Contract bytecode confirmed on Robinhood Chain (4663) at block ${escape(Number(d.block).toLocaleString())}. Bytecode is not an audit. Check the address against the <a href="${escape(info.announcement!)}" target="_blank" rel="noopener noreferrer">announcement</a> before you trade, and never sign anything a DM sends you.</p>
+      <p class="links"><a href="https://robinhoodchain.blockscout.com/address/${escape(ca)}" target="_blank" rel="noopener noreferrer">Blockscout ${arrow}</a>${info.launchpad && /^https:\/\//.test(info.launchpad) ? `<a href="${escape(info.launchpad)}" target="_blank" rel="noopener noreferrer">Launchpad ${arrow}</a>` : ''}</p>`;
+    el('copyCa').addEventListener('click', async () => {
+      const b = el<HTMLButtonElement>('copyCa');
+      try { await navigator.clipboard.writeText(ca); b.textContent = 'Copied'; } catch { getSelection()?.selectAllChildren(el('tokenCa')); b.textContent = 'Press Ctrl+C'; }
+      setTimeout(() => (b.textContent = 'Copy'), 1600);
+    });
+  } catch {
+    body.innerHTML = '<p class="notice-big">Not live yet.</p><p class="error">The configured address has no contract on Robinhood Chain right now, so it is not shown. Trust only announcements from @sentinelhood.</p>';
+  }
+}
+
 renderWatch();
+void loadHookUsage();
+void loadToken();
 // Place the indicator in its final spot before first paint (no slide-in).
 spy(true);
 void network();

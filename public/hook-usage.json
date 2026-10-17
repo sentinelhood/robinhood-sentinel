@@ -1,0 +1,145 @@
+{
+ "chainId": 4663,
+ "block": 91030244,
+ "windowDays": 7.0,
+ "hooks": [
+  {
+   "hook": "DynamicFee",
+   "address": "0x7566a3bfbe88c06bc5f33fea927f461e8279d0c4",
+   "stage": "template",
+   "flagsMatch": true,
+   "pools": 53,
+   "activePools": 2,
+   "swaps": 10,
+   "uniqueSenders": 3
+  },
+  {
+   "hook": "NoOp",
+   "address": "0x8ef1699f78f830375239f6f3165cb72d5b64c0c4",
+   "stage": "template",
+   "flagsMatch": true,
+   "pools": 3,
+   "activePools": 0,
+   "swaps": 0,
+   "uniqueSenders": 0
+  },
+  {
+   "hook": "BlockEcho",
+   "address": "0xf2f992fe611f64ecfcc413c420f558c85a7480c4",
+   "stage": "deployed",
+   "flagsMatch": true,
+   "pools": 0,
+   "activePools": 0,
+   "swaps": 0,
+   "uniqueSenders": 0
+  },
+  {
+   "hook": "CapGate",
+   "address": "0x57777eb796b2b01aef0a0a6752217c5dbe9a00c4",
+   "stage": "deployed",
+   "flagsMatch": true,
+   "pools": 0,
+   "activePools": 0,
+   "swaps": 0,
+   "uniqueSenders": 0
+  },
+  {
+   "hook": "ComboBreaker",
+   "address": "0x85c98fff5bee81278b4de807465a4d86f39f20cc",
+   "stage": "deployed",
+   "flagsMatch": true,
+   "pools": 0,
+   "activePools": 0,
+   "swaps": 0,
+   "uniqueSenders": 0
+  },
+  {
+   "hook": "CrownClash",
+   "address": "0xcbbc0818c555bff795a2ab6261d224e793678044",
+   "stage": "deployed",
+   "flagsMatch": true,
+   "pools": 0,
+   "activePools": 0,
+   "swaps": 0,
+   "uniqueSenders": 0
+  },
+  {
+   "hook": "ExactInGate",
+   "address": "0x2c10afb513a6505befb74dfdf5800b392c9f00c4",
+   "stage": "deployed",
+   "flagsMatch": true,
+   "pools": 0,
+   "activePools": 0,
+   "swaps": 0,
+   "uniqueSenders": 0
+  },
+  {
+   "hook": "HeavierHand",
+   "address": "0x368575b8712e7a6b56b309f6b3ce20549e9c90c4",
+   "stage": "deployed",
+   "flagsMatch": true,
+   "pools": 0,
+   "activePools": 0,
+   "swaps": 0,
+   "uniqueSenders": 0
+  },
+  {
+   "hook": "LastBuyerWins",
+   "address": "0x94de41e76700443f3d6673a397b00d41cf6ea0cc",
+   "stage": "deployed",
+   "flagsMatch": true,
+   "pools": 0,
+   "activePools": 0,
+   "swaps": 0,
+   "uniqueSenders": 0
+  },
+  {
+   "hook": "LegacyLedger",
+   "address": "0x70dec3a54943fd96fe460ff74172038f57208044",
+   "stage": "deployed",
+   "flagsMatch": true,
+   "pools": 0,
+   "activePools": 0,
+   "swaps": 0,
+   "uniqueSenders": 0
+  },
+  {
+   "hook": "TailTwins",
+   "address": "0x971df49844604e44514120682eac3fcdc4f5c0c4",
+   "stage": "deployed",
+   "flagsMatch": true,
+   "pools": 0,
+   "activePools": 0,
+   "swaps": 0,
+   "uniqueSenders": 0
+  },
+  {
+   "hook": "TeamWar",
+   "address": "0x9c657d8637e98b9299be6e4e23d52fd2713aa0cc",
+   "stage": "deployed",
+   "flagsMatch": true,
+   "pools": 0,
+   "activePools": 0,
+   "swaps": 0,
+   "uniqueSenders": 0
+  },
+  {
+   "hook": "TotalizerTrap",
+   "address": "0x1e27183e12a9c108dd850e022f26870b12a200c4",
+   "stage": "deployed",
+   "flagsMatch": true,
+   "pools": 0,
+   "activePools": 0,
+   "swaps": 0,
+   "uniqueSenders": 0
+  }
+ ],
+ "totals": {
+  "hooks": 13,
+  "hooksWithPools": 2,
+  "pools": 56,
+  "swaps": 10
+ },
+ "generatedAt": "2026-10-17T15:25:50+00:00",
+ "source": "skills/hook-usage/hook_usage.py via rpc.mainnet.chain.robinhood.com"
+}

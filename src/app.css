@@ -227,6 +227,21 @@ pre { overflow: auto; max-height: 280px; margin: 10px 0 0; padding: 12px; backgr
 .cmd code { flex: 1; min-width: 0; overflow-x: auto; white-space: nowrap; font-size: 13px; color: var(--gold-2); scrollbar-width: none; }
 .links { display: flex; flex-wrap: wrap; gap: 18px; margin: 0; }
 .links a { font-size: 13px; font-weight: 600; }
+/* ---------- hook usage ---------- */
+.hooks { margin: 20px 0 0; }
+.hooks-head { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: end; }
+.hook-stats { grid-template-columns: repeat(3, 1fr); margin: 0; }
+.hook-stats dd { font-size: 17px; }
+.bars { list-style: none; margin: 24px 0 14px; padding: 0; display: grid; gap: 2px; }
+.bars li { display: grid; grid-template-columns: 150px 1fr 44px 170px; align-items: center; gap: 14px; padding: 7px 0; border-top: 1px solid var(--line); font: 13px var(--mono); }
+.bars li.off { color: var(--dim); }
+.bars .track { height: 8px; background: #1c1f19; border-radius: 4px; overflow: hidden; }
+.bars .track i { display: block; height: 100%; width: var(--w); background: linear-gradient(90deg, var(--gold), var(--gold-2)); border-radius: 4px; transform-origin: left; animation: grow .9s var(--ease) both; animation-delay: calc(var(--d, 0) * 45ms); }
+.bars .num { text-align: right; font-variant-numeric: tabular-nums; color: var(--text); }
+.bars li.off .num { color: var(--dim); }
+.bars .sub { color: var(--dim); font-size: 11px; }
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
 .results li { padding: 12px 0; border-top: 1px solid var(--line); }
 .results li a { font-weight: 700; font-size: 14px; }
 .results li p { margin: 4px 0 0; font-size: 13px; }
@@ -255,6 +270,15 @@ pre { overflow: auto; max-height: 280px; margin: 10px 0 0; padding: 12px; backgr
   .hero { grid-template-columns: 1fr; gap: 32px; padding: 48px 0 40px; }
   .grid, .aeon { grid-template-columns: 1fr; }
   .aeon { gap: 8px; }
+}
+@media (max-width: 1000px) {
+  .hooks-head { grid-template-columns: 1fr; gap: 18px; }
+}
+@media (max-width: 720px) {
+  .bars li { grid-template-columns: 1fr 44px; gap: 4px 12px; }
+  .bars .track { grid-column: 1 / -1; grid-row: 2; }
+  .bars .sub { grid-column: 1 / -1; }
+  .hook-stats dd { font-size: 15px; }
 }
 @media (max-width: 720px) {
   .top { height: auto; flex-wrap: wrap; gap: 10px 14px; padding-top: 12px; padding-bottom: 10px; }

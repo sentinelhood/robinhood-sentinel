@@ -39,6 +39,13 @@ export async function execute(action, value) {
   const receipt = await rpc('eth_getTransactionReceipt',[value]);
   return {...base, transaction, receipt, warning:'Historical execution only, not a pre-sign simulation or safety verdict.'};
 }
+// Shared, non-personal reads are edge-cached briefly so many visitors cost one RPC call.
+// Address/transaction lookups and every error stay uncached.
+export const CACHE = {
+  network: 'public, max-age=0, s-maxage=4, stale-while-revalidate=10',
+  aeon: 'public, max-age=0, s-maxage=600, stale-while-revalidate=3600',
+};
+
 export default async function handler(req, res) {
   res.setHeader('Cache-Control','no-store');
   res.setHeader('X-Content-Type-Options','nosniff');
@@ -46,6 +53,10 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') { res.setHeader('Allow','GET'); return res.status(405).json({error:'Only GET is supported'}); }
   const {action, value} = req.query;
   try { validate(action,value); } catch (e) { return res.status(400).json({error:e.message}); }
-  try { return res.status(200).json(await execute(action,value)); }
+  try {
+    const body = await execute(action,value);
+    if (CACHE[action]) res.setHeader('Cache-Control', CACHE[action]);
+    return res.status(200).json(body);
+  }
   catch { return res.status(502).json({error:'Upstream unavailable, timed out, or chain mismatch. Retry later.'}); }
 }
