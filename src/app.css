@@ -242,6 +242,16 @@ pre { overflow: auto; max-height: 280px; margin: 10px 0 0; padding: 12px; backgr
 .bars .sub { color: var(--dim); font-size: 11px; }
 @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
+/* ---------- aeon contributions ---------- */
+.contrib { margin: 20px 0 0; }
+.contrib-list { list-style: none; margin: 22px 0 14px; padding: 0; }
+.contrib-list li { display: grid; grid-template-columns: 70px 1fr auto; align-items: start; gap: 18px; padding: 14px 0; border-top: 1px solid var(--line); }
+.contrib-list .num { font: 600 15px var(--mono); }
+.contrib-list code { font-size: 13px; overflow-wrap: anywhere; }
+.contrib-list p { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+.contrib-list .state { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.contrib-list small { font: 11px var(--mono); color: var(--dim); white-space: nowrap; }
+
 .results li { padding: 12px 0; border-top: 1px solid var(--line); }
 .results li a { font-weight: 700; font-size: 14px; }
 .results li p { margin: 4px 0 0; font-size: 13px; }
@@ -275,6 +285,8 @@ pre { overflow: auto; max-height: 280px; margin: 10px 0 0; padding: 12px; backgr
   .hooks-head { grid-template-columns: 1fr; gap: 18px; }
 }
 @media (max-width: 720px) {
+  .contrib-list li { grid-template-columns: 1fr auto; gap: 6px 12px; }
+  .contrib-list li > div { grid-column: 1 / -1; grid-row: 2; }
   .bars li { grid-template-columns: 1fr 44px; gap: 4px 12px; }
   .bars .track { grid-column: 1 / -1; grid-row: 2; }
   .bars .sub { grid-column: 1 / -1; }

@@ -26,6 +26,13 @@ try {
   /* Corrupt storage is ignored. */
 }
 
+// Aeon pull requests by sentinelhood. Update `merged`/`when` only after checking the PR on GitHub.
+const CONTRIBUTIONS = [
+  { pr: 1244, title: 'feat(onchain-monitor): watch wallets and contracts on Robinhood Chain', what: 'Aeon\u2019s on-chain alerts learn Robinhood Chain, with a keyless path through the public RPC.', merged: false, when: 'approved 2026-10-18' },
+  { pr: 1243, title: 'fix(deploy-uni-hook): add Alchemy slug for Robinhood Chain', what: 'Hook deploys to Robinhood use Alchemy when a key is set, instead of always the public RPC.', merged: true, when: 'merged 2026-10-18' },
+  { pr: 1227, title: 'docs(packs): list the Sentinel Pack', what: 'The Sentinel Pack joins Aeon\u2019s community skill-pack registry.', merged: true, when: 'merged 2026-10-16' },
+];
+
 const mark = `<svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 37 20 20 37 3 20Z" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M20 11 29 20 20 29 11 20Z" fill="none" stroke="#f5f1e9" stroke-width="1.2"/><path d="M20 16.5 23.5 20 20 23.5 16.5 20Z" fill="currentColor"/></svg>`;
 const arrow = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>`;
 
@@ -33,7 +40,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
 <header class="top">
   <a class="brand" href="#" aria-label="Sentinel home">${mark}<span><strong>SENTINEL</strong><small>ROBINHOOD CHAIN · 4663</small></span></a>
   <nav aria-label="Sections" id="nav">
-    <a href="#inspect" data-section>Inspect</a><a href="#watch" data-section>Watchlist</a><a href="#aeon" data-section>Aeon</a><a href="#hooks" data-section>Hooks</a>
+    <a href="#inspect" data-section>Inspect</a><a href="#watch" data-section>Watchlist</a><a href="#aeon" data-section>Aeon</a><a href="#hooks" data-section>Hooks</a><a href="#contrib" data-section>Contributions</a>
     <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">X ${arrow}</a>
     <span class="nav-ind" aria-hidden="true"></span>
   </nav>
@@ -144,6 +151,20 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
     <ul class="bars" id="hookBars" aria-live="polite"><li class="hint">Loading the latest snapshot…</li></ul>
     <p class="hint" id="hookMeta"></p>
     <p class="links"><a href="/hook-usage.json" target="_blank" rel="noopener">Raw JSON ${arrow}</a><a href="/skills/hook-usage.md" target="_blank" rel="noopener">SKILL.md ${arrow}</a></p>
+  </section>
+
+  <section class="card contrib reveal" id="contrib" aria-labelledby="contribTitle">
+    <span class="tag gold">05 · AEON CONTRIBUTIONS</span>
+    <h2 id="contribTitle">Shipped upstream.</h2>
+    <p class="muted">Pull requests from <code>sentinelhood</code> to <a href="https://github.com/aeonfun/aeon" target="_blank" rel="noopener noreferrer">aeonfun/aeon</a>. Each one is public: open the link and check the review, the diff and the merge yourself.</p>
+    <ul class="contrib-list">${CONTRIBUTIONS.map((c, i) => `
+      <li style="--d:${i}">
+        <a class="num" href="https://github.com/aeonfun/aeon/pull/${c.pr}" target="_blank" rel="noopener noreferrer">#${c.pr}</a>
+        <div><a href="https://github.com/aeonfun/aeon/pull/${c.pr}" target="_blank" rel="noopener noreferrer"><code>${c.title}</code></a><p>${c.what}</p></div>
+        <span class="state"><span class="badge ${c.merged ? 'ok' : 'wait'}">${c.merged ? 'Merged' : 'Approved'}</span><small>${c.when}</small></span>
+      </li>`).join('')}
+    </ul>
+    <p class="hint">Approved means the maintainer reviewed and accepted it; it is not in Aeon until it is merged.</p>
   </section>
 </main>
 
@@ -517,7 +538,7 @@ addEventListener('keydown', (e) => { if (e.key === 'Escape') { setPop(false); pi
 // The position is saved relative to the nearest section ("12px into #watch"), not as a
 // raw scrollY. Web fonts and live data change heights after load, so a raw pixel value
 // lands in the wrong place; an anchor + offset still points at the same content.
-const ANCHORS = ['.hero', '#inspect', '#watch', '#aeon', '#hooks', '.foot'];
+const ANCHORS = ['.hero', '#inspect', '#watch', '#aeon', '#hooks', '#contrib', '.foot'];
 const SCROLL_KEY = 'sentinel.scroll.v1';
 type Saved = { path: string; anchor: string; offset: number };
 
