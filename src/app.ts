@@ -648,7 +648,9 @@ async function loadToken() {
   if (!info.live) return;
   const body = el('tokenBody');
   const ca = info.address || '';
-  const announcementOk = typeof info.announcement === 'string' && /^https:\/\/(x|twitter)\.com\/sentinelhood\/status\/\d+$/.test(info.announcement);
+  const announcementOk = info.announcement === undefined || (typeof info.announcement === 'string' && /^https:\/\/(x|twitter)\.com\/sentinelhood\/status\/\d+$/.test(info.announcement));
+  const source = info.announcement || 'https://x.com/sentinelhood';
+  const sourceLabel = info.announcement ? 'announcement' : '@sentinelhood';
   if (!ADDRESS.test(ca) || info.chainId !== 4663 || !announcementOk) {
     body.innerHTML = '<p class="notice-big">Not live yet.</p><p class="error">The token config is incomplete, so no address is shown. Trust only announcements from @sentinelhood.</p>';
     return;
@@ -660,7 +662,7 @@ async function loadToken() {
     body.innerHTML = `
       <p class="notice-big">${escape(info.symbol || 'Live')} <span class="badge ok">verified on chain</span></p>
       <div class="cmd"><code id="tokenCa" title="${escape(ca)}">${escape(ca)}</code><button class="btn small" id="copyCa">Copy</button></div>
-      <p>Contract bytecode confirmed on Robinhood Chain (4663) at block ${escape(Number(d.block).toLocaleString())}. Bytecode is not an audit. Check the address against the <a href="${escape(info.announcement!)}" target="_blank" rel="noopener noreferrer">announcement</a> before you trade, and never sign anything a DM sends you.</p>
+      <p>Contract bytecode confirmed on Robinhood Chain (4663) at block ${escape(Number(d.block).toLocaleString())}. Bytecode is not an audit. Check the address against <a href="${escape(source)}" target="_blank" rel="noopener noreferrer">${sourceLabel}</a> before you trade, and never sign anything a DM sends you.</p>
       <p class="links"><a href="https://robinhoodchain.blockscout.com/address/${escape(ca)}" target="_blank" rel="noopener noreferrer">Blockscout ${arrow}</a>${info.launchpad && /^https:\/\//.test(info.launchpad) ? `<a href="${escape(info.launchpad)}" target="_blank" rel="noopener noreferrer">Launchpad ${arrow}</a>` : ''}</p>`;
     el('copyCa').addEventListener('click', async () => {
       const b = el<HTMLButtonElement>('copyCa');

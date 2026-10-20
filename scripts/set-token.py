@@ -7,7 +7,7 @@
 
 It only writes public/token.json. Publishing is a normal `git push` (Vercel deploys it).
 It refuses to write unless: the address is well formed, the RPC reports chain 4663, the
-address has contract bytecode, and the announcement is a @sentinelhood status URL.
+address has contract bytecode, and (if given) the announcement is a @sentinelhood status URL.
 """
 import argparse, json, re, sys, urllib.request
 from pathlib import Path
@@ -43,7 +43,7 @@ def main():
         raise SystemExit('address must be 0x + 40 hex characters')
     if not a.symbol or not re.fullmatch(r'[A-Z0-9]{2,10}', a.symbol):
         raise SystemExit('--symbol must be 2-10 uppercase letters or digits')
-    if not a.announcement or not re.fullmatch(r'https://(x|twitter)\.com/sentinelhood/status/\d+', a.announcement):
+    if a.announcement and not re.fullmatch(r'https://(x|twitter)\.com/sentinelhood/status/\d+', a.announcement):
         raise SystemExit('--announcement must be an https://x.com/sentinelhood/status/<id> link')
     if a.launchpad and not a.launchpad.startswith('https://'):
         raise SystemExit('--launchpad must be an https link')
@@ -57,7 +57,9 @@ def main():
         raise SystemExit(f'{a.address} has no contract bytecode on Robinhood Chain at block {int(block, 16):,}. Not writing.')
 
     data = {'live': True, 'name': a.name, 'symbol': a.symbol, 'address': a.address, 'chainId': 4663,
-            'announcement': a.announcement, 'verifiedAtBlock': int(block, 16), 'codeBytes': (len(code) - 2) // 2}
+            'verifiedAtBlock': int(block, 16), 'codeBytes': (len(code) - 2) // 2}
+    if a.announcement:
+        data['announcement'] = a.announcement
     if a.launchpad:
         data['launchpad'] = a.launchpad
     OUT.write_text(json.dumps(data, indent=2) + '\n')
