@@ -26,9 +26,9 @@ try {
   /* Corrupt storage is ignored. */
 }
 
-// Aeon pull requests by sentinelhood. Update `merged`/`when` only after checking the PR on GitHub.
+// Aeon pull requests by sentinelhood. Keep status aligned with the public GitHub PR.
 const CONTRIBUTIONS = [
-  { pr: 1244, title: 'feat(onchain-monitor): watch wallets and contracts on Robinhood Chain', what: 'Aeon\u2019s on-chain alerts learn Robinhood Chain, with a keyless path through the public RPC.', merged: false, when: 'approved 2026-10-18' },
+  { pr: 1244, title: 'feat(onchain-monitor): watch wallets and contracts on Robinhood Chain', what: 'Aeon\u2019s on-chain alerts learn Robinhood Chain, with a keyless path through the public RPC.', merged: true, when: 'merged 2026-10-20' },
   { pr: 1243, title: 'fix(deploy-uni-hook): add Alchemy slug for Robinhood Chain', what: 'Hook deploys to Robinhood use Alchemy when a key is set, instead of always the public RPC.', merged: true, when: 'merged 2026-10-18' },
   { pr: 1227, title: 'docs(packs): list the Sentinel Pack', what: 'The Sentinel Pack joins Aeon\u2019s community skill-pack registry.', merged: true, when: 'merged 2026-10-16' },
 ];
@@ -121,7 +121,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
     <div class="aeon-main">
       <span class="tag gold">03 · AEON</span>
       <h2 id="aeonTitle">The gap it fills.</h2>
-      <p class="muted">Aeon's <code>onchain-monitor</code> covers Ethereum, Base, Arbitrum, Optimism and Polygon, but not Robinhood Chain. The Sentinel Pack adds that. It watches addresses for nonce, balance and bytecode changes, reads only from the official Robinhood Chain RPC, and needs no keys.</p>
+      <p class="muted">Aeon\u2019s <code>onchain-monitor</code> now includes the Robinhood Chain path from merged PR <a href="https://github.com/aeonfun/aeon/pull/1244" target="_blank" rel="noopener noreferrer">#1244</a>. It watches addresses for nonce, balance and bytecode changes, reads only from the official RPC, and needs no keys.</p>
       <div class="cmd"><code id="installCmd">${INSTALL}</code><button class="btn small" id="copyCmd">Copy</button></div>
       <p class="links"><a href="https://github.com/sentinelhood/robinhood-sentinel" target="_blank" rel="noopener noreferrer">Source ${arrow}</a><a href="/skills/robinhood-chain-monitor.md" target="_blank" rel="noopener">SKILL.md ${arrow}</a><a href="/openapi.json" target="_blank" rel="noopener">OpenAPI ${arrow}</a><a href="/llms.txt" target="_blank" rel="noopener">llms.txt ${arrow}</a></p>
     </div>
@@ -164,7 +164,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
         <span class="state"><span class="badge ${c.merged ? 'ok' : 'wait'}">${c.merged ? 'Merged' : 'Approved'}</span><small>${c.when}</small></span>
       </li>`).join('')}
     </ul>
-    <p class="hint">Approved means the maintainer reviewed and accepted it; it is not in Aeon until it is merged.</p>
+    <p class="hint">Status is checked against the public PR. The reorg-aware and replayable-evidence follow-up is still local and under review; it is not represented as merged here.</p>
   </section>
 </main>
 
