@@ -23,7 +23,7 @@
       "headers": [{"key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800"}]
     },
     {
-      "source": "/(hook-usage.json|token.json)",
+      "source": "/(hook-usage.json|token.json|burn.json)",
       "headers": [{"key": "Cache-Control", "value": "public, max-age=0, s-maxage=60, stale-while-revalidate=300"}]
     }
   ]

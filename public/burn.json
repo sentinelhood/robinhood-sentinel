@@ -1,0 +1,47 @@
+{
+  "chainId": 4663,
+  "token": "0x2da80b9D1bc1B323693C80C76eb4a321ec08CbD0",
+  "decimals": 18,
+  "fromBlock": 93500000,
+  "block": 94048740,
+  "blockHash": "0x0e19c69c5d0e07865e87ecc24a415b8a690540c7203f2cff5425524833c62e60",
+  "timestamp": "2026-10-21T05:47:30+00:00",
+  "generatedAt": "2026-10-21T05:47:38.375900+00:00",
+  "mintedRaw": "1000000000000000000000000000",
+  "burnedRaw": "30000429066646124346090870",
+  "remainingRaw": "969999570933353875653909130",
+  "mintEventCount": 1,
+  "burnEventCount": 19,
+  "latestBurns": [
+    {
+      "tx": "0x4c0177331cd35a5226edc528064b8862131b72f8d1e6c4488f4f9687e38e4979",
+      "block": 94031480,
+      "logIndex": 21,
+      "amountRaw": "532043479377417910326613"
+    },
+    {
+      "tx": "0xf0fb81d92954879592a441c17f523ea38915a141bc935702bad689d19b60b323",
+      "block": 94009296,
+      "logIndex": 0,
+      "amountRaw": "605008937319836415425570"
+    },
+    {
+      "tx": "0x84c284e15378f0d67cf798c4fc851f37550caf6d8a02853fc753a0e86091c4a2",
+      "block": 93703732,
+      "logIndex": 23,
+      "amountRaw": "870625820224515641519820"
+    },
+    {
+      "tx": "0xb4d2d2f327f2ef13a0acb449a8d27146aabed30b95a0938c7933fef596b35dfc",
+      "block": 93629110,
+      "logIndex": 0,
+      "amountRaw": "849396537561938988592731"
+    },
+    {
+      "tx": "0x7f8da70a089128a9bb99587a811d15ec755dd21f39aae0075502626d8bf1da55",
+      "block": 93601672,
+      "logIndex": 4,
+      "amountRaw": "742318406839594685323312"
+    }
+  ]
+}

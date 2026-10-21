@@ -1,4 +1,5 @@
 import './app.css';
+import { validateBurn, tokenAmount, burnPercent } from './burn';
 
 type Watch = { address: string; label: string };
 
@@ -663,7 +664,9 @@ async function loadToken() {
       <p class="notice-big">${escape(info.symbol || 'Live')} <span class="badge ok">verified on chain</span></p>
       <div class="cmd"><code id="tokenCa" title="${escape(ca)}">${escape(ca)}</code><button class="btn small" id="copyCa">Copy</button></div>
       <p>Contract bytecode confirmed on Robinhood Chain (4663) at block ${escape(Number(d.block).toLocaleString())}. Bytecode is not an audit. Check the address against <a href="${escape(source)}" target="_blank" rel="noopener noreferrer">${sourceLabel}</a> before you trade, and never sign anything a DM sends you.</p>
-      <p class="links"><a href="https://robinhoodchain.blockscout.com/address/${escape(ca)}" target="_blank" rel="noopener noreferrer">Blockscout ${arrow}</a>${info.launchpad && /^https:\/\//.test(info.launchpad) ? `<a href="${escape(info.launchpad)}" target="_blank" rel="noopener noreferrer">Launchpad ${arrow}</a>` : ''}</p>`;
+      <p class="links"><a href="https://robinhoodchain.blockscout.com/address/${escape(ca)}" target="_blank" rel="noopener noreferrer">Blockscout ${arrow}</a>${info.launchpad && /^https:\/\//.test(info.launchpad) ? `<a href="${escape(info.launchpad)}" target="_blank" rel="noopener noreferrer">Launchpad ${arrow}</a>` : ''}</p>
+      <section class="burn-panel" id="burnPanel" aria-label="SNTL burn snapshot" aria-live="polite"><p class="hint">Loading burn snapshot…</p></section>`;
+    void loadBurn(ca);
     el('copyCa').addEventListener('click', async () => {
       const b = el<HTMLButtonElement>('copyCa');
       try { await navigator.clipboard.writeText(ca); b.textContent = 'Copied'; } catch { getSelection()?.selectAllChildren(el('tokenCa')); b.textContent = 'Press Ctrl+C'; }
@@ -671,6 +674,25 @@ async function loadToken() {
     });
   } catch {
     body.innerHTML = '<p class="notice-big">Not live yet.</p><p class="error">The configured address has no contract on Robinhood Chain right now, so it is not shown. Trust only announcements from @sentinelhood.</p>';
+  }
+}
+
+async function loadBurn(ca: string) {
+  const panel = el('burnPanel');
+  try {
+    const response = await fetch('/burn.json', { cache: 'no-store', signal: AbortSignal.timeout(10000) });
+    if (!response.ok) throw new Error('Snapshot unavailable');
+    const s = validateBurn(await response.json(), ca);
+    panel.innerHTML = `<span class="tag gold">BURNED · SNAPSHOT, NOT LIVE</span>
+      <p class="burn-total" title="${escape(tokenAmount(s.burnedRaw))} SNTL">${escape(tokenAmount(s.burnedRaw, 4))}<small>SNTL burned · ${escape(burnPercent(s))}% of minted supply</small></p>
+      <p>${escape(s.burnEventCount)} burn events. Transfers to the zero address only; mint minus burn matches totalSupply at this block. Display truncated to 4 decimals.</p>
+      <details><summary>Exact supply figures</summary><dl class="kv">
+        ${row('Minted', escape(tokenAmount(s.mintedRaw)))}${row('Burned', escape(tokenAmount(s.burnedRaw)))}${row('Remaining', escape(tokenAmount(s.remainingRaw)))}
+      </dl></details>
+      <p class="burn-meta">${escape(new Date(s.timestamp).toISOString())} · Block <a href="https://robinhoodchain.blockscout.com/block/${s.block}" target="_blank" rel="noopener noreferrer">${escape(s.block.toLocaleString('en-US'))}</a></p>
+      <p class="links">${s.latestBurns.length ? `<a href="https://robinhoodchain.blockscout.com/tx/${escape(s.latestBurns[0].tx)}" target="_blank" rel="noopener noreferrer">Latest burn ${arrow}</a>` : ''}<a href="/burn.json" target="_blank" rel="noopener noreferrer">Raw snapshot JSON ${arrow}</a></p>`;
+  } catch {
+    panel.textContent = 'Burn snapshot unavailable. No burn total is shown until the snapshot passes validation.';
   }
 }
 

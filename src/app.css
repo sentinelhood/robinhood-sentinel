@@ -161,6 +161,12 @@ h1 em { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; color
 .notice { border-color: #4a3b28; background: linear-gradient(180deg, #1d1a14, var(--panel)); }
 .notice-big { margin: 10px 0 6px; font-size: 26px !important; font-weight: 800; letter-spacing: -.03em; color: var(--text) !important; }
 .notice p:last-child { margin: 0; font-size: 13px; }
+.burn-panel { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line-2); min-width: 0; }
+.burn-total { font: 500 clamp(20px, 3vw, 28px) var(--mono); color: var(--gold-2) !important; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.burn-total small { display: block; margin-top: 8px; font: 12px/1.6 var(--mono); color: var(--muted); }
+.burn-meta { font: 11px/1.7 var(--mono); overflow-wrap: anywhere; }
+.burn-panel .kv div { flex-wrap: wrap; gap: 6px; }
+.burn-panel .kv dd { max-width: 100%; }
 
 /* ---------- buttons & fields ---------- */
 .btn {

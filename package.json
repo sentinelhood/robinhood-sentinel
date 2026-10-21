@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build && mkdir -p dist/skills && cp skills/robinhood-chain-monitor/SKILL.md dist/skills/robinhood-chain-monitor.md && cp skills/hook-usage/SKILL.md dist/skills/hook-usage.md",
     "preview": "vite preview",
-    "test": "node --test tests/service.test.js"
+    "test": "node --experimental-strip-types --test tests/*.test.js"
   },
   "devDependencies": {
     "typescript": "^5.6.3",
