@@ -268,8 +268,11 @@ el('inspectForm').addEventListener('submit', async (event) => {
     const data = await api(action, v);
     const link = `<a class="link-out" href="https://robinhoodchain.blockscout.com/${action === 'address' ? 'address' : 'tx'}/${v}" target="_blank" rel="noopener noreferrer">Open in Blockscout ${arrow}</a>`;
     if (action === 'address') {
-      const kind = data.codeBytes ? 'Contract' : 'Account';
-      show(out, `<h3><span class="badge">${kind}</span>${escape(short(v))}</h3><dl class="kv">${row('Balance', `${escape(eth(data.balanceWei))} ETH`)}${row('Bytecode', `${escape(Number(data.codeBytes).toLocaleString())} bytes`)}${row('Nonce', escape(data.nonce))}${row('Read at block', escape(Number(data.block).toLocaleString()))}</dl><p class="hint">${escape(data.warning)}</p>${link}`);
+      const delegated = typeof data.delegatedTo === 'string' && ADDRESS.test(data.delegatedTo);
+      const kind = delegated ? 'Wallet · 7702' : data.codeBytes ? 'Contract' : 'Account';
+      const code = delegated ? row('Delegates to', escape(short(data.delegatedTo))) : row('Bytecode', `${escape(Number(data.codeBytes).toLocaleString())} bytes`);
+      show(out, `<h3><span class="badge">${kind}</span>${escape(short(v))}</h3><dl class="kv">${row('Balance', `${escape(eth(data.balanceWei))} ETH`)}${code}${row('Nonce', escape(data.nonce))}${row('Read at block', escape(Number(data.block).toLocaleString()))}</dl><div id="tokenCheck"></div><p class="hint">${escape(data.warning)}</p>${link}`);
+      if (data.codeBytes && !delegated) void tokenCheck(v);
     } else if (!data.transaction) {
       show(out, '<p class="error">Transaction not found on chain 4663. Check the hash, or retry if it was just submitted.</p>');
     } else {
@@ -285,6 +288,41 @@ el('inspectForm').addEventListener('submit', async (event) => {
     busy(card, false);
   }
 });
+
+// Token check: ERC-20 metadata + the Pons v2 factory record for this address. Facts only, no verdict.
+const PHASE = ['Bonding curve', 'Swept · pool pending', 'Uniswap v4 · liquidity locked', 'Rescued (recovery path)'];
+const bps = (n: unknown) => (Number.isSafeInteger(n) ? `${(Number(n) / 100).toFixed(2).replace(/\.?0+$/, '')}%` : '—');
+async function tokenCheck(address: string) {
+  const box = el('tokenCheck');
+  box.innerHTML = '<p class="hint">Checking token and Pons launch record…</p>';
+  try {
+    const d = await api('token', address);
+    if (el<HTMLInputElement>('lookup').value.trim().toLowerCase() !== address.toLowerCase()) return;
+    if (!d.erc20) { box.innerHTML = '<p class="hint">Not an ERC-20 token (no decimals/totalSupply).</p>'; return; }
+    const p = d.pons;
+    const head = `<h4 class="tc-head"><span class="tag gold">TOKEN</span>${escape(d.name || 'Unnamed')} <code>${escape(d.symbol || '?')}</code></h4>`;
+    const meta = row('Total supply', escape(d.totalSupply)) + row('Decimals', escape(d.decimals));
+    if (!p) {
+      box.innerHTML = `${head}<dl class="kv">${meta}${row('Pons v2 launch', '<span class="badge">No record</span>')}</dl><p class="hint">Not launched through the Pons v2 factory. Tax, supply rules and liquidity are not covered by Pons guarantees. Read the contract itself.</p>`;
+      return;
+    }
+    const total = Number.isSafeInteger(p.baseFeeBps) ? bps(p.baseFeeBps + p.creatorTaxBps) : '—';
+    const phase = PHASE[p.phase] || `Unknown (${escape(p.phase)})`;
+    const holders = (Array.isArray(p.holders) ? p.holders : []).map((h: { role: string; address: string; balance: string | null; percent: string | null }) =>
+      row(`${escape(h.role)} holds`, h.balance === null ? 'unreadable' : `${escape(h.balance)} <small>(${escape(h.percent)}%)</small>`)).join('');
+    box.innerHTML = `${head}<dl class="kv">
+      ${row('Pons v2 launch', `<span class="badge ok">Factory record</span>`)}
+      ${row('Phase', escape(phase))}
+      ${row('Trading cost', `${escape(total)} <small>(${escape(bps(p.baseFeeBps))} base + ${escape(bps(p.creatorTaxBps))} creator tax)</small>`)}
+      ${row('Buyback', p.buybackEnabled ? 'On' : 'Off')}
+      ${row('Pair', p.pairToken === '0x' + '0'.repeat(40) ? 'Native ETH' : `<code>${escape(short(p.pairToken))}</code>`)}
+      ${row('Deployer', `<a href="https://robinhoodchain.blockscout.com/address/${escape(p.deployer)}" target="_blank" rel="noopener noreferrer">${escape(short(p.deployer))}</a>`)}
+      ${holders}${meta}
+    </dl><p class="hint">Tax is fixed at launch and cannot be raised. ${p.phase === 2 ? 'Pool liquidity is locked by the Pons locker. ' : ''}${escape(d.warning)}</p>`;
+  } catch (e) {
+    box.innerHTML = `<p class="error">Token check unavailable: ${escape((e as Error).message)}</p>`;
+  }
+}
 
 function renderWatch() {
   el('watchRows').innerHTML =

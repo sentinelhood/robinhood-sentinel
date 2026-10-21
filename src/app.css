@@ -216,6 +216,9 @@ input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rg
 .kv div { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .kv dt { color: var(--dim); font-size: 13px; }
 .kv dd { margin: 0; font: 13px var(--mono); text-align: right; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.tc-head { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 20px 0 6px; padding-top: 18px; border-top: 1px solid var(--line); font: 600 15px var(--mono); }
+.tc-head code { color: var(--gold-2); }
+.kv small { color: var(--dim); }
 .link-out { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 13px; font-weight: 600; }
 details { margin: 12px 0; }
 summary { cursor: pointer; color: var(--muted); font-size: 12px; }
