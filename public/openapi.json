@@ -12,8 +12,8 @@
         "operationId": "sentinelRead",
         "summary": "Read network status, an address snapshot, a transaction receipt, or search Aeon skills",
         "parameters": [
-          { "name": "action", "in": "query", "required": true, "schema": { "type": "string", "enum": ["network", "address", "transaction", "aeon", "contributions", "token"] } },
-          { "name": "value", "in": "query", "required": false, "description": "address / token: 0x + 40 hex (token = ERC-20 metadata + Pons v2 factory launch record: phase, base fee, creator tax, buyback, deployer holdings). transaction: 0x + 64 hex. aeon: query of 2-200 chars. Omit for network and contributions (sentinelhood's aeonfun/aeon PRs, read from the public GitHub API).", "schema": { "type": "string" } }
+          { "name": "action", "in": "query", "required": true, "schema": { "type": "string", "enum": ["network", "address", "transaction", "aeon", "contributions", "token", "launches", "shiplog"] } },
+          { "name": "value", "in": "query", "required": false, "description": "address / token: 0x + 40 hex (token = ERC-20 metadata + Pons v2 factory launch record: phase, base fee, creator tax, buyback, deployer holdings). transaction: 0x + 64 hex. aeon: query of 2-200 chars. Omit for network, contributions (sentinelhood's aeonfun/aeon PRs, public GitHub API), launches (12 newest Pons v2 TokenLaunched events with creator tax and phase) and shiplog (this site's recent commits).", "schema": { "type": "string" } }
         ],
         "responses": {
           "200": { "description": "Block-stamped result. Includes chainId, block, checkedAt, source." },

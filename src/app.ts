@@ -59,7 +59,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
 <header class="top">
   <a class="brand" href="#" aria-label="Sentinel home">${mark}<span><strong>SENTINEL</strong><small>ROBINHOOD CHAIN · 4663</small></span></a>
   <nav aria-label="Sections" id="nav">
-    <a href="#inspect" data-section>Inspect</a><a href="#watch" data-section>Watchlist</a><a href="#aeon" data-section>Aeon</a><a href="#hooks" data-section>Hooks</a><a href="#contrib" data-section>Contributions</a>
+    <a href="#inspect" data-section>Inspect</a><a href="#watch" data-section>Watchlist</a><a href="#aeon" data-section>Aeon</a><a href="#hooks" data-section>Hooks</a><a href="#launches" data-section>Launches</a><a href="#contrib" data-section>Contributions</a><a href="#shiplog" data-section>Log</a>
     <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">X ${arrow}</a>
     <span class="nav-ind" aria-hidden="true"></span>
   </nav>
@@ -136,6 +136,19 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
     </article>
   </section>
 
+  <section class="card launches reveal" id="launches" aria-labelledby="launchesTitle">
+    <div class="launch-head">
+      <div>
+        <span class="tag gold"><i class="dot live"></i>LIVE · PONS V2 FACTORY</span>
+        <h2 id="launchesTitle">New launches, as they land.</h2>
+        <p class="muted">The newest tokens created through the Pons v2 factory on Robinhood Chain, with the creator tax and phase read from the factory itself. Tap <b>Check</b> for the full read.</p>
+      </div>
+      <button class="link" id="launchRefresh">Refresh</button>
+    </div>
+    <ul class="launch-list" id="launchList" aria-live="polite"><li class="hint">Reading the factory…</li></ul>
+    <p class="hint" id="launchMeta"></p>
+  </section>
+
   <section class="card aeon reveal" id="aeon" aria-labelledby="aeonTitle">
     <div class="aeon-main">
       <span class="tag gold">03 · AEON</span>
@@ -179,6 +192,14 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
     <ul class="contrib-list" id="contribList" aria-live="polite">${contributionRows(CONTRIBUTIONS)}
     </ul>
     <p class="hint" id="contribMeta">Showing saved statuses. Checking GitHub…</p>
+  </section>
+
+  <section class="card shiplog reveal" id="shiplog" aria-labelledby="shiplogTitle">
+    <span class="tag gold">SHIPPING LOG</span>
+    <h2 id="shiplogTitle">What changed, and when.</h2>
+    <p class="muted">Read from this site’s public <a href="https://github.com/sentinelhood/robinhood-sentinel/commits/main" target="_blank" rel="noopener noreferrer">commit history</a>. Every line links to the exact change.</p>
+    <ol class="ship-list" id="shipList" aria-live="polite"><li class="hint">Reading GitHub…</li></ol>
+    <p class="hint" id="shipMeta"></p>
   </section>
 </main>
 
@@ -259,6 +280,8 @@ el('inspectForm').addEventListener('submit', async (event) => {
   const out = el('inspection');
   const action = ADDRESS.test(v) ? 'address' : TX_HASH.test(v) ? 'transaction' : '';
   if (!action) return show(out, '<p class="error">Enter a valid 0x address (42 characters) or transaction hash (66 characters).</p>');
+  // A token result sets ?ca=; any other lookup must not leave a stale share link in the address bar.
+  if (location.search) history.replaceState(null, '', location.pathname + location.hash);
   const card = el('inspect');
   const button = el('inspectForm').querySelector('button')!;
   button.disabled = true;
@@ -289,6 +312,18 @@ el('inspectForm').addEventListener('submit', async (event) => {
   }
 });
 
+const shareLink = (address: string) => `${location.origin}/?ca=${address}`;
+async function copyText(button: HTMLButtonElement, text: string, fallback: HTMLElement) {
+  try { await navigator.clipboard.writeText(text); button.textContent = 'Copied'; } catch { getSelection()?.selectAllChildren(fallback); button.textContent = 'Press Ctrl+C'; }
+  setTimeout(() => (button.textContent = 'Copy link'), 1600);
+}
+// Open the Inspector on an address: used by ?ca= share links and the launch feed's Check buttons.
+function inspectAddress(address: string) {
+  el<HTMLInputElement>('lookup').value = address;
+  el<HTMLFormElement>('inspectForm').requestSubmit();
+  el('inspect').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+}
+
 // Token check: ERC-20 metadata + the Pons v2 factory record for this address. Facts only, no verdict.
 const PHASE = ['Bonding curve', 'Swept · pool pending', 'Uniswap v4 · liquidity locked', 'Rescued (recovery path)'];
 const bps = (n: unknown) => (Number.isSafeInteger(n) ? `${(Number(n) / 100).toFixed(2).replace(/\.?0+$/, '')}%` : '—');
@@ -318,7 +353,10 @@ async function tokenCheck(address: string) {
       ${row('Pair', p.pairToken === '0x' + '0'.repeat(40) ? 'Native ETH' : `<code>${escape(short(p.pairToken))}</code>`)}
       ${row('Deployer', `<a href="https://robinhoodchain.blockscout.com/address/${escape(p.deployer)}" target="_blank" rel="noopener noreferrer">${escape(short(p.deployer))}</a>`)}
       ${holders}${meta}
-    </dl><p class="hint">Tax is fixed at launch and cannot be raised. ${p.phase === 2 ? 'Pool liquidity is locked by the Pons locker. ' : ''}${escape(d.warning)}</p>`;
+    </dl><p class="hint">Tax is fixed at launch and cannot be raised. ${p.phase === 2 ? 'Pool liquidity is locked by the Pons locker. ' : ''}${escape(d.warning)}</p>
+    <div class="cmd share"><code id="shareUrl">${escape(shareLink(address))}</code><button class="btn small" id="copyShare">Copy link</button></div>`;
+    history.replaceState(null, '', `/?ca=${address}`);
+    el('copyShare').addEventListener('click', () => copyText(el<HTMLButtonElement>('copyShare'), shareLink(address), el('shareUrl')));
   } catch (e) {
     box.innerHTML = `<p class="error">Token check unavailable: ${escape((e as Error).message)}</p>`;
   }
@@ -590,7 +628,7 @@ addEventListener('keydown', (e) => { if (e.key === 'Escape') { setPop(false); pi
 // The position is saved relative to the nearest section ("12px into #watch"), not as a
 // raw scrollY. Web fonts and live data change heights after load, so a raw pixel value
 // lands in the wrong place; an anchor + offset still points at the same content.
-const ANCHORS = ['.hero', '#inspect', '#watch', '#aeon', '#hooks', '#contrib', '.foot'];
+const ANCHORS = ['.hero', '#inspect', '#watch', '#launches', '#aeon', '#hooks', '#contrib', '#shiplog', '.foot'];
 const SCROLL_KEY = 'sentinel.scroll.v1';
 type Saved = { path: string; anchor: string; offset: number };
 
@@ -767,10 +805,76 @@ async function loadContributions() {
   }
 }
 
+// ---------- live Pons v2 launches ----------
+type Launch = { token: string; deployer: string; block: number; tx: string; name: string | null; symbol: string | null; launchedAt: string | null; creatorTaxBps: number | null; phase: number | null; nativePair: boolean | null };
+const PHASE_SHORT = ['Curve', 'Swept', 'v4 pool', 'Rescued'];
+function ago(iso: string | null) {
+  const s = iso ? Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 1000)) : NaN;
+  if (!Number.isFinite(s)) return '';
+  return s < 60 ? `${s}s ago` : s < 3600 ? `${Math.floor(s / 60)}m ago` : s < 86400 ? `${Math.floor(s / 3600)}h ago` : `${Math.floor(s / 86400)}d ago`;
+}
+async function loadLaunches() {
+  const list = el('launchList'), meta = el('launchMeta'), button = el<HTMLButtonElement>('launchRefresh');
+  button.disabled = true;
+  try {
+    const d = await api('launches');
+    const rows: Launch[] = (Array.isArray(d.launches) ? d.launches : []).filter((l: Launch) => ADDRESS.test(l?.token) && ADDRESS.test(l?.deployer) && TX_HASH.test(l?.tx));
+    // Tickers are not unique on Pons. Flag repeats so nobody buys the wrong one by name.
+    const seen = new Map<string, number>();
+    for (const l of rows) if (l.symbol) seen.set(l.symbol.toUpperCase(), (seen.get(l.symbol.toUpperCase()) || 0) + 1);
+    list.innerHTML = rows.map((l, i) => {
+      const dup = l.symbol && (seen.get(l.symbol.toUpperCase()) || 0) > 1;
+      const tax = Number.isSafeInteger(l.creatorTaxBps) ? bps(l.creatorTaxBps) : '—';
+      return `<li style="--d:${i}">
+        <div class="who"><strong>${escape(l.symbol || '?')}</strong>${dup ? '<span class="badge wait">Same ticker</span>' : ''}<small>${escape(l.name || 'Unnamed')}</small></div>
+        <span class="facts"><span>tax <b>${escape(tax)}</b></span><span>${escape(PHASE_SHORT[l.phase as number] || '?')}</span><span>${l.nativePair === false ? 'token pair' : 'ETH'}</span></span>
+        <span class="meta"><a href="https://robinhoodchain.blockscout.com/tx/${escape(l.tx)}" target="_blank" rel="noopener noreferrer">${escape(ago(l.launchedAt) || `#${l.block}`)}</a><code title="${escape(l.token)}">${escape(short(l.token))}</code></span>
+        <button class="btn small" data-check-ca="${escape(l.token)}">Check</button>
+      </li>`;
+    }).join('') || '<li class="empty">No launches in the scanned window.</li>';
+    meta.textContent = `${rows.length} newest launches · factory read at block ${Number(d.block).toLocaleString()}. ${d.warning}`;
+  } catch (e) {
+    list.innerHTML = `<li class="error">Factory read unavailable: ${escape((e as Error).message)}</li>`;
+  } finally {
+    button.disabled = false;
+  }
+}
+el('launchList').addEventListener('click', (e) => {
+  const ca = (e.target as HTMLElement).closest<HTMLElement>('[data-check-ca]')?.dataset.checkCa;
+  if (ca && ADDRESS.test(ca)) inspectAddress(ca);
+});
+el('launchRefresh').addEventListener('click', () => void loadLaunches());
+
+// ---------- shipping log (this repo's commits) ----------
+type Ship = { sha: string; url: string; title: string; type: string; date: string };
+const SHIP_TYPE: Record<string, string> = { feat: 'Feature', fix: 'Fix', ui: 'Design', site: 'Site', token: 'Token', docs: 'Docs', skill: 'Skill' };
+async function loadShiplog() {
+  const list = el('shipList'), meta = el('shipMeta');
+  try {
+    const d = await api('shiplog');
+    const rows: Ship[] = (Array.isArray(d.commits) ? d.commits : []).filter((c: Ship) => /^[0-9a-f]{7}$/.test(c?.sha) && typeof c.title === 'string' && /^https:\/\/github\.com\/sentinelhood\/robinhood-sentinel\/commit\/[0-9a-f]{40}$/.test(c.url));
+    if (!rows.length) throw new Error('empty');
+    list.innerHTML = rows.map((c, i) => `<li style="--d:${i}">
+      <time datetime="${escape(c.date)}">${escape(new Date(c.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }))}</time>
+      <span class="badge">${escape(SHIP_TYPE[c.type] || 'Update')}</span>
+      <a href="${escape(c.url)}" target="_blank" rel="noopener noreferrer">${escape(c.title)}</a>
+      <code>${escape(c.sha)}</code>
+    </li>`).join('');
+    meta.textContent = `${d.dataRefreshes ? `Plus ${d.dataRefreshes} automated burn snapshot refresh${d.dataRefreshes > 1 ? 'es' : ''} in the same window${d.lastDataRefresh ? `, last ${ago(d.lastDataRefresh)}` : ''}. ` : ''}Checked ${ago(d.checkedAt) || 'just now'}.`;
+  } catch {
+    list.innerHTML = '<li class="hint">GitHub is unreachable right now. The full history is on <a href="https://github.com/sentinelhood/robinhood-sentinel/commits/main" target="_blank" rel="noopener noreferrer">GitHub</a>.</li>';
+  }
+}
+
 renderWatch();
 void loadHookUsage();
 void loadToken();
 void loadContributions();
+void loadLaunches();
+void loadShiplog();
+// Share links: sentinelhood.com/?ca=0x... opens the Inspector on that address.
+const sharedCa = new URLSearchParams(location.search).get('ca');
+if (sharedCa && ADDRESS.test(sharedCa)) inspectAddress(sharedCa);
 // Place the indicator in its final spot before first paint (no slide-in).
 spy(true);
 void network();
@@ -789,3 +893,5 @@ if ((navType === 'reload' || navType === 'back_forward') && saved && saved.path 
 }
 // Keep the network card fresh while the tab is visible (one cheap read every 20s).
 setInterval(() => document.visibilityState === 'visible' && void network(), 20000);
+// New launches every minute while the tab is visible (the API edge cache makes this one shared read).
+setInterval(() => document.visibilityState === 'visible' && void loadLaunches(), 60000);

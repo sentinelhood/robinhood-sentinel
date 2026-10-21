@@ -257,6 +257,28 @@ pre { overflow: auto; max-height: 280px; margin: 10px 0 0; padding: 12px; backgr
 
 /* ---------- aeon contributions ---------- */
 .contrib { margin: 20px 0 0; }
+/* ---------- launches ---------- */
+.launches, .shiplog { margin: 20px 0 0; }
+.launch-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+.launch-head .tag .dot { margin-right: 6px; }
+.launch-list, .ship-list { list-style: none; margin: 20px 0 12px; padding: 0; }
+.launch-list li { display: grid; grid-template-columns: minmax(150px, 1.2fr) 1.4fr 1fr auto; align-items: center; gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+.launch-list .who { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; min-width: 0; }
+.launch-list .who strong { font: 600 14px var(--mono); color: var(--gold-2); overflow-wrap: anywhere; }
+.launch-list .who small { width: 100%; color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.launch-list .facts { display: flex; flex-wrap: wrap; gap: 4px 14px; font: 12px var(--mono); color: var(--muted); }
+.launch-list .facts b { color: var(--text); font-weight: 500; }
+.launch-list .meta { display: flex; flex-direction: column; gap: 2px; font: 12px var(--mono); }
+.launch-list .meta code { color: var(--dim); font-size: 11px; }
+/* ---------- shipping log ---------- */
+.ship-list li { display: grid; grid-template-columns: 64px 76px 1fr auto; align-items: baseline; gap: 14px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.ship-list time { font: 12px var(--mono); color: var(--dim); }
+.ship-list .badge { justify-self: start; }
+.ship-list a { color: var(--text); }
+.ship-list a:hover { color: var(--gold-2); }
+.ship-list code { font-size: 11px; color: var(--dim); }
+.cmd.share { margin: 14px 0 6px; }
+.cmd.share code { color: var(--muted); }
 .contrib-list { list-style: none; margin: 22px 0 14px; padding: 0; }
 .contrib-list li { display: grid; grid-template-columns: 70px 1fr auto; align-items: start; gap: 18px; padding: 14px 0; border-top: 1px solid var(--line); }
 .contrib-list .num { font: 600 15px var(--mono); }
@@ -299,6 +321,13 @@ pre { overflow: auto; max-height: 280px; margin: 10px 0 0; padding: 12px; backgr
   .hooks-head { grid-template-columns: 1fr; gap: 18px; }
 }
 @media (max-width: 720px) {
+  .launch-list li { grid-template-columns: 1fr auto; gap: 6px 12px; }
+  .launch-list .facts, .launch-list .meta { grid-column: 1; }
+  .launch-list .btn { grid-column: 2; grid-row: 1 / span 3; align-self: center; }
+  .launch-list .meta { flex-direction: row; gap: 10px; }
+  .ship-list li { grid-template-columns: auto 1fr; gap: 4px 10px; }
+  .ship-list a { grid-column: 1 / -1; }
+  .ship-list code { display: none; }
   .contrib-list li { grid-template-columns: 1fr auto; gap: 6px 12px; }
   .contrib-list li > div { grid-column: 1 / -1; grid-row: 2; }
   .bars li { grid-template-columns: 1fr 44px; gap: 4px 12px; }

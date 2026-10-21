@@ -95,6 +95,59 @@ async function tokenCheck(address, block) {
   };
 }
 
+// ---------- latest Pons v2 launches ----------
+// event TokenLaunched(address indexed token, address indexed curve, address indexed deployer, address pairToken, uint256 launchConfigId, uint256 graduationThreshold)
+export const TOKEN_LAUNCHED = '0x8d4aad4953d0ca700d468f3753aa14432d1b35b43ec6409f051fb6aa43a89607';
+const LAUNCH_WINDOW = 50000; // blocks per eth_getLogs page (~1.4 h on RH); ~100 launches per window
+const LAUNCH_LIMIT = 12;
+export function parseLaunchLog(log) {
+  const t = log?.topics;
+  if (!Array.isArray(t) || t.length !== 4 || String(t[0]).toLowerCase() !== TOKEN_LAUNCHED || log.removed) return null;
+  if (String(log.address).toLowerCase() !== PONS_FACTORY.toLowerCase()) return null;
+  const block = Number.parseInt(log.blockNumber, 16), index = Number.parseInt(log.logIndex, 16);
+  if (!Number.isSafeInteger(block) || !Number.isSafeInteger(index) || !hashPattern.test(log.transactionHash || '')) return null;
+  const w = (h) => /^0x[0-9a-fA-F]{64}$/.test(h) ? h.slice(2) : null;
+  const [token, curve, deployer] = t.slice(1).map(w);
+  if (!token || !curve || !deployer) return null;
+  return {token: wAddr(token), curve: wAddr(curve), deployer: wAddr(deployer), block, logIndex: index, tx: log.transactionHash.toLowerCase()};
+}
+async function launches(head) {
+  const found = [];
+  for (let to = head, pages = 0; found.length < LAUNCH_LIMIT && to > 0 && pages < 4; pages++, to -= LAUNCH_WINDOW) {
+    const from = Math.max(0, to - LAUNCH_WINDOW + 1);
+    const logs = await rpc('eth_getLogs', [{address: PONS_FACTORY, topics: [TOKEN_LAUNCHED], fromBlock: '0x' + from.toString(16), toBlock: '0x' + to.toString(16)}]);
+    found.push(...(Array.isArray(logs) ? logs : []).map(parseLaunchLog).filter(Boolean));
+  }
+  const latest = found.sort((a, b) => b.block - a.block || b.logIndex - a.logIndex).slice(0, LAUNCH_LIMIT);
+  const tag = '0x' + head.toString(16);
+  const rows = await Promise.all(latest.map(async (l) => {
+    const [nameHex, symbolHex, launchHex, header] = await Promise.all([call(l.token, SEL.name, tag), call(l.token, SEL.symbol, tag), call(PONS_FACTORY, SEL.launch + pad(l.token), tag), rpc('eth_getBlockByNumber', ['0x' + l.block.toString(16), false]).catch(() => null)]);
+    let rec = null;
+    try { rec = launchHex && decodeLaunch(launchHex); } catch { rec = null; }
+    const ts = header && Number.parseInt(header.timestamp, 16);
+    return {...l, name: decodeString(nameHex), symbol: decodeString(symbolHex), launchedAt: Number.isSafeInteger(ts) ? new Date(ts * 1000).toISOString() : null,
+      creatorTaxBps: rec ? rec.creatorTaxBps : null, buybackEnabled: rec ? rec.buybackEnabled : null, phase: rec ? rec.phase : null, nativePair: rec ? rec.pairToken === ZERO_ADDR : null};
+  }));
+  return {factory: PONS_FACTORY, scannedTo: head, launches: rows, warning: 'Newest launches straight from the Pons v2 factory. Listing is not an endorsement. Names and symbols are not unique: always check the address.'};
+}
+
+// ---------- shipping log: latest commits on this site's own repo ----------
+export function toCommit(c) {
+  const sha = c?.sha, msg = c?.commit?.message, date = c?.commit?.committer?.date || c?.commit?.author?.date;
+  if (typeof sha !== 'string' || !/^[0-9a-f]{40}$/.test(sha) || typeof msg !== 'string' || !Number.isFinite(Date.parse(date))) return null;
+  const title = msg.split('\n')[0].trim().slice(0, 140);
+  if (!title) return null;
+  const m = /^(\w+)(?:\(([^)]+)\))?!?:\s*/.exec(title);
+  return {sha: sha.slice(0, 7), url: `https://github.com/sentinelhood/robinhood-sentinel/commit/${sha}`, title: m ? title.slice(m[0].length) : title, type: m ? m[1].toLowerCase() : 'other', date: new Date(date).toISOString()};
+}
+async function shiplog() {
+  const data = await github('/repos/sentinelhood/robinhood-sentinel/commits?sha=main&per_page=40');
+  const all = (Array.isArray(data) ? data : []).map(toCommit).filter(Boolean);
+  // Automated burn refreshes are real but noisy: count them instead of listing each one.
+  const burns = all.filter((c) => c.type === 'data');
+  return {source: 'https://github.com/sentinelhood/robinhood-sentinel/commits/main', checkedAt: new Date().toISOString(), commits: all.filter((c) => !['data', 'chore', 'share'].includes(c.type)).slice(0, 12), dataRefreshes: burns.length, lastDataRefresh: burns[0]?.date || null};
+}
+
 const GH = 'https://api.github.com';
 async function github(path) {
   const response = await fetch(GH + path, {headers: {Accept: 'application/vnd.github+json', 'User-Agent': 'sentinelhood-site'}, signal: AbortSignal.timeout(10000)});
@@ -128,7 +181,7 @@ async function contributions() {
   return {source: 'https://github.com/aeonfun/aeon/pulls?q=author%3Asentinelhood', checkedAt: new Date().toISOString(), prs};
 }
 export function validate(action, value) {
-  if (!['network','address','transaction','aeon','contributions','token'].includes(action)) throw new Error('Unknown action');
+  if (!['network','address','transaction','aeon','contributions','token','launches','shiplog'].includes(action)) throw new Error('Unknown action');
   // Only plain strings: a one-element array (?value=..&value=..) would otherwise stringify past the regex.
   if ((action === 'address' || action === 'token') && !(typeof value === 'string' && addressPattern.test(value))) throw new Error('Invalid address');
   if (action === 'transaction' && !(typeof value === 'string' && hashPattern.test(value))) throw new Error('Invalid transaction hash');
@@ -137,6 +190,7 @@ export function validate(action, value) {
 export async function execute(action, value) {
   validate(action, value);
   if (action === 'contributions') return contributions();
+  if (action === 'shiplog') return shiplog();
   if (action === 'aeon') {
     const response = await fetch(`https://www.aeon.fun/ask?q=${encodeURIComponent(value)}`, {signal: AbortSignal.timeout(10000)});
     if (!response.ok) throw new Error('Aeon unavailable or rate limited');
@@ -148,6 +202,7 @@ export async function execute(action, value) {
   const block = await rpc('eth_blockNumber');
   const base = {chainId, block: Number(BigInt(block)), checkedAt: new Date().toISOString(), source: RPC_LABEL};
   if (action === 'network') return {...base, gasPriceWei: BigInt(await rpc('eth_gasPrice')).toString()};
+  if (action === 'launches') return {...base, ...(await launches(base.block))};
   if (action === 'token') {
     const code = await rpc('eth_getCode', [value, block]);
     if (code === '0x' || delegation(code)) return {...base, address: value, contract: false, delegatedTo: delegation(code)};
@@ -169,6 +224,9 @@ export const CACHE = {
   aeon: 'public, max-age=0, s-maxage=600, stale-while-revalidate=3600',
   // GitHub allows ~60 unauthenticated calls/hour; one refresh costs 1 search + 1 per open PR.
   contributions: 'public, max-age=0, s-maxage=900, stale-while-revalidate=86400',
+  shiplog: 'public, max-age=0, s-maxage=600, stale-while-revalidate=86400',
+  // Shared for every visitor: one scan per minute at most, however many people open the page.
+  launches: 'public, max-age=0, s-maxage=60, stale-while-revalidate=300',
 };
 
 export default async function handler(req, res) {
