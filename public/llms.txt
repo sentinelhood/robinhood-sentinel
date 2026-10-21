@@ -3,7 +3,7 @@
 > Keyless, read-only Robinhood Chain (chainId 4663) reader for agents and humans. GET-only, block-stamped, never signs or broadcasts.
 
 ## API
-- [OpenAPI 3.1 spec](https://sentinelhood.com/openapi.json): one operation, `GET /api/service?action=network|address|transaction|aeon&value=...`
+- [OpenAPI 3.1 spec](https://sentinelhood.com/openapi.json): one operation, `GET /api/service?action=network|address|transaction|aeon|contributions&value=...`
 
 ## Aeon
 - [robinhood-chain-monitor skill](https://sentinelhood.com/skills/robinhood-chain-monitor.md): drop-in Aeon skill that watches Robinhood Chain addresses for nonce, balance and bytecode changes. Reads only from the official RPC (rpc.mainnet.chain.robinhood.com), not from this API. Requires no keys. Robinhood Chain is not covered by Aeon's `onchain-monitor`.

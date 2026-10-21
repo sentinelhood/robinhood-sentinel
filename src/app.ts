@@ -27,12 +27,30 @@ try {
   /* Corrupt storage is ignored. */
 }
 
-// Aeon pull requests by sentinelhood. Keep status aligned with the public GitHub PR.
-const CONTRIBUTIONS = [
-  { pr: 1244, title: 'feat(onchain-monitor): watch wallets and contracts on Robinhood Chain', what: 'Aeon\u2019s on-chain alerts learn Robinhood Chain, with a keyless path through the public RPC.', merged: true, when: 'merged 2026-10-20' },
-  { pr: 1243, title: 'fix(deploy-uni-hook): add Alchemy slug for Robinhood Chain', what: 'Hook deploys to Robinhood use Alchemy when a key is set, instead of always the public RPC.', merged: true, when: 'merged 2026-10-18' },
-  { pr: 1227, title: 'docs(packs): list the Sentinel Pack', what: 'The Sentinel Pack joins Aeon\u2019s community skill-pack registry.', merged: true, when: 'merged 2026-10-16' },
+// Aeon pull requests by sentinelhood. Fallback only: statuses are refreshed live from GitHub on load.
+type Contribution = { pr: number; title: string; what?: string; state: 'merged' | 'open' | 'closed'; review?: 'approved' | 'changes_requested' | 'review'; when: string };
+const CONTRIBUTIONS: Contribution[] = [
+  { pr: 1251, title: 'feat(onchain-monitor): add reorg-safe evidence replay', what: 'Reorg-aware replay and per-chain evidence receipts for onchain-monitor.', state: 'open', review: 'changes_requested', when: '2026-10-20' },
+  { pr: 1244, title: 'feat(onchain-monitor): watch wallets and contracts on Robinhood Chain', what: 'Aeon\u2019s on-chain alerts learn Robinhood Chain, with a keyless path through the public RPC.', state: 'merged', when: '2026-10-20' },
+  { pr: 1243, title: 'fix(deploy-uni-hook): add Alchemy slug for Robinhood Chain', what: 'Hook deploys to Robinhood use Alchemy when a key is set, instead of always the public RPC.', state: 'merged', when: '2026-10-18' },
+  { pr: 1227, title: 'docs(packs): list the Sentinel Pack', what: 'The Sentinel Pack joins Aeon\u2019s community skill-pack registry.', state: 'merged', when: '2026-10-16' },
 ];
+const STATUS = {
+  merged: ['ok', 'Merged', 'merged'], closed: ['bad', 'Closed', 'closed'],
+  approved: ['ok', 'Approved', 'opened'], changes_requested: ['wait', 'Changes requested', 'opened'], review: ['wait', 'In review', 'opened'],
+} as const;
+function contributionRows(list: Contribution[]) {
+  return list.map((c, i) => {
+    const [tone, label, verb] = STATUS[c.state === 'open' ? c.review || 'review' : c.state];
+    const url = `https://github.com/aeonfun/aeon/pull/${encodeURIComponent(c.pr)}`;
+    return `
+      <li style="--d:${i}">
+        <a class="num" href="${url}" target="_blank" rel="noopener noreferrer">#${escape(c.pr)}</a>
+        <div><a href="${url}" target="_blank" rel="noopener noreferrer"><code>${escape(c.title)}</code></a>${c.what ? `<p>${escape(c.what)}</p>` : ''}</div>
+        <span class="state"><span class="badge ${tone}">${label}</span>${c.when ? `<small>${verb} ${escape(c.when)}</small>` : ''}</span>
+      </li>`;
+  }).join('');
+}
 
 const mark = `<svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 37 20 20 37 3 20Z" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M20 11 29 20 20 29 11 20Z" fill="none" stroke="#f5f1e9" stroke-width="1.2"/><path d="M20 16.5 23.5 20 20 23.5 16.5 20Z" fill="currentColor"/></svg>`;
 const arrow = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>`;
@@ -158,14 +176,9 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
     <span class="tag gold">05 · AEON CONTRIBUTIONS</span>
     <h2 id="contribTitle">Shipped upstream.</h2>
     <p class="muted">Pull requests from <code>sentinelhood</code> to <a href="https://github.com/aeonfun/aeon" target="_blank" rel="noopener noreferrer">aeonfun/aeon</a>. Each one is public: open the link and check the review, the diff and the merge yourself.</p>
-    <ul class="contrib-list">${CONTRIBUTIONS.map((c, i) => `
-      <li style="--d:${i}">
-        <a class="num" href="https://github.com/aeonfun/aeon/pull/${c.pr}" target="_blank" rel="noopener noreferrer">#${c.pr}</a>
-        <div><a href="https://github.com/aeonfun/aeon/pull/${c.pr}" target="_blank" rel="noopener noreferrer"><code>${c.title}</code></a><p>${c.what}</p></div>
-        <span class="state"><span class="badge ${c.merged ? 'ok' : 'wait'}">${c.merged ? 'Merged' : 'Approved'}</span><small>${c.when}</small></span>
-      </li>`).join('')}
+    <ul class="contrib-list" id="contribList" aria-live="polite">${contributionRows(CONTRIBUTIONS)}
     </ul>
-    <p class="hint">Status is checked against the public PR. The reorg-aware and replayable-evidence follow-up is still local and under review; it is not represented as merged here.</p>
+    <p class="hint" id="contribMeta">Showing saved statuses. Checking GitHub…</p>
   </section>
 </main>
 
@@ -699,9 +712,27 @@ async function loadBurn(ca: string) {
   }
 }
 
+// Live PR status from GitHub via the API (edge-cached). Falls back to the saved list on any error.
+async function loadContributions() {
+  const meta = el('contribMeta');
+  try {
+    const d = await api('contributions');
+    const saved = new Map(CONTRIBUTIONS.map((c) => [c.pr, c.what]));
+    const prs: Contribution[] = (Array.isArray(d.prs) ? d.prs : [])
+      .filter((p: Contribution) => Number.isSafeInteger(p?.pr) && typeof p.title === 'string' && ['merged', 'open', 'closed'].includes(p.state))
+      .map((p: Contribution) => ({ ...p, review: p.state === 'open' && ['approved', 'changes_requested', 'review'].includes(p.review as string) ? p.review : undefined, what: saved.get(p.pr) }));
+    if (!prs.length) throw new Error('empty');
+    el('contribList').innerHTML = contributionRows(prs);
+    meta.textContent = `Live from GitHub · checked ${new Date(d.checkedAt).toLocaleString()}. Only merged PRs are part of Aeon.`;
+  } catch {
+    meta.textContent = 'GitHub is unreachable right now, so saved statuses are shown. Open each PR to confirm.';
+  }
+}
+
 renderWatch();
 void loadHookUsage();
 void loadToken();
+void loadContributions();
 // Place the indicator in its final spot before first paint (no slide-in).
 spy(true);
 void network();
