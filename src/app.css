@@ -103,7 +103,8 @@ code { font-family: var(--mono); font-size: .92em; color: var(--text); }
 
 /* ---------- layout ---------- */
 main { max-width: 1240px; margin: 0 auto; padding: 0 clamp(18px, 4vw, 48px); }
-.hero { display: grid; grid-template-columns: 1.25fr 1fr; gap: 48px; align-items: center; padding: 72px 0 56px; }
+.hero { display: grid; grid-template-columns: 1.25fr 1fr; gap: 48px; align-items: start; padding: 72px 0 56px; }
+.hero-copy { padding-top: 56px; }
 .kicker { margin: 0; font: 11px var(--mono); letter-spacing: .14em; color: var(--dim); }
 h1 { margin: 18px 0 20px; font-size: clamp(42px, 6vw, 76px); line-height: .98; letter-spacing: -.05em; font-weight: 800; }
 h1 em { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; color: var(--gold); letter-spacing: -.03em; }
@@ -287,6 +288,7 @@ pre { overflow: auto; max-height: 280px; margin: 10px 0 0; padding: 12px; backgr
 /* ---------- responsive ---------- */
 @media (max-width: 1000px) {
   .hero { grid-template-columns: 1fr; gap: 32px; padding: 48px 0 40px; }
+  .hero-copy { padding-top: 0; }
   .grid, .aeon { grid-template-columns: 1fr; }
   .aeon { gap: 8px; }
 }
