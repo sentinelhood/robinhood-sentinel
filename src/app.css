@@ -30,8 +30,6 @@ body {
   min-width: 320px;
   background:
     radial-gradient(900px 500px at 85% -10%, rgba(215, 163, 93, .09), transparent 60%),
-    linear-gradient(rgba(255, 255, 255, .02) 1px, transparent 1px) 0 0 / 72px 72px,
-    linear-gradient(90deg, rgba(255, 255, 255, .02) 1px, transparent 1px) 0 0 / 72px 72px,
     var(--bg);
   -webkit-font-smoothing: antialiased;
 }
@@ -162,9 +160,14 @@ h1 em { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; color
 .notice-big { margin: 10px 0 6px; font-size: 26px !important; font-weight: 800; letter-spacing: -.03em; color: var(--text) !important; }
 .notice p:last-child { margin: 0; font-size: 13px; }
 .burn-panel { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line-2); min-width: 0; }
-.burn-total { font: 500 clamp(20px, 3vw, 28px) var(--mono); color: var(--gold-2) !important; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
-.burn-total small { display: block; margin-top: 8px; font: 12px/1.6 var(--mono); color: var(--muted); }
-.burn-meta { font: 11px/1.7 var(--mono); overflow-wrap: anywhere; }
+.burn-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.burn-total { margin: 14px 0 0; font: 600 clamp(24px, 3.2vw, 32px) var(--mono); letter-spacing: -.02em; color: var(--gold-2) !important; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.burn-total span { margin-left: 8px; font-size: 14px; font-weight: 500; color: var(--muted); }
+.burn-bar { height: 6px; margin: 14px 0 10px; background: #1c1f19; border-radius: 3px; overflow: hidden; }
+.burn-bar i { display: block; height: 100%; min-width: 4px; width: var(--w); background: linear-gradient(90deg, var(--gold), var(--gold-2)); border-radius: 3px; }
+.burn-facts { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 0 4px; font: 12px var(--mono); color: var(--muted); }
+.burn-facts b { color: var(--text); font-weight: 500; }
+.burn-meta { margin: 14px 0 10px; font: 11px/1.7 var(--mono); color: var(--dim); overflow-wrap: anywhere; }
 .burn-panel .kv div { flex-wrap: wrap; gap: 6px; }
 .burn-panel .kv dd { max-width: 100%; }
 
