@@ -131,6 +131,43 @@ async function launches(head) {
   return {factory: PONS_FACTORY, scannedTo: head, launches: rows, warning: 'Newest launches straight from the Pons v2 factory. Listing is not an endorsement. Names and symbols are not unique: always check the address.'};
 }
 
+// ---------- deployer history: every Pons v2 launch by one address ----------
+// The public RPC allows 10M-block log ranges with a topic filter (private RPCs cap far lower), and
+// answers 429 to bursts, so windows run one after another with a short backoff.
+export const PONS_FIRST_BLOCK = 28000000; // first Pons v2 TokenLaunched is just after 28.58M
+const HISTORY_WINDOW = 10000000;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+async function publicLogs(filter) {
+  for (let attempt = 0; ; attempt++) {
+    const response = await fetch(PUBLIC_RPC, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({jsonrpc: '2.0', id: 1, method: 'eth_getLogs', params: [filter]}), signal: AbortSignal.timeout(15000)});
+    const data = response.ok ? await response.json() : {error: {code: response.status}};
+    if (Array.isArray(data.result)) return data.result;
+    if ((data.error?.code === 429 || response.status === 429) && attempt < 4) { await sleep(400 * 2 ** attempt); continue; }
+    throw new Error('Launch history unavailable');
+  }
+}
+export function summariseHistory(logs, deployer, current) {
+  const own = logs.map(parseLaunchLog).filter((l) => l && l.deployer === deployer.toLowerCase());
+  const unique = [...new Map(own.map((l) => [l.token, l])).values()].sort((a, b) => b.block - a.block || b.logIndex - a.logIndex);
+  const idx = current ? unique.findIndex((l) => l.token === current.toLowerCase()) : -1;
+  return {deployer: deployer.toLowerCase(), launches: unique.length, firstBlock: unique.length ? unique[unique.length - 1].block : null,
+    latestBlock: unique.length ? unique[0].block : null, launchNumber: idx >= 0 ? unique.length - idx : null,
+    recent: unique.slice(0, 6).map(({token, block, tx}) => ({token, block, tx}))};
+}
+async function deployerHistory(deployer, current, head) {
+  const logs = [];
+  for (let to = head; to >= PONS_FIRST_BLOCK; to -= HISTORY_WINDOW) {
+    const from = Math.max(PONS_FIRST_BLOCK, to - HISTORY_WINDOW + 1);
+    logs.push(...await publicLogs({address: PONS_FACTORY, topics: [TOKEN_LAUNCHED, null, null, '0x' + pad(deployer)], fromBlock: '0x' + from.toString(16), toBlock: '0x' + to.toString(16)}));
+    await sleep(120);
+  }
+  const s = summariseHistory(logs, deployer, current);
+  const [first, latest] = await Promise.all([s.firstBlock, s.latestBlock].map((b) => b === null ? null : rpc('eth_getBlockByNumber', ['0x' + b.toString(16), false]).catch(() => null)));
+  const iso = (h) => { const t = h && Number.parseInt(h.timestamp, 16); return Number.isSafeInteger(t) ? new Date(t * 1000).toISOString() : null; };
+  return {...s, firstAt: iso(first), latestAt: iso(latest), scannedFrom: PONS_FIRST_BLOCK, scannedTo: head,
+    warning: 'Counts Pons v2 launches from this address only. Many launches is not proof of bad intent, and one launch is not proof of good intent.'};
+}
+
 // ---------- shipping log: latest commits on this site's own repo ----------
 export function toCommit(c) {
   const sha = c?.sha, msg = c?.commit?.message, date = c?.commit?.committer?.date || c?.commit?.author?.date;
@@ -181,9 +218,9 @@ async function contributions() {
   return {source: 'https://github.com/aeonfun/aeon/pulls?q=author%3Asentinelhood', checkedAt: new Date().toISOString(), prs};
 }
 export function validate(action, value) {
-  if (!['network','address','transaction','aeon','contributions','token','launches','shiplog'].includes(action)) throw new Error('Unknown action');
+  if (!['network','address','transaction','aeon','contributions','token','launches','shiplog','deployer'].includes(action)) throw new Error('Unknown action');
   // Only plain strings: a one-element array (?value=..&value=..) would otherwise stringify past the regex.
-  if ((action === 'address' || action === 'token') && !(typeof value === 'string' && addressPattern.test(value))) throw new Error('Invalid address');
+  if (['address', 'token', 'deployer'].includes(action) && !(typeof value === 'string' && addressPattern.test(value))) throw new Error('Invalid address');
   if (action === 'transaction' && !(typeof value === 'string' && hashPattern.test(value))) throw new Error('Invalid transaction hash');
   if (action === 'aeon' && (typeof value !== 'string' || value.trim().length < 2 || value.length > 200)) throw new Error('Query must be 2–200 characters');
 }
@@ -203,6 +240,12 @@ export async function execute(action, value) {
   const base = {chainId, block: Number(BigInt(block)), checkedAt: new Date().toISOString(), source: RPC_LABEL};
   if (action === 'network') return {...base, gasPriceWei: BigInt(await rpc('eth_gasPrice')).toString()};
   if (action === 'launches') return {...base, ...(await launches(base.block))};
+  // value = a Pons token; its factory record names the deployer whose history is read.
+  if (action === 'deployer') {
+    const rec = decodeLaunch(await rpc('eth_call', [{to: PONS_FACTORY, data: SEL.launch + pad(value)}, block]));
+    if (!rec) return {...base, token: value, pons: false};
+    return {...base, token: value, pons: true, ...(await deployerHistory(rec.deployer, value, base.block))};
+  }
   if (action === 'token') {
     const code = await rpc('eth_getCode', [value, block]);
     if (code === '0x' || delegation(code)) return {...base, address: value, contract: false, delegatedTo: delegation(code)};
@@ -227,6 +270,8 @@ export const CACHE = {
   shiplog: 'public, max-age=0, s-maxage=600, stale-while-revalidate=86400',
   // Shared for every visitor: one scan per minute at most, however many people open the page.
   launches: 'public, max-age=0, s-maxage=60, stale-while-revalidate=300',
+  // Per token, but the same answer for everyone: ~7 log windows per miss, so cache it.
+  deployer: 'public, max-age=0, s-maxage=300, stale-while-revalidate=3600',
 };
 
 export default async function handler(req, res) {

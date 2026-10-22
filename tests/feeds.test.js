@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validate, CACHE, parseLaunchLog, toCommit, TOKEN_LAUNCHED, PONS_FACTORY } from '../api/service.js';
+import { validate, CACHE, parseLaunchLog, toCommit, summariseHistory, TOKEN_LAUNCHED, PONS_FACTORY } from '../api/service.js';
 
 // Real TokenLaunched log captured from the Pons v2 factory on chain 4663.
 const LOG = {
@@ -34,6 +34,30 @@ test('spoofed, removed or malformed logs are dropped', () => {
     assert.equal(parseLaunchLog({ ...LOG, ...patch }), null);
   }
   assert.equal(parseLaunchLog(null), null);
+});
+
+test('deployer action needs a token address and is edge-cached', () => {
+  validate('deployer', '0x' + '1'.repeat(40));
+  for (const v of [undefined, '0x12', ['0x' + '1'.repeat(40)]]) assert.throws(() => validate('deployer', v));
+  assert.ok(CACHE.deployer.includes('s-maxage=300'));
+});
+
+test('deployer history: counts own launches only, dedupes, numbers the current token', () => {
+  const dep = LOG.topics[3].replace(/^0x0{24}/, '0x');
+  const mk = (n, block, deployer = LOG.topics[3]) => ({ ...LOG, blockNumber: '0x' + block.toString(16),
+    topics: [TOKEN_LAUNCHED, '0x' + n.toString(16).padStart(64, '0'), LOG.topics[2], deployer] });
+  const other = '0x' + '0'.repeat(24) + 'b'.repeat(40);
+  const logs = [mk(1, 100), mk(2, 300), mk(3, 200), mk(3, 200), mk(4, 400, other), { ...mk(5, 500), removed: true }];
+  const tok = (n) => '0x' + n.toString(16).padStart(40, '0');
+  const s = summariseHistory(logs, dep, tok(3));
+  assert.equal(s.deployer, dep);
+  assert.equal(s.launches, 3); // own, deduped, other deployer + removed log dropped
+  assert.equal(s.firstBlock, 100);
+  assert.equal(s.latestBlock, 300);
+  assert.equal(s.launchNumber, 2); // blocks 100, 200, 300 -> the token at 200 is the 2nd launch
+  assert.deepEqual(s.recent.map((r) => r.block), [300, 200, 100]);
+  assert.equal(summariseHistory([], dep, tok(3)).launches, 0);
+  assert.equal(summariseHistory(logs, dep, tok(9)).launchNumber, null);
 });
 
 test('commits: conventional prefix stripped, type kept, junk dropped', () => {

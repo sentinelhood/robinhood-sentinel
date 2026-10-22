@@ -312,6 +312,24 @@ el('inspectForm').addEventListener('submit', async (event) => {
   }
 });
 
+// How many Pons tokens this token's deployer has launched, and which one this is. Facts, not a verdict.
+async function deployerHistory(token: string) {
+  const cell = document.getElementById('deployerHistory');
+  if (!cell) return;
+  try {
+    const d = await api('deployer', token);
+    if (el<HTMLInputElement>('lookup').value.trim().toLowerCase() !== token.toLowerCase()) return;
+    if (!d.pons || !Number.isSafeInteger(d.launches) || d.launches < 1) throw new Error('none');
+    const since = d.firstAt ? new Date(d.firstAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '';
+    const nth = Number.isSafeInteger(d.launchNumber) ? `This is launch #${Number(d.launchNumber).toLocaleString()}` : '';
+    cell.innerHTML = d.launches === 1
+      ? '<b>First Pons launch</b> <small>from this address</small>'
+      : `<b>${escape(Number(d.launches).toLocaleString())} Pons launches</b> <small>${since ? `since ${escape(since)}` : ''}${nth ? ` · ${escape(nth)}` : ''}</small>${d.launches >= 10 ? ' <span class="badge wait">Serial deployer</span>' : ''}`;
+  } catch {
+    cell.innerHTML = '<span class="hint">History unavailable right now</span>';
+  }
+}
+
 const shareLink = (address: string) => `${location.origin}/?ca=${address}`;
 async function copyText(button: HTMLButtonElement, text: string, fallback: HTMLElement) {
   try { await navigator.clipboard.writeText(text); button.textContent = 'Copied'; } catch { getSelection()?.selectAllChildren(fallback); button.textContent = 'Press Ctrl+C'; }
@@ -352,10 +370,12 @@ async function tokenCheck(address: string) {
       ${row('Buyback', p.buybackEnabled ? 'On' : 'Off')}
       ${row('Pair', p.pairToken === '0x' + '0'.repeat(40) ? 'Native ETH' : `<code>${escape(short(p.pairToken))}</code>`)}
       ${row('Deployer', `<a href="https://robinhoodchain.blockscout.com/address/${escape(p.deployer)}" target="_blank" rel="noopener noreferrer">${escape(short(p.deployer))}</a>`)}
+      <div><dt>Deployer history</dt><dd id="deployerHistory"><span class="hint">Reading every Pons launch…</span></dd></div>
       ${holders}${meta}
     </dl><p class="hint">Tax is fixed at launch and cannot be raised. ${p.phase === 2 ? 'Pool liquidity is locked by the Pons locker. ' : ''}${escape(d.warning)}</p>
     <div class="cmd share"><code id="shareUrl">${escape(shareLink(address))}</code><button class="btn small" id="copyShare">Copy link</button></div>`;
     history.replaceState(null, '', `/?ca=${address}`);
+    void deployerHistory(address);
     el('copyShare').addEventListener('click', () => copyText(el<HTMLButtonElement>('copyShare'), shareLink(address), el('shareUrl')));
   } catch (e) {
     box.innerHTML = `<p class="error">Token check unavailable: ${escape((e as Error).message)}</p>`;
