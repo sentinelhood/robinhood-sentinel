@@ -3,16 +3,34 @@
   "token": "0x2da80b9D1bc1B323693C80C76eb4a321ec08CbD0",
   "decimals": 18,
   "fromBlock": 93500000,
-  "block": 94802612,
-  "blockHash": "0x4e379bc3625d2e74122b0b4e41bc148a36d4b262a8c2b2053ed66c684075037f",
-  "timestamp": "2026-10-22T03:30:04+00:00",
-  "generatedAt": "2026-10-22T03:30:19.622795+00:00",
+  "block": 94888730,
+  "blockHash": "0x970210124415bce7a727eab1dafc6b571d2c86395d312c222e644e4184656100",
+  "timestamp": "2026-10-22T06:00:02+00:00",
+  "generatedAt": "2026-10-22T06:00:09.387017+00:00",
   "mintedRaw": "1000000000000000000000000000",
-  "burnedRaw": "32191259421879741846156723",
-  "remainingRaw": "967808740578120258153843277",
+  "burnedRaw": "33289690186129393662337894",
+  "remainingRaw": "966710309813870606337662106",
   "mintEventCount": 1,
-  "burnEventCount": 24,
+  "burnEventCount": 27,
   "latestBurns": [
+    {
+      "tx": "0x1f731f9fed768268d15bbb40a02ac1824873721bb325756569e85c65008af492",
+      "block": 94875605,
+      "logIndex": 39,
+      "amountRaw": "244052438749534743701422"
+    },
+    {
+      "tx": "0x704739ec63781e2803a76d9966183d8a1b88631e7b0e02c5a6c3ef67e444a8af",
+      "block": 94875378,
+      "logIndex": 0,
+      "amountRaw": "484078242262294522735704"
+    },
+    {
+      "tx": "0xb9dd45ca5755a2d605bca2b8509710a3c6fb2c729118c43fb67ec1cdd9d5350e",
+      "block": 94871986,
+      "logIndex": 0,
+      "amountRaw": "370300083237822549744045"
+    },
     {
       "tx": "0x75ae696400b10f44e98615a52705a9e31ab1f31e20de311d4d4b0bc349880ee0",
       "block": 94784377,
@@ -24,24 +42,6 @@
       "block": 94387955,
       "logIndex": 231,
       "amountRaw": "312303483798918848992618"
-    },
-    {
-      "tx": "0x254b352c1c903918847b58b4cf11c1641322312e2bbdbe5e48367589d7b04ccb",
-      "block": 94253001,
-      "logIndex": 0,
-      "amountRaw": "306098636561406255020864"
-    },
-    {
-      "tx": "0x76ba74e750249668c59e5fbeb003a9b9ff5eabcedda19e669008a6edfe3894d3",
-      "block": 94215427,
-      "logIndex": 0,
-      "amountRaw": "328919218964306495630707"
-    },
-    {
-      "tx": "0xd51441046e7475635d5cd21bb2a286a34ccd224c1cb451c98294c553fd344d64",
-      "block": 94101272,
-      "logIndex": 0,
-      "amountRaw": "344585262852319757919204"
     }
   ]
 }
