@@ -147,6 +147,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
     </div>
     <ul class="launch-list" id="launchList" aria-live="polite"><li class="hint">Reading the factory…</li></ul>
     <p class="hint" id="launchMeta"></p>
+    <p class="links"><a href="/skills/pons-launch-watch.md" target="_blank" rel="noopener">Get alerted when your ticker is copied: Aeon skill ${arrow}</a></p>
   </section>
 
   <section class="card aeon reveal" id="aeon" aria-labelledby="aeonTitle">
