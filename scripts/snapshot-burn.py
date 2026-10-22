@@ -8,7 +8,9 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import time
 from datetime import datetime, timezone
+from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 RPC = 'https://rpc.mainnet.chain.robinhood.com'
@@ -20,13 +22,24 @@ ZERO = '0x' + '0' * 64
 
 
 def rpc(method, params):
-    req = Request(RPC, json.dumps(dict(jsonrpc='2.0', id=1, method=method, params=params)).encode(),
-                  {'Content-Type': 'application/json', 'User-Agent': 'Sentinel/1.0 (read-only snapshot)', 'Accept': 'application/json'})
-    with urlopen(req, timeout=60) as response:
-        result = json.load(response)
-    if 'error' in result:
-        raise RuntimeError(result['error'])
-    return result['result']
+    # The public RPC answers 429 to bursts; retry a few times before giving up on this run.
+    for attempt in range(5):
+        req = Request(RPC, json.dumps(dict(jsonrpc='2.0', id=1, method=method, params=params)).encode(),
+                      {'Content-Type': 'application/json', 'User-Agent': 'Sentinel/1.0 (read-only snapshot)', 'Accept': 'application/json'})
+        try:
+            with urlopen(req, timeout=60) as response:
+                result = json.load(response)
+        except HTTPError as e:
+            if e.code in (429, 502, 503, 504) and attempt < 4:
+                time.sleep(2 * (attempt + 1))
+                continue
+            raise
+        if (result.get('error') or {}).get('code') == 429 and attempt < 4:
+            time.sleep(2 * (attempt + 1))
+            continue
+        if 'error' in result:
+            raise RuntimeError(result['error'])
+        return result['result']
 
 
 def main():
