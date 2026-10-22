@@ -169,7 +169,8 @@ async function batchLogs(filters) {
     if (Array.isArray(data) && data.length === filters.length && data.every((r) => Array.isArray(r?.result))) {
       return data.sort((a, b) => a.id - b.id).flatMap((r) => r.result);
     }
-    await sleep(400 * 2 ** attempt);
+    // Heavy batches are sometimes refused whole (429) and accepted a moment later. No wait after the last try.
+    if (attempt < 2) await sleep(500 * 2 ** attempt);
   }
   return null;
 }
