@@ -4,7 +4,7 @@ description: Measure real usage of Aeon's Uniswap v4 hooks on Robinhood Chain - 
 metadata:
   title: Hook Usage
   category: crypto
-  var: ""
+  var: "Window in days for the swap count, e.g. 7. Empty = 7."
   tags:
     - crypto
     - robinhood-chain

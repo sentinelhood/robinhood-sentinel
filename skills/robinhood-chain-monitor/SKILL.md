@@ -4,7 +4,7 @@ description: Watch Robinhood Chain (chainId 4663) addresses for balance, nonce a
 metadata:
   title: Robinhood Chain Monitor
   category: crypto
-  var: ""
+  var: "Label of one watch from memory/robinhood-watches.yml to check. Empty = all watches."
   tags:
     - crypto
     - robinhood-chain

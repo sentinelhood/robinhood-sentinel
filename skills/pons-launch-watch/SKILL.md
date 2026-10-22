@@ -4,7 +4,7 @@ description: Alert when a new Pons v2 launch on Robinhood Chain copies your toke
 metadata:
   title: Pons Launch Watch
   category: crypto
-  var: ""
+  var: "Comma-separated tickers or names to guard, e.g. SNTL,Sentinel. Empty = launch summary only, no lookalike alerts."
   tags:
     - crypto
     - robinhood-chain
