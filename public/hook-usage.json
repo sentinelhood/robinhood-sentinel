@@ -1,6 +1,6 @@
 {
  "chainId": 4663,
- "block": 92397647,
+ "block": 95079796,
  "windowDays": 7.0,
  "hooks": [
   {
@@ -10,7 +10,7 @@
    "flagsMatch": true,
    "pools": 53,
    "activePools": 1,
-   "swaps": 40,
+   "swaps": 46,
    "uniqueSenders": 5
   },
   {
@@ -36,16 +36,6 @@
   {
    "hook": "CapGate",
    "address": "0x57777eb796b2b01aef0a0a6752217c5dbe9a00c4",
-   "stage": "deployed",
-   "flagsMatch": true,
-   "pools": 0,
-   "activePools": 0,
-   "swaps": 0,
-   "uniqueSenders": 0
-  },
-  {
-   "hook": "ComboBreaker",
-   "address": "0x85c98fff5bee81278b4de807465a4d86f39f20cc",
    "stage": "deployed",
    "flagsMatch": true,
    "pools": 0,
@@ -135,11 +125,11 @@
   }
  ],
  "totals": {
-  "hooks": 13,
+  "hooks": 12,
   "hooksWithPools": 2,
   "pools": 56,
-  "swaps": 40
+  "swaps": 46
  },
- "generatedAt": "2026-10-19T06:16:54+00:00",
+ "generatedAt": "2026-10-22T11:33:30+00:00",
  "source": "skills/hook-usage/hook_usage.py via rpc.mainnet.chain.robinhood.com"
 }
