@@ -287,6 +287,10 @@ el('inspectForm').addEventListener('submit', async (event) => {
   button.disabled = true;
   busy(card, true);
   show(out, '<p class="hint">Reading chain…</p>');
+  // Start the token and deployer reads now, alongside the address read, instead of after it.
+  // Wallets answer both cheaply (no contract / no Pons record) and the results are simply unused.
+  const prefetch = action === 'address' ? { token: api('token', v), deployer: api('deployer', v) } : undefined;
+  prefetch?.token.catch(() => {}); prefetch?.deployer.catch(() => {});
   try {
     const data = await api(action, v);
     const link = `<a class="link-out" href="https://robinhoodchain.blockscout.com/${action === 'address' ? 'address' : 'tx'}/${v}" target="_blank" rel="noopener noreferrer">Open in Blockscout ${arrow}</a>`;
@@ -295,7 +299,7 @@ el('inspectForm').addEventListener('submit', async (event) => {
       const kind = delegated ? 'Wallet · 7702' : data.codeBytes ? 'Contract' : 'Account';
       const code = delegated ? row('Delegates to', escape(short(data.delegatedTo))) : row('Bytecode', `${escape(Number(data.codeBytes).toLocaleString())} bytes`);
       show(out, `<h3><span class="badge">${kind}</span>${escape(short(v))}</h3><dl class="kv">${row('Balance', `${escape(eth(data.balanceWei))} ETH`)}${code}${row('Nonce', escape(data.nonce))}${row('Read at block', escape(Number(data.block).toLocaleString()))}</dl><div id="tokenCheck"></div><p class="hint">${escape(data.warning)}</p>${link}`);
-      if (data.codeBytes && !delegated) void tokenCheck(v);
+      if (data.codeBytes && !delegated) void tokenCheck(v, prefetch);
     } else if (!data.transaction) {
       show(out, '<p class="error">Transaction not found on chain 4663. Check the hash, or retry if it was just submitted.</p>');
     } else {
@@ -313,11 +317,11 @@ el('inspectForm').addEventListener('submit', async (event) => {
 });
 
 // How many Pons tokens this token's deployer has launched, and which one this is. Facts, not a verdict.
-async function deployerHistory(token: string) {
+async function deployerHistory(token: string, pending?: Promise<any>) {
   const cell = document.getElementById('deployerHistory');
   if (!cell) return;
   try {
-    const d = await api('deployer', token);
+    const d = await (pending || api('deployer', token));
     if (el<HTMLInputElement>('lookup').value.trim().toLowerCase() !== token.toLowerCase()) return;
     if (!d.pons || !Number.isSafeInteger(d.launches) || d.launches < 1) throw new Error('none');
     const since = d.firstAt ? new Date(d.firstAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '';
@@ -345,11 +349,11 @@ function inspectAddress(address: string) {
 // Token check: ERC-20 metadata + the Pons v2 factory record for this address. Facts only, no verdict.
 const PHASE = ['Bonding curve', 'Swept · pool pending', 'Uniswap v4 · liquidity locked', 'Rescued (recovery path)'];
 const bps = (n: unknown) => (Number.isSafeInteger(n) ? `${(Number(n) / 100).toFixed(2).replace(/\.?0+$/, '')}%` : '—');
-async function tokenCheck(address: string) {
+async function tokenCheck(address: string, pending?: { token: Promise<any>; deployer: Promise<any> }) {
   const box = el('tokenCheck');
   box.innerHTML = '<p class="hint">Checking token and Pons launch record…</p>';
   try {
-    const d = await api('token', address);
+    const d = await (pending?.token || api('token', address));
     if (el<HTMLInputElement>('lookup').value.trim().toLowerCase() !== address.toLowerCase()) return;
     if (!d.erc20) { box.innerHTML = '<p class="hint">Not an ERC-20 token (no decimals/totalSupply).</p>'; return; }
     const p = d.pons;
@@ -375,7 +379,7 @@ async function tokenCheck(address: string) {
     </dl><p class="hint">Tax is fixed at launch and cannot be raised. ${p.phase === 2 ? 'Pool liquidity is locked by the Pons locker. ' : ''}${escape(d.warning)}</p>
     <div class="cmd share"><code id="shareUrl">${escape(shareLink(address))}</code><button class="btn small" id="copyShare">Copy link</button></div>`;
     history.replaceState(null, '', `/?ca=${address}`);
-    void deployerHistory(address);
+    void deployerHistory(address, pending?.deployer);
     el('copyShare').addEventListener('click', () => copyText(el<HTMLButtonElement>('copyShare'), shareLink(address), el('shareUrl')));
   } catch (e) {
     box.innerHTML = `<p class="error">Token check unavailable: ${escape((e as Error).message)}</p>`;

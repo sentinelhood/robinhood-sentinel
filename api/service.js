@@ -5,11 +5,16 @@ const envRpc = process.env.ROBINHOOD_RPC_URL || '';
 const RPC = envRpc.startsWith('https://') ? envRpc : PUBLIC_RPC;
 const RPC_LABEL = RPC === PUBLIC_RPC ? 'public-rpc' : 'private-rpc';
 async function rpc(method, params = []) {
-  const response = await fetch(RPC, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({jsonrpc:'2.0', id:1, method, params}), signal: AbortSignal.timeout(10000)});
-  if (!response.ok) throw new Error('RPC unavailable');
-  const data = await response.json();
-  if (data.error || data.result === undefined) throw new Error('RPC request failed');
-  return data.result;
+  // Two short retries on rate limiting only (HTTP 429 or JSON-RPC 429). Other errors fail fast.
+  for (let attempt = 0; ; attempt++) {
+    const response = await fetch(RPC, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({jsonrpc:'2.0', id:1, method, params}), signal: AbortSignal.timeout(10000)});
+    const data = response.ok ? await response.json() : null;
+    const limited = response.status === 429 || data?.error?.code === 429;
+    if (limited && attempt < 2) { await new Promise((r) => setTimeout(r, 300 * 2 ** attempt)); continue; }
+    if (!response.ok) throw new Error('RPC unavailable');
+    if (data.error || data.result === undefined) throw new Error('RPC request failed');
+    return data.result;
+  }
 }
 // ---------- token check (ERC-20 metadata + Pons v2 factory record) ----------
 export const PONS_FACTORY = '0x7eD598BcEf8bd9Edd8C97A195C6d13f40801EC7e';
@@ -154,12 +159,30 @@ export function summariseHistory(logs, deployer, current) {
     latestBlock: unique.length ? unique[0].block : null, launchNumber: idx >= 0 ? unique.length - idx : null,
     recent: unique.slice(0, 6).map(({token, block, tx}) => ({token, block, tx}))};
 }
+// All windows in one JSON-RPC batch: one round trip (~0.5 s) instead of one per window (~3 s).
+// Returns null if the batch is refused or any window errors, so the caller can fall back.
+async function batchLogs(filters) {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const response = await fetch(PUBLIC_RPC, {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(filters.map((f, id) => ({jsonrpc: '2.0', id, method: 'eth_getLogs', params: [f]}))), signal: AbortSignal.timeout(15000)}).catch(() => null);
+    const data = response && response.ok ? await response.json().catch(() => null) : null;
+    if (Array.isArray(data) && data.length === filters.length && data.every((r) => Array.isArray(r?.result))) {
+      return data.sort((a, b) => a.id - b.id).flatMap((r) => r.result);
+    }
+    await sleep(400 * 2 ** attempt);
+  }
+  return null;
+}
 async function deployerHistory(deployer, current, head) {
-  const logs = [];
+  const filters = [];
   for (let to = head; to >= PONS_FIRST_BLOCK; to -= HISTORY_WINDOW) {
     const from = Math.max(PONS_FIRST_BLOCK, to - HISTORY_WINDOW + 1);
-    logs.push(...await publicLogs({address: PONS_FACTORY, topics: [TOKEN_LAUNCHED, null, null, '0x' + pad(deployer)], fromBlock: '0x' + from.toString(16), toBlock: '0x' + to.toString(16)}));
-    await sleep(120);
+    filters.push({address: PONS_FACTORY, topics: [TOKEN_LAUNCHED, null, null, '0x' + pad(deployer)], fromBlock: '0x' + from.toString(16), toBlock: '0x' + to.toString(16)});
+  }
+  let logs = await batchLogs(filters);
+  if (!logs) {
+    logs = [];
+    for (const f of filters) { logs.push(...await publicLogs(f)); await sleep(120); }
   }
   const s = summariseHistory(logs, deployer, current);
   const [first, latest] = await Promise.all([s.firstBlock, s.latestBlock].map((b) => b === null ? null : rpc('eth_getBlockByNumber', ['0x' + b.toString(16), false]).catch(() => null)));
@@ -234,9 +257,10 @@ export async function execute(action, value) {
     const data = await response.json();
     return {source:'https://www.aeon.fun/ask', results: (data.results || []).slice(0,8).filter(r => typeof r.url === 'string' && r.url.startsWith('https://www.aeon.fun/')).map(r => ({name:r.name, description:r.description, url:r.url}))};
   }
-  const chainId = Number(BigInt(await rpc('eth_chainId')));
+  // Both reads are independent: one round trip instead of two. The chain check still gates every result.
+  const [chainHex, block] = await Promise.all([rpc('eth_chainId'), rpc('eth_blockNumber')]);
+  const chainId = Number(BigInt(chainHex));
   if (chainId !== 4663) throw new Error('Unexpected RPC chain');
-  const block = await rpc('eth_blockNumber');
   const base = {chainId, block: Number(BigInt(block)), checkedAt: new Date().toISOString(), source: RPC_LABEL};
   if (action === 'network') return {...base, gasPriceWei: BigInt(await rpc('eth_gasPrice')).toString()};
   if (action === 'launches') return {...base, ...(await launches(base.block))};

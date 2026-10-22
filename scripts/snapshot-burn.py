@@ -14,6 +14,7 @@ from urllib.request import Request, urlopen
 RPC = 'https://rpc.mainnet.chain.robinhood.com'
 TOKEN = '0x2da80b9D1bc1B323693C80C76eb4a321ec08CbD0'
 START = 93500000
+WINDOW = 10_000_000
 TRANSFER = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
 ZERO = '0x' + '0' * 64
 
@@ -44,8 +45,10 @@ def main():
     minted = burned = mint_count = 0
     burns = []
     seen = set()
-    for start in range(START, block + 1, 99999):
-        end = min(start + 99998, block)
+    # With an address + topic filter the public RPC accepts 10M-block ranges (it caps at 10k logs,
+    # far above this token's mint/burn count), so one window covers ~12 days per call.
+    for start in range(START, block + 1, WINDOW):
+        end = min(start + WINDOW - 1, block)
         # Filter mint and burn separately to avoid a potentially truncated full transfer history.
         for kind, topics in [('mint', [TRANSFER, ZERO]), ('burn', [TRANSFER, None, ZERO])]:
             logs = rpc('eth_getLogs', [{'address': TOKEN, 'fromBlock': hex(start), 'toBlock': hex(end), 'topics': topics}])
