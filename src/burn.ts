@@ -8,6 +8,28 @@ type BurnSnapshot = {
 const raw = (x: unknown): x is string => typeof x === 'string' && /^(0|[1-9]\d{0,77})$/.test(x);
 const hash = (x: unknown) => typeof x === 'string' && /^0x[\da-f]{64}$/i.test(x);
 const integer = (x: unknown): x is number => Number.isSafeInteger(x) && Number(x) >= 0;
+const address = (x: unknown): x is string => typeof x === 'string' && /^0x[\da-f]{40}$/i.test(x);
+const text = (x: unknown) => x === null || (typeof x === 'string' && x.length <= 64);
+
+type CopiesSnapshot = {
+  chainId: number; official: string; block: number; generatedAt: string; windowHours: number;
+  launches: number; copyCount: number;
+  copies: { token: string; deployer: string; block: number; symbol: string | null; name: string | null }[];
+};
+// public/copies.json must name the same official token, and no listed copy may be the official address.
+export function validateCopies(value: unknown, ca: string): CopiesSnapshot {
+  const s = value as CopiesSnapshot;
+  if (!s || ca.toLowerCase() !== SNTL || typeof s.official !== 'string' || s.official.toLowerCase() !== SNTL ||
+      s.chainId !== 4663 || !integer(s.block) || !integer(s.launches) || !integer(s.copyCount) || !integer(s.windowHours) ||
+      typeof s.generatedAt !== 'string' || !Number.isFinite(Date.parse(s.generatedAt)) ||
+      !Array.isArray(s.copies) || s.copies.length > 20 || s.copies.length > s.copyCount || s.copyCount > s.launches ||
+      (s.copyCount > 0 && s.copies.length === 0)) throw new Error('Invalid copies snapshot');
+  for (const c of s.copies) {
+    if (!c || !address(c.token) || !address(c.deployer) || !integer(c.block) || c.block > s.block ||
+        !text(c.symbol) || !text(c.name) || c.token.toLowerCase() === SNTL) throw new Error('Invalid copy entry');
+  }
+  return s;
+}
 
 export function validateBurn(value: unknown, ca: string): BurnSnapshot {
   const s = value as BurnSnapshot;

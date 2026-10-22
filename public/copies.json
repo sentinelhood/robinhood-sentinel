@@ -1,0 +1,16 @@
+{
+ "chainId": 4663,
+ "official": "0x2da80b9D1bc1B323693C80C76eb4a321ec08CbD0",
+ "watch": [
+  "SNTL",
+  "Sentinel"
+ ],
+ "windowHours": 24,
+ "block": 95082628,
+ "generatedAt": "2026-10-22T11:38:37+00:00",
+ "launches": 1689,
+ "sharedTickerLaunches": 798,
+ "copies": [],
+ "copyCount": 0,
+ "source": "skills/pons-launch-watch/pons_launch_watch.py via rpc.mainnet.chain.robinhood.com"
+}

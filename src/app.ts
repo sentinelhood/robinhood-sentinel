@@ -1,5 +1,5 @@
 import './app.css';
-import { validateBurn, tokenAmount, burnPercent } from './burn';
+import { validateBurn, validateCopies, tokenAmount, burnPercent } from './burn';
 
 type Watch = { address: string; label: string };
 
@@ -779,8 +779,10 @@ async function loadToken() {
       <div class="cmd"><code id="tokenCa" title="${escape(ca)}">${escape(ca)}</code><button class="btn small" id="copyCa">Copy</button></div>
       <p>Contract bytecode confirmed on Robinhood Chain (4663) at block ${escape(Number(d.block).toLocaleString())}. Bytecode is not an audit. Check the address against <a href="${escape(source)}" target="_blank" rel="noopener noreferrer">${sourceLabel}</a> before you trade, and never sign anything a DM sends you.</p>
       <p class="links"><a href="https://robinhoodchain.blockscout.com/address/${escape(ca)}" target="_blank" rel="noopener noreferrer">Blockscout ${arrow}</a>${info.launchpad && /^https:\/\//.test(info.launchpad) ? `<a href="${escape(info.launchpad)}" target="_blank" rel="noopener noreferrer">Launchpad ${arrow}</a>` : ''}</p>
-      <section class="burn-panel" id="burnPanel" aria-label="SNTL burn snapshot" aria-live="polite"><p class="hint">Loading burn snapshot…</p></section>`;
+      <section class="burn-panel" id="burnPanel" aria-label="SNTL burn snapshot" aria-live="polite"><p class="hint">Loading burn snapshot…</p></section>
+      <section class="burn-panel" id="copiesPanel" aria-label="Copies of the SNTL ticker" aria-live="polite"><p class="hint">Checking for ticker copies…</p></section>`;
     void loadBurn(ca);
+    void loadCopies(ca);
     el('copyCa').addEventListener('click', async () => {
       const b = el<HTMLButtonElement>('copyCa');
       try { await navigator.clipboard.writeText(ca); b.textContent = 'Copied'; } catch { getSelection()?.selectAllChildren(el('tokenCa')); b.textContent = 'Press Ctrl+C'; }
@@ -810,6 +812,25 @@ async function loadBurn(ca: string) {
       <p class="links">${s.latestBurns.length ? `<a href="https://robinhoodchain.blockscout.com/tx/${escape(s.latestBurns[0].tx)}" target="_blank" rel="noopener noreferrer">Latest burn ${arrow}</a>` : ''}<a href="/burn.json" target="_blank" rel="noopener noreferrer">Raw snapshot JSON ${arrow}</a></p>`;
   } catch {
     panel.textContent = 'Burn snapshot unavailable. No burn total is shown until the snapshot passes validation.';
+  }
+}
+
+// Pons tokens that reuse the $SNTL ticker or name in the last 24h (public/copies.json, from the pons-launch-watch skill).
+async function loadCopies(ca: string) {
+  const panel = el('copiesPanel');
+  try {
+    const response = await fetch('/copies.json', { cache: 'no-store', signal: AbortSignal.timeout(10000) });
+    if (!response.ok) throw new Error('unavailable');
+    const s = validateCopies(await response.json(), ca);
+    const when = ago(s.generatedAt) || 'recently';
+    const list = s.copies.map((c) => `<li><code>${escape(c.symbol || '?')}</code> <small>${escape(c.name || '')}</small>
+        <a href="/?ca=${escape(c.token)}">${escape(short(c.token))}</a></li>`).join('');
+    panel.innerHTML = `<div class="burn-head"><span class="tag gold">COPIES OF THIS TICKER</span><span class="badge ${s.copyCount ? 'wait' : 'ok'}">${s.copyCount ? `${s.copyCount} found` : 'None'}</span></div>
+      <p class="burn-facts"><span><b>${escape(s.copyCount)}</b> Pons tokens named SNTL or Sentinel</span><span>out of <b>${escape(Number(s.launches).toLocaleString())}</b> launches in ${escape(s.windowHours)}h</span></p>
+      ${s.copyCount ? `<ul class="copy-list">${list}</ul><p class="hint">Only the address above is $SNTL. These share the name, which is not proof of a scam. Check the CA before you buy.</p>` : '<p class="hint">Nobody has launched a token with this ticker or name on Pons in the window. Only the address above is $SNTL.</p>'}
+      <p class="burn-meta">Checked ${escape(when)} · Block ${escape(s.block.toLocaleString('en-US'))} · <a href="/skills/pons-launch-watch.md" target="_blank" rel="noopener">pons-launch-watch skill ${arrow}</a></p>`;
+  } catch {
+    panel.textContent = 'Ticker-copy check unavailable right now.';
   }
 }
 
