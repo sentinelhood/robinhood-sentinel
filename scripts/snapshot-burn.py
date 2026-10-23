@@ -10,7 +10,7 @@ from pathlib import Path
 import tempfile
 import time
 from datetime import datetime, timezone
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 RPC = 'https://rpc.mainnet.chain.robinhood.com'
@@ -31,6 +31,12 @@ def rpc(method, params):
                 result = json.load(response)
         except HTTPError as e:
             if e.code in (429, 502, 503, 504) and attempt < 4:
+                time.sleep(2 * (attempt + 1))
+                continue
+            raise
+        except (URLError, TimeoutError):
+            # Socket timeouts and dropped connections are transient on the public RPC too.
+            if attempt < 4:
                 time.sleep(2 * (attempt + 1))
                 continue
             raise
