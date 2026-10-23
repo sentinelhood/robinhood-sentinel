@@ -111,6 +111,15 @@ h1 em { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; color
 .lede { max-width: 520px; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.7; }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
 .hero-side { display: grid; gap: 16px; }
+/* The right column (network + token card) is much taller; keep the copy in view beside it. */
+.hero-copy { position: sticky; top: 96px; }
+.hero-live { margin-top: 44px; max-width: 520px; }
+.hero-live ul { list-style: none; margin: 14px 0 0; padding: 0; border-top: 1px solid var(--line); }
+.hero-live li { border-bottom: 1px solid var(--line); }
+.hero-live a { display: grid; grid-template-columns: 150px 1fr; gap: 4px 16px; padding: 13px 2px; color: inherit; text-decoration: none; }
+.hero-live a:hover b, .hero-live a:focus-visible b { color: var(--gold); }
+.hero-live b { font-size: 14px; color: var(--text); }
+.hero-live span { font-size: 13px; line-height: 1.5; color: var(--muted); }
 
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .card {
@@ -321,7 +330,8 @@ pre { overflow: auto; max-height: 280px; margin: 10px 0 0; padding: 12px; backgr
 /* ---------- responsive ---------- */
 @media (max-width: 1000px) {
   .hero { grid-template-columns: 1fr; gap: 32px; padding: 48px 0 40px; }
-  .hero-copy { padding-top: 0; }
+  .hero-copy { padding-top: 0; position: static; }
+  .hero-live { margin-top: 32px; }
   .grid, .aeon { grid-template-columns: 1fr; }
   .aeon { gap: 8px; }
 }
@@ -343,14 +353,18 @@ pre { overflow: auto; max-height: 280px; margin: 10px 0 0; padding: 12px; backgr
   .bars .sub { grid-column: 1 / -1; }
   .hook-stats dd { font-size: 15px; }
 }
-@media (max-width: 720px) {
+/* The nav has 8 links; below ~1100px it no longer fits beside the brand and pill, so it wraps to its own row. */
+@media (max-width: 1100px) {
   .top { height: auto; flex-wrap: wrap; gap: 10px 14px; padding-top: 12px; padding-bottom: 10px; }
   .pill-wrap { margin-left: auto; }
-  .pill { font-size: 9px; padding: 0 10px; }
   .pop { width: min(280px, calc(100vw - 36px)); }
   .top nav { order: 3; width: 100%; margin: 0 -12px; overflow-x: auto; scrollbar-width: none; }
   .top nav a { display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; }
   html { scroll-padding-top: 116px; }
+  .hero-copy { top: 132px; } /* clear the taller two-row header */
+}
+@media (max-width: 720px) {
+  .pill { font-size: 9px; padding: 0 10px; }
   .card { padding: 20px; }
   .card h2 { font-size: 23px; }
   .lede { font-size: 15px; }

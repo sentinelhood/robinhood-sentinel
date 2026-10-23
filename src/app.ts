@@ -84,6 +84,16 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
       <h1 class="reveal" style="--d:1">Less guessing.<br><em>More evidence.</em></h1>
       <p class="lede reveal" style="--d:2">Inspect real transactions and addresses on Robinhood Chain, keep a quiet watchlist, and give your Aeon agent a keyless monitor for chain 4663. No wallet connection. Nothing to sign.</p>
       <div class="hero-cta reveal" style="--d:3"><a class="btn primary" href="#inspect">Inspect an address</a><a class="btn ghost" href="#aeon">Aeon skill pack</a></div>
+      <nav class="hero-live reveal" style="--d:4" aria-label="What is live">
+        <p class="kicker">LIVE ON THIS PAGE</p>
+        <ul>
+          <li><a href="#inspect"><b>Inspector</b><span>Read any address or transaction, with the block it was read at.</span></a></li>
+          <li><a href="#watch"><b>Watchlist</b><span>Quiet balance and nonce checks, stored only in this browser.</span></a></li>
+          <li><a href="#launches"><b>Pons launches</b><span>New tokens from the factory, with tax, phase and repeated tickers.</span></a></li>
+          <li><a href="#guard"><b>Sentinel Guard</b><span>Burn $SNTL from a deployer to list copies of that ticker.</span></a></li>
+          <li><a href="#aeon"><b>Sentinel Pack</b><span>Three keyless Aeon skills for Robinhood Chain.</span></a></li>
+        </ul>
+      </nav>
     </div>
 
     <aside class="hero-side">
