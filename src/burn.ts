@@ -31,6 +31,43 @@ export function validateCopies(value: unknown, ca: string): CopiesSnapshot {
   return s;
 }
 
+type Guard = {
+  token: string; deployer: string; symbol: string | null; name: string | null; burnedRaw: string; burns: number;
+  since: string; expiresAt: string; active: boolean; lastTx: string; copyCount: number;
+  copies: { token: string; deployer: string; block: number; symbol: string | null; name: string | null }[];
+};
+type GuardsSnapshot = {
+  chainId: number; token: string; block: number; generatedAt: string; minBurnRaw: string; periodDays: number;
+  windowHours: number; launches: number; guards: Guard[];
+};
+const date = (x: unknown) => typeof x === 'string' && Number.isFinite(Date.parse(x));
+// public/guards.json: SNTL burns that guard a Pons token. Every field is checked before anything is shown.
+export function validateGuards(value: unknown): GuardsSnapshot {
+  const s = value as GuardsSnapshot;
+  if (!s || s.chainId !== 4663 || typeof s.token !== 'string' || s.token.toLowerCase() !== SNTL || !integer(s.block) ||
+      !date(s.generatedAt) || !raw(s.minBurnRaw) || BigInt(s.minBurnRaw) === 0n || !integer(s.periodDays) || s.periodDays < 1 ||
+      !integer(s.windowHours) || !integer(s.launches) || !Array.isArray(s.guards) || s.guards.length > 500) throw new Error('Invalid guards snapshot');
+  for (const g of s.guards) {
+    if (!g || !address(g.token) || !address(g.deployer) || g.token.toLowerCase() === SNTL || !text(g.symbol) || !text(g.name) ||
+        !raw(g.burnedRaw) || BigInt(g.burnedRaw) < BigInt(s.minBurnRaw) || !integer(g.burns) || g.burns < 1 ||
+        !date(g.since) || !date(g.expiresAt) || Date.parse(g.expiresAt) <= Date.parse(g.since) || typeof g.active !== 'boolean' ||
+        !hash(g.lastTx) || !integer(g.copyCount) || !Array.isArray(g.copies) || g.copies.length > Math.min(5, g.copyCount) ||
+        (g.copyCount > 0 && g.copies.length === 0)) throw new Error('Invalid guard entry');
+    for (const c of g.copies) {
+      if (!c || !address(c.token) || !address(c.deployer) || !integer(c.block) || c.block > s.block || !text(c.symbol) || !text(c.name) ||
+          c.token.toLowerCase() === g.token.toLowerCase()) throw new Error('Invalid guard copy');
+    }
+  }
+  return s;
+}
+
+// Calldata for burn(amount) on SNTL with the guarded token appended as one extra 32-byte word.
+export function guardCalldata(token: string, wholeSntl: bigint): string {
+  if (!address(token) || token.toLowerCase() === SNTL || wholeSntl <= 0n) throw new Error('Invalid guard input');
+  const word = (x: string) => x.padStart(64, '0');
+  return '0x42966c68' + word((wholeSntl * 10n ** 18n).toString(16)) + word(token.slice(2).toLowerCase());
+}
+
 export function validateBurn(value: unknown, ca: string): BurnSnapshot {
   const s = value as BurnSnapshot;
   if (!s || ca.toLowerCase() !== SNTL || typeof s.token !== 'string' || s.token.toLowerCase() !== SNTL ||

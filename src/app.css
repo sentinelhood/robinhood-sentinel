@@ -262,7 +262,11 @@ pre { overflow: auto; max-height: 280px; margin: 10px 0 0; padding: 12px; backgr
 /* ---------- aeon contributions ---------- */
 .contrib { margin: 20px 0 0; }
 /* ---------- launches ---------- */
-.launches, .shiplog { margin: 20px 0 0; }
+.launches, .shiplog, .guard { margin: 20px 0 0; }
+.guard .field { max-width: 640px; margin-top: 18px; }
+.guard-list { margin-top: 18px; }
+.guard-list li { padding: 8px 0; border-top: 1px solid var(--line); }
+#guardData { overflow-wrap: anywhere; word-break: break-all; }
 .launch-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
 .launch-head .tag .dot { margin-right: 6px; }
 .launch-list, .ship-list { list-style: none; margin: 20px 0 12px; padding: 0; }

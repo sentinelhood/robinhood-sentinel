@@ -1,0 +1,14 @@
+{
+ "chainId": 4663,
+ "token": "0x2da80b9d1bc1b323693c80c76eb4a321ec08cbd0",
+ "fromBlock": 95225000,
+ "block": 95858029,
+ "generatedAt": "2026-10-23T10:04:10Z",
+ "minBurnRaw": "1000000000000000000000000",
+ "periodDays": 30,
+ "windowHours": 24,
+ "launches": 0,
+ "guards": [],
+ "rejected": [],
+ "source": "SNTL burn logs + Pons v2 factory via rpc.mainnet.chain.robinhood.com"
+}

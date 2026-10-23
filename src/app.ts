@@ -1,5 +1,5 @@
 import './app.css';
-import { validateBurn, validateCopies, tokenAmount, burnPercent } from './burn';
+import { validateBurn, validateCopies, validateGuards, guardCalldata, tokenAmount, burnPercent } from './burn';
 
 type Watch = { address: string; label: string };
 
@@ -59,7 +59,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
 <header class="top">
   <a class="brand" href="#" aria-label="Sentinel home">${mark}<span><strong>SENTINEL</strong><small>ROBINHOOD CHAIN · 4663</small></span></a>
   <nav aria-label="Sections" id="nav">
-    <a href="#inspect" data-section>Inspect</a><a href="#watch" data-section>Watchlist</a><a href="#aeon" data-section>Aeon</a><a href="#hooks" data-section>Hooks</a><a href="#launches" data-section>Launches</a><a href="#contrib" data-section>Contributions</a><a href="#shiplog" data-section>Log</a>
+    <a href="#inspect" data-section>Inspect</a><a href="#watch" data-section>Watchlist</a><a href="#aeon" data-section>Aeon</a><a href="#hooks" data-section>Hooks</a><a href="#launches" data-section>Launches</a><a href="#guard" data-section>Guard</a><a href="#contrib" data-section>Contributions</a><a href="#shiplog" data-section>Log</a>
     <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">X ${arrow}</a>
     <span class="nav-ind" aria-hidden="true"></span>
   </nav>
@@ -148,6 +148,20 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
     <ul class="launch-list" id="launchList" aria-live="polite"><li class="hint">Reading the factory…</li></ul>
     <p class="hint" id="launchMeta"></p>
     <p class="links"><a href="/skills/pons-launch-watch.md" target="_blank" rel="noopener">Get alerted when your ticker is copied: Aeon skill ${arrow}</a></p>
+  </section>
+
+  <section class="card guard reveal" id="guard" aria-labelledby="guardTitle">
+    <span class="tag gold">SENTINEL GUARD · BURN SNTL</span>
+    <h2 id="guardTitle">Guard your ticker.</h2>
+    <p class="muted">Launched on Pons? Burn <b>1,000,000 SNTL</b> from your <b>deployer wallet</b> with your token address attached, and Sentinel lists every Pons launch that copies your ticker or name, for 30 days, on a public page. The SNTL is destroyed: nobody receives it, including us. Each extra burn adds 30 days.</p>
+    <form id="guardForm" class="field">
+      <label for="guardToken">Your Pons token address</label>
+      <div class="input-row"><input id="guardToken" required pattern="0x[0-9a-fA-F]{40}" maxlength="42" placeholder="0x…" spellcheck="false" autocomplete="off"><button class="btn primary">Build the burn</button></div>
+    </form>
+    <div id="guardHow" class="result" aria-live="polite"></div>
+    <ul class="copy-list guard-list" id="guardList" aria-live="polite"><li class="hint">Loading guarded tokens…</li></ul>
+    <p class="hint" id="guardMeta"></p>
+    <p class="hint">A guard is a public alert, not protection: copies can still launch. It only counts when the burn is sent by the deployer the Pons factory records for that token. Check the result here before you announce it.</p>
   </section>
 
   <section class="card aeon reveal" id="aeon" aria-labelledby="aeonTitle">
@@ -376,11 +390,13 @@ async function tokenCheck(address: string, pending?: { token: Promise<any>; depl
       ${row('Pair', p.pairToken === '0x' + '0'.repeat(40) ? 'Native ETH' : `<code>${escape(short(p.pairToken))}</code>`)}
       ${row('Deployer', `<a href="https://robinhoodchain.blockscout.com/address/${escape(p.deployer)}" target="_blank" rel="noopener noreferrer">${escape(short(p.deployer))}</a>`)}
       <div><dt>Deployer history</dt><dd id="deployerHistory"><span class="hint">Reading every Pons launch…</span></dd></div>
+      <div><dt>Sentinel Guard</dt><dd id="guardStatus"><span class="hint">Checking…</span></dd></div>
       ${holders}${meta}
     </dl><p class="hint">Tax is fixed at launch and cannot be raised. ${p.phase === 2 ? 'Pool liquidity is locked by the Pons locker. ' : ''}${escape(d.warning)}</p>
     <div class="cmd share"><code id="shareUrl">${escape(shareLink(address))}</code><button class="btn small" id="copyShare">Copy link</button></div>`;
     history.replaceState(null, '', `/?ca=${address}`);
     void deployerHistory(address, pending?.deployer);
+    void guardStatus(address);
     el('copyShare').addEventListener('click', () => copyText(el<HTMLButtonElement>('copyShare'), shareLink(address), el('shareUrl')));
   } catch (e) {
     box.innerHTML = `<p class="error">Token check unavailable: ${escape((e as Error).message)}</p>`;
@@ -653,7 +669,7 @@ addEventListener('keydown', (e) => { if (e.key === 'Escape') { setPop(false); pi
 // The position is saved relative to the nearest section ("12px into #watch"), not as a
 // raw scrollY. Web fonts and live data change heights after load, so a raw pixel value
 // lands in the wrong place; an anchor + offset still points at the same content.
-const ANCHORS = ['.hero', '#inspect', '#watch', '#launches', '#aeon', '#hooks', '#contrib', '#shiplog', '.foot'];
+const ANCHORS = ['.hero', '#inspect', '#watch', '#launches', '#guard', '#aeon', '#hooks', '#contrib', '#shiplog', '.foot'];
 const SCROLL_KEY = 'sentinel.scroll.v1';
 type Saved = { path: string; anchor: string; offset: number };
 
@@ -834,6 +850,65 @@ async function loadCopies(ca: string) {
   }
 }
 
+// ---------- Sentinel Guard (public/guards.json from scripts/snapshot-guards.py) ----------
+let guardsCache: Promise<ReturnType<typeof validateGuards>> | null = null;
+const loadGuardsJson = () => (guardsCache ??= fetch('/guards.json', { cache: 'no-store', signal: AbortSignal.timeout(10000) })
+  .then((r) => { if (!r.ok) throw new Error('unavailable'); return r.json(); }).then(validateGuards)
+  .catch((e) => { guardsCache = null; throw e; }));
+const day = (iso: string) => new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+
+async function loadGuards() {
+  const list = el('guardList'), meta = el('guardMeta');
+  try {
+    const s = await loadGuardsJson();
+    const active = s.guards.filter((g) => g.active);
+    list.innerHTML = active.map((g) => `<li><code>${escape(g.symbol || '?')}</code> <small>${escape(g.name || '')}</small>
+      <a href="/?ca=${escape(g.token)}">${escape(short(g.token))}</a>
+      <span class="badge ${g.copyCount ? 'wait' : 'ok'}">${g.copyCount ? `${g.copyCount} cop${g.copyCount > 1 ? 'ies' : 'y'} in ${s.windowHours}h` : 'No copies'}</span>
+      <small>until ${escape(day(g.expiresAt))}</small></li>`).join('') || '<li class="hint">No guarded tokens yet. Be the first.</li>';
+    meta.textContent = `${active.length} active guard${active.length === 1 ? '' : 's'} · updated ${ago(s.generatedAt) || 'recently'} · block ${s.block.toLocaleString('en-US')}`;
+  } catch {
+    list.innerHTML = '<li class="hint">Guard list unavailable right now.</li>';
+  }
+}
+
+async function guardStatus(token: string) {
+  const cell = el('guardStatus');
+  try {
+    const s = await loadGuardsJson();
+    const g = s.guards.find((x) => x.token.toLowerCase() === token.toLowerCase());
+    if (!cell.isConnected) return;
+    if (!g) { cell.innerHTML = '<span class="hint">Not guarded</span> <a href="#guard">How</a>'; return; }
+    const copies = g.copies.map((c) => `<a href="/?ca=${escape(c.token)}">${escape(c.symbol || short(c.token))}</a>`).join(', ');
+    cell.innerHTML = g.active
+      ? `<span class="badge ok">Guarded until ${escape(day(g.expiresAt))}</span> <small>${escape(tokenAmount(g.burnedRaw, 0))} SNTL burned by the deployer · <a href="https://robinhoodchain.blockscout.com/tx/${escape(g.lastTx)}" target="_blank" rel="noopener noreferrer">burn tx</a></small>${g.copyCount ? `<br><small>${escape(g.copyCount)} cop${g.copyCount > 1 ? 'ies' : 'y'} in ${escape(s.windowHours)}h: ${copies}</small>` : '<br><small>No copies in the last 24h</small>'}`
+      : `<span class="badge">Expired ${escape(day(g.expiresAt))}</span>`;
+  } catch {
+    if (cell.isConnected) cell.innerHTML = '<span class="hint">Unavailable right now</span>';
+  }
+}
+
+el('guardForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const out = el('guardHow');
+  const token = value('guardToken');
+  let data: string;
+  try { data = guardCalldata(token, 1_000_000n); } catch { show(out, '<p class="error">Enter a Pons token address (0x + 40 hex). It cannot be the SNTL address.</p>'); return; }
+  show(out, '<p class="hint">Reading the Pons factory record…</p>');
+  try {
+    const d = await api('token', token);
+    if (value('guardToken') !== token) return;
+    if (!d.pons) { show(out, '<p class="error">This address has no Pons v2 launch record, so a burn for it would not count. Nothing to send.</p>'); return; }
+    show(out, `<p>Send this from the deployer <a href="https://robinhoodchain.blockscout.com/address/${escape(d.pons.deployer)}" target="_blank" rel="noopener noreferrer"><code>${escape(short(d.pons.deployer))}</code></a> of <b>${escape(d.symbol || 'this token')}</b>. From any other wallet the burn is lost and does not count.</p>
+      <dl class="kv">${row('To', '<code>SNTL 0x2da80b9D…CbD0</code>')}${row('Value', '0 ETH')}${row('Burns', '1,000,000 SNTL')}</dl>
+      <div class="cmd"><code id="guardData">${escape(data)}</code><button class="btn small" id="copyGuardData" type="button">Copy data</button></div>
+      <p class="hint">Paste it as the hex data of a transaction to the SNTL contract (wallets call this "custom data" or "hex data"). It calls the token's own public <code>burn</code>, with your token address added at the end. No approval, no other contract. The guard shows up here within about 30 minutes.</p>`);
+    el('copyGuardData').addEventListener('click', () => copyText(el<HTMLButtonElement>('copyGuardData'), data, el('guardData')));
+  } catch (err) {
+    show(out, `<p class="error">Factory read unavailable: ${escape((err as Error).message)}</p>`);
+  }
+});
+
 // Live PR status from GitHub via the API (edge-cached). Falls back to the saved list on any error.
 async function loadContributions() {
   const meta = el('contribMeta');
@@ -917,6 +992,7 @@ void loadHookUsage();
 void loadToken();
 void loadContributions();
 void loadLaunches();
+void loadGuards();
 void loadShiplog();
 // Share links: sentinelhood.com/?ca=0x... opens the Inspector on that address.
 const sharedCa = new URLSearchParams(location.search).get('ca');
