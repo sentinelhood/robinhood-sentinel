@@ -1,7 +1,7 @@
 {
   "name": "Sentinel Pack",
-  "version": "1.2.0",
-  "description": "Keyless Robinhood Chain (4663) monitoring for Aeon: address diffs, real usage of Aeon's v4 hooks, and lookalike alerts for new Pons launches. Read-only, never signs.",
+  "version": "1.3.0",
+  "description": "Keyless Robinhood Chain (4663) monitoring for Aeon: address diffs, real usage of Aeon's v4 hooks, lookalike alerts for new Pons launches, and one-shot Pons token checks. Read-only, never signs.",
   "author": "sentinelhood",
   "license": "MIT",
   "homepage": "https://sentinelhood.com",
@@ -32,6 +32,16 @@
       "description": "Alert when a new Pons v2 launch on Robinhood Chain copies your token's ticker or name, plus daily launch volume, repeated tickers and busiest deployers - keyless, read-only",
       "category": "crypto",
       "schedule": "*/30 * * * *",
+      "default_enabled": false,
+      "secrets_required": [],
+      "capabilities": ["read_only", "sends_notifications"]
+    },
+    {
+      "slug": "pons-token-check",
+      "path": "skills/pons-token-check",
+      "description": "One-shot check of any Robinhood Chain token: Pons v2 launch record, real trading cost, phase, the deployer's full launch history and holdings - keyless, read-only, block-stamped",
+      "category": "crypto",
+      "schedule": "workflow_dispatch",
       "default_enabled": false,
       "secrets_required": [],
       "capabilities": ["read_only", "sends_notifications"]
