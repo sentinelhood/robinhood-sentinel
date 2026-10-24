@@ -6,11 +6,21 @@
   "Sentinel"
  ],
  "windowHours": 24,
- "block": 95082628,
- "generatedAt": "2026-10-22T11:38:37+00:00",
- "launches": 1689,
- "sharedTickerLaunches": 798,
- "copies": [],
- "copyCount": 0,
+ "block": 96781892,
+ "generatedAt": "2026-10-24T13:00:10+00:00",
+ "launches": 1399,
+ "sharedTickerLaunches": 625,
+ "copies": [
+  {
+   "token": "0x8c64217e5953244936f81eb09e9c586c66a25785",
+   "deployer": "0x9fe96a0891a87bdbb3b0f400cc580263e31e1d8d",
+   "block": 96779012,
+   "symbol": "SENTINEL",
+   "name": "SENTINEL AI",
+   "matched": "Sentinel",
+   "field": "symbol"
+  }
+ ],
+ "copyCount": 1,
  "source": "skills/pons-launch-watch/pons_launch_watch.py via rpc.mainnet.chain.robinhood.com"
 }
