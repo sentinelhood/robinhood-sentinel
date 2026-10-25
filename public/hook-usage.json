@@ -1,6 +1,6 @@
 {
  "chainId": 4663,
- "block": 95079796,
+ "block": 97820820,
  "windowDays": 7.0,
  "hooks": [
   {
@@ -8,10 +8,10 @@
    "address": "0x7566a3bfbe88c06bc5f33fea927f461e8279d0c4",
    "stage": "template",
    "flagsMatch": true,
-   "pools": 53,
-   "activePools": 1,
-   "swaps": 46,
-   "uniqueSenders": 5
+   "pools": 54,
+   "activePools": 5,
+   "swaps": 126,
+   "uniqueSenders": 13
   },
   {
    "hook": "NoOp",
@@ -127,9 +127,9 @@
  "totals": {
   "hooks": 12,
   "hooksWithPools": 2,
-  "pools": 56,
-  "swaps": 46
+  "pools": 57,
+  "swaps": 126
  },
- "generatedAt": "2026-10-22T11:33:30+00:00",
+ "generatedAt": "2026-10-25T19:16:27+00:00",
  "source": "skills/hook-usage/hook_usage.py via rpc.mainnet.chain.robinhood.com"
 }
