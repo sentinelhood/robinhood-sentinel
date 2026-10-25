@@ -3,16 +3,22 @@
   "token": "0x2da80b9D1bc1B323693C80C76eb4a321ec08CbD0",
   "decimals": 18,
   "fromBlock": 93500000,
-  "block": 96937058,
-  "blockHash": "0x74ed18bc6d51c10408b703173b41c3dbcf18494437979422e96a0719eb5aa075",
-  "timestamp": "2026-10-24T17:30:06+00:00",
-  "generatedAt": "2026-10-24T17:30:12.355677+00:00",
+  "block": 97365849,
+  "blockHash": "0x8b7c71d47d63fd71877dacfa130796d67ba4aedf895264e7759671111f00accb",
+  "timestamp": "2026-10-25T06:00:02+00:00",
+  "generatedAt": "2026-10-25T06:00:08.498998+00:00",
   "mintedRaw": "1000000000000000000000000000",
-  "burnedRaw": "61432837629426003227702759",
-  "remainingRaw": "938567162370573996772297241",
+  "burnedRaw": "62021905956891191024809601",
+  "remainingRaw": "937978094043108808975190399",
   "mintEventCount": 1,
-  "burnEventCount": 47,
+  "burnEventCount": 48,
   "latestBurns": [
+    {
+      "tx": "0x4f8ae9b13ea14acc8dc7edd98014ad5709397ef2be7cb70ec33b9dc211a48fb0",
+      "block": 97362450,
+      "logIndex": 0,
+      "amountRaw": "589068327465187797106842"
+    },
     {
       "tx": "0x0c9610785ad58ab9983ca1a72c771778aea20f3de05ca1e1608e95c5eff4560d",
       "block": 96934415,
@@ -36,12 +42,6 @@
       "block": 96000206,
       "logIndex": 6,
       "amountRaw": "484141052947466806129142"
-    },
-    {
-      "tx": "0xb2e556f1f57ce7c5b4bce5163e26fc2bacf6e73b48f53dc2c7d779bd6c13e272",
-      "block": 95952252,
-      "logIndex": 6,
-      "amountRaw": "858716105688260316788911"
     }
   ]
 }
