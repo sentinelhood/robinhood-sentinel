@@ -1,5 +1,6 @@
 import './app.css';
 import { validateBurn, validateCopies, validateGuards, guardCalldata, tokenAmount, burnPercent } from './burn';
+import { validateMovers, quoteAmount } from './movers';
 
 type Watch = { address: string; label: string };
 
@@ -59,7 +60,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
 <header class="top">
   <a class="brand" href="#" aria-label="Sentinel home">${mark}<span><strong>SENTINEL</strong><small>ROBINHOOD CHAIN · 4663</small></span></a>
   <nav aria-label="Sections" id="nav">
-    <a href="#inspect" data-section>Inspect</a><a href="#watch" data-section>Watchlist</a><a href="#aeon" data-section>Aeon</a><a href="#hooks" data-section>Hooks</a><a href="#launches" data-section>Launches</a><a href="#guard" data-section>Guard</a><a href="#contrib" data-section>Contributions</a><a href="#shiplog" data-section>Log</a>
+    <a href="#inspect" data-section>Inspect</a><a href="#watch" data-section>Watchlist</a><a href="#aeon" data-section>Aeon</a><a href="#hooks" data-section>Hooks</a><a href="#launches" data-section>Launches</a><a href="#movers" data-section>Movers</a><a href="#guard" data-section>Guard</a><a href="#contrib" data-section>Contributions</a><a href="#shiplog" data-section>Log</a>
     <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">X ${arrow}</a>
     <span class="nav-ind" aria-hidden="true"></span>
   </nav>
@@ -90,8 +91,9 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
           <li><a href="#inspect"><b>Inspector</b><span>Read any address or transaction, with the block it was read at.</span></a></li>
           <li><a href="#watch"><b>Watchlist</b><span>Quiet balance and nonce checks, stored only in this browser.</span></a></li>
           <li><a href="#launches"><b>Pons launches</b><span>New tokens from the factory, with tax, phase and repeated tickers.</span></a></li>
+          <li><a href="#movers"><b>Curve movers</b><span>The busiest bonding curves, before any DEX lists them.</span></a></li>
           <li><a href="#guard"><b>Sentinel Guard</b><span>Burn $SNTL from a deployer to list copies of that ticker.</span></a></li>
-          <li><a href="#aeon"><b>Sentinel Pack</b><span>Three keyless Aeon skills for Robinhood Chain.</span></a></li>
+          <li><a href="#aeon"><b>Sentinel Pack</b><span>Seven keyless Aeon skills for Robinhood Chain and Pons.</span></a></li>
         </ul>
       </nav>
     </div>
@@ -158,6 +160,24 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
     <ul class="launch-list" id="launchList" aria-live="polite"><li class="hint">Reading the factory…</li></ul>
     <p class="hint" id="launchMeta"></p>
     <p class="links"><a href="/skills/pons-launch-watch.md" target="_blank" rel="noopener">Get alerted when your ticker is copied: Aeon skill ${arrow}</a></p>
+  </section>
+
+  <section class="card movers reveal" id="movers" aria-labelledby="moversTitle">
+    <div class="launch-head">
+      <div>
+        <span class="tag gold">PONS V2 · BONDING CURVES</span>
+        <h2 id="moversTitle">Busiest curves, before any DEX lists them.</h2>
+        <p class="muted">A Pons token trades on its own bonding curve until the curve fills, so it has no DEX pair yet. These are the curves with the most trades in the window, read from every curve Buy and Sell on chain. Each curve is checked against the Pons factory first.</p>
+      </div>
+      <dl class="stats hook-stats" id="moverStats">
+        <div><dt>Curve trades</dt><dd>…</dd></div>
+        <div><dt>Curves</dt><dd>…</dd></div>
+      </dl>
+    </div>
+    <ul class="launch-list mover-list" id="moverList" aria-live="polite"><li class="hint">Loading the latest snapshot…</li></ul>
+    <p class="hint" id="moverMeta"></p>
+    <p class="hint">Activity is a fact, not a verdict. Many trades can come from a few wallets, and tickers on Pons are not unique: check the address.</p>
+    <p class="links"><a href="/movers.json" target="_blank" rel="noopener">Raw JSON ${arrow}</a><a href="/skills/pons-curve-movers.md" target="_blank" rel="noopener">Run it in Aeon: SKILL.md ${arrow}</a></p>
   </section>
 
   <section class="card guard reveal" id="guard" aria-labelledby="guardTitle">
@@ -679,7 +699,7 @@ addEventListener('keydown', (e) => { if (e.key === 'Escape') { setPop(false); pi
 // The position is saved relative to the nearest section ("12px into #watch"), not as a
 // raw scrollY. Web fonts and live data change heights after load, so a raw pixel value
 // lands in the wrong place; an anchor + offset still points at the same content.
-const ANCHORS = ['.hero', '#inspect', '#watch', '#launches', '#guard', '#aeon', '#hooks', '#contrib', '#shiplog', '.foot'];
+const ANCHORS = ['.hero', '#inspect', '#watch', '#launches', '#movers', '#guard', '#aeon', '#hooks', '#contrib', '#shiplog', '.foot'];
 const SCROLL_KEY = 'sentinel.scroll.v1';
 type Saved = { path: string; anchor: string; offset: number };
 
@@ -976,6 +996,45 @@ el('launchList').addEventListener('click', (e) => {
 });
 el('launchRefresh').addEventListener('click', () => void loadLaunches());
 
+// ---------- curve movers (public/movers.json from scripts/snapshot-movers.py) ----------
+async function loadMovers() {
+  const list = el('moverList'), meta = el('moverMeta');
+  try {
+    const response = await fetch('/movers.json', { cache: 'no-store', signal: AbortSignal.timeout(10000) });
+    if (!response.ok) throw new Error('unavailable');
+    const s = validateMovers(await response.json());
+    const dd = el('moverStats').querySelectorAll('dd');
+    dd[0].textContent = `${s.trades.toLocaleString('en-US')} / ${s.windowHours}h`;
+    dd[1].textContent = s.curves.toLocaleString('en-US');
+    const seen = new Map<string, number>();
+    for (const m of s.movers) if (m.symbol) seen.set(m.symbol.toUpperCase(), (seen.get(m.symbol.toUpperCase()) || 0) + 1);
+    list.innerHTML = s.movers.map((m, i) => {
+      const dup = m.symbol && (seen.get(m.symbol.toUpperCase()) || 0) > 1;
+      const unit = m.pairSymbol || '?';
+      const known = m.pairDecimals !== null;
+      const vol = known ? quoteAmount(m.volumeRaw, m.pairDecimals as number) : '?';
+      const net = known ? quoteAmount(m.netRaw, m.pairDecimals as number) : '?';
+      const stage = m.phase === 0
+        ? (m.progress === null ? '<span>progress unknown</span>' : `<span class="prog" role="img" aria-label="${m.progress}% to graduation"><i style="--w:${Math.max(1, m.progress)}%"></i></span><span><b>${escape(m.progress)}%</b> to graduation</span>`)
+        : `<span>now <b>${escape(PHASE_SHORT[m.phase] || '?')}</b></span>`;
+      return `<li style="--d:${i}">
+        <div class="who"><strong>${escape(m.symbol || '?')}</strong>${dup ? '<span class="badge wait">Same ticker</span>' : ''}<small>${escape(m.name || 'Unnamed')}</small></div>
+        <span class="facts"><span><b>${m.buys}</b> buys / <b>${m.sells}</b> sells</span><span><b>${m.traders}</b> traders</span><span><b>${escape(vol)}</b> ${escape(unit)} traded · net ${net.startsWith('-') ? '' : '+'}${escape(net)}</span></span>
+        <span class="facts stage">${stage}</span>
+        <span class="meta"><code title="${escape(m.token)}">${escape(short(m.token))}</code></span>
+        <button class="btn small" data-check-ca="${escape(m.token)}">Check</button>
+      </li>`;
+    }).join('') || '<li class="empty">No curve trades in the window.</li>';
+    meta.textContent = `Read at block ${s.block.toLocaleString('en-US')} · ${ago(s.generatedAt) || 'recently'}${s.skipped ? ` · ${s.skipped} look-alike emitter(s) skipped` : ''}. Ranked by trades, then distinct traders.`;
+  } catch {
+    list.innerHTML = '<li class="error">Snapshot unavailable. Run the pons-curve-movers skill to read it yourself.</li>';
+  }
+}
+el('moverList').addEventListener('click', (e) => {
+  const ca = (e.target as HTMLElement).closest<HTMLElement>('[data-check-ca]')?.dataset.checkCa;
+  if (ca && ADDRESS.test(ca)) inspectAddress(ca);
+});
+
 // ---------- shipping log (this repo's commits) ----------
 type Ship = { sha: string; url: string; title: string; type: string; date: string };
 const SHIP_TYPE: Record<string, string> = { feat: 'Feature', fix: 'Fix', ui: 'Design', site: 'Site', token: 'Token', docs: 'Docs', skill: 'Skill' };
@@ -1002,6 +1061,7 @@ void loadHookUsage();
 void loadToken();
 void loadContributions();
 void loadLaunches();
+void loadMovers();
 void loadGuards();
 void loadShiplog();
 // Share links: sentinelhood.com/?ca=0x... opens the Inspector on that address.
