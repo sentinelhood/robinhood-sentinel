@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && mkdir -p dist/skills && cp skills/robinhood-chain-monitor/SKILL.md dist/skills/robinhood-chain-monitor.md && cp skills/hook-usage/SKILL.md dist/skills/hook-usage.md && cp skills/pons-launch-watch/SKILL.md dist/skills/pons-launch-watch.md && cp skills/pons-token-check/SKILL.md dist/skills/pons-token-check.md && cp skills/pons-deployer-watch/SKILL.md dist/skills/pons-deployer-watch.md && cp skills/pons-graduation-watch/SKILL.md dist/skills/pons-graduation-watch.md",
+    "build": "tsc && vite build && mkdir -p dist/skills && cp skills/robinhood-chain-monitor/SKILL.md dist/skills/robinhood-chain-monitor.md && cp skills/hook-usage/SKILL.md dist/skills/hook-usage.md && cp skills/pons-launch-watch/SKILL.md dist/skills/pons-launch-watch.md && cp skills/pons-token-check/SKILL.md dist/skills/pons-token-check.md && cp skills/pons-deployer-watch/SKILL.md dist/skills/pons-deployer-watch.md && cp skills/pons-graduation-watch/SKILL.md dist/skills/pons-graduation-watch.md && cp skills/pons-curve-movers/SKILL.md dist/skills/pons-curve-movers.md",
     "preview": "vite preview",
     "test": "node --experimental-strip-types --test tests/*.test.js"
   },
