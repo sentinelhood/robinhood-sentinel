@@ -27,6 +27,9 @@ test('movers: reject wrong chain, bad shapes, unsafe text and impossible numbers
   }
   assert.throws(() => validateMovers({...snap, movers: [mover, mover]}), undefined, 'duplicate token');
   assert.throws(() => validateMovers({...snap, movers: [{...mover, buys: 1, sells: 0, traders: 1}, mover]}), undefined, 'not ranked');
+  const fewTraders = {...mover, token: '0x' + 'e'.repeat(40), buys: 1076, sells: 0, traders: 1};
+  assert.throws(() => validateMovers({...snap, movers: [fewTraders, mover]}), undefined, 'one-wallet spam above more traders');
+  assert.throws(() => validateMovers({...snap, movers: [{...mover, buys: 10}, {...mover, token: fewTraders.token}]}), undefined, 'tie on traders, fewer trades first');
   assert.throws(() => validateMovers(null));
 });
 

@@ -167,7 +167,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
       <div>
         <span class="tag gold">PONS V2 · BONDING CURVES</span>
         <h2 id="moversTitle">Busiest curves, before any DEX lists them.</h2>
-        <p class="muted">A Pons token trades on its own bonding curve until the curve fills, so it has no DEX pair yet. These are the curves with the most trades in the window, read from every curve Buy and Sell on chain. Each curve is checked against the Pons factory first.</p>
+        <p class="muted">A Pons token trades on its own bonding curve until the curve fills, so it has no DEX pair yet. These are the curves with the most distinct traders in the window, read from every curve Buy and Sell on chain. Each curve is checked against the Pons factory first.</p>
       </div>
       <dl class="stats hook-stats" id="moverStats">
         <div><dt>Curve trades</dt><dd>…</dd></div>
@@ -1025,7 +1025,7 @@ async function loadMovers() {
         <button class="btn small" data-check-ca="${escape(m.token)}">Check</button>
       </li>`;
     }).join('') || '<li class="empty">No curve trades in the window.</li>';
-    meta.textContent = `Read at block ${s.block.toLocaleString('en-US')} · ${ago(s.generatedAt) || 'recently'}${s.skipped ? ` · ${s.skipped} look-alike emitter(s) skipped` : ''}. Ranked by trades, then distinct traders.`;
+    meta.textContent = `Read at block ${s.block.toLocaleString('en-US')} · ${ago(s.generatedAt) || 'recently'}${s.skipped ? ` · ${s.skipped} look-alike emitter(s) skipped` : ''}. Ranked by distinct traders, then trades.`;
   } catch {
     list.innerHTML = '<li class="error">Snapshot unavailable. Run the pons-curve-movers skill to read it yourself.</li>';
   }

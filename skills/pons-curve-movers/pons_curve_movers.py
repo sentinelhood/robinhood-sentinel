@@ -135,8 +135,10 @@ def aggregate(trades):
 
 
 def rank(per):
-    """Busiest first: trades, then distinct traders. Both are unit-free, so curves on different pairs compare fairly."""
-    return sorted(per, key=lambda c: (-(per[c]['buys'] + per[c]['sells']), -len(per[c]['traders']), c))
+    """Most distinct traders first, then trades. Both are unit-free, so curves on different pairs compare fairly.
+
+    Traders lead because one wallet can send thousands of dust buys; seen live on 2026-10-27."""
+    return sorted(per, key=lambda c: (-len(per[c]['traders']), -(per[c]['buys'] + per[c]['sells']), c))
 
 
 def decode_record(hexdata):

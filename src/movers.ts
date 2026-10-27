@@ -22,10 +22,12 @@ export function validateMovers(value: unknown): MoversSnapshot {
     throw new Error('Invalid movers snapshot');
   }
   const seen = new Set<string>();
-  let previous = Infinity;
+  let previous = [Infinity, Infinity];
   for (const m of s.movers) {
     const trades = m && integer(m.buys) && integer(m.sells) ? m.buys + m.sells : -1;
-    if (!m || !address(m.token) || seen.has(m.token) || !text(m.symbol) || !text(m.name) || trades < 1 || trades > previous ||
+    // Ranked by distinct traders, then trades (pons-curve-movers rank()).
+    const outOfOrder = m && (m.traders > previous[0] || (m.traders === previous[0] && trades > previous[1]));
+    if (!m || !address(m.token) || seen.has(m.token) || !text(m.symbol) || !text(m.name) || trades < 1 || outOfOrder ||
         !integer(m.traders) || m.traders < 1 || m.traders > trades || !unsigned(m.volumeRaw) || !signed(m.netRaw) ||
         !text(m.pairSymbol) || !(m.pairDecimals === null || (integer(m.pairDecimals) && m.pairDecimals <= 36)) ||
         !integer(m.phase) || m.phase > 3 ||
@@ -34,7 +36,7 @@ export function validateMovers(value: unknown): MoversSnapshot {
       throw new Error('Invalid mover entry');
     }
     seen.add(m.token);
-    previous = trades;
+    previous = [m.traders, trades];
   }
   return s;
 }

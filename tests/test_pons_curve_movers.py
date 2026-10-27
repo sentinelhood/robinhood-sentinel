@@ -106,7 +106,23 @@ class Maths(unittest.TestCase):
         a = per[CURVE]
         self.assertEqual((a['buys'], a['sells'], len(a['traders'])), (2, 1, 2))
         self.assertEqual(per[other]['lastBlock'], 200)
-        self.assertEqual(pcm.rank(per), [CURVE, other])  # 3 trades beats 2
+        self.assertEqual(pcm.rank(per), [CURVE, other])  # 2 traders beats 1
+
+    def test_rank_one_wallet_dust_does_not_lead(self):
+        # Live pattern 2026-10-27: one sender, one 100-wei buy per block, hundreds of times.
+        spam, busy = '0x' + 'e' * 40, '0x' + 'f' * 40
+        dust = trade_log(*REAL[0], curve=spam, trader='0x' + 'd' * 40)
+        ts = [pcm.parse_trade(dust) for _ in range(500)]
+        ts += [pcm.parse_trade(trade_log(*REAL[0], curve=busy, trader=f'0x{i:040x}')) for i in range(1, 31)]
+        per = pcm.aggregate(ts)
+        self.assertEqual(pcm.rank(per), [busy, spam])
+        self.assertEqual((per[spam]['buys'], len(per[spam]['traders'])), (500, 1))
+
+    def test_rank_ties_on_traders_break_by_trades(self):
+        a, b = '0x' + '1' * 40, '0x' + '2' * 40
+        ts = [pcm.parse_trade(trade_log(*REAL[0], curve=a, trader='0x' + 'a' * 40)) for _ in range(2)]
+        ts += [pcm.parse_trade(trade_log(*REAL[0], curve=b, trader='0x' + 'a' * 40)) for _ in range(5)]
+        self.assertEqual(pcm.rank(pcm.aggregate(ts)), [b, a])
 
     def test_amount(self):
         self.assertEqual(pcm.amount(26343100000000000000, 18), '26.3431')
