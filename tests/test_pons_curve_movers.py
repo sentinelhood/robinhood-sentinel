@@ -124,6 +124,24 @@ class Maths(unittest.TestCase):
         ts += [pcm.parse_trade(trade_log(*REAL[0], curve=b, trader='0x' + 'a' * 40)) for _ in range(5)]
         self.assertEqual(pcm.rank(pcm.aggregate(ts)), [b, a])
 
+    def test_concentration(self):
+        # 500 dust buys from one wallet + 30 buys from 30 others: the busiest wallet sent 500/530 trades.
+        spam = '0x' + 'e' * 40
+        ts = [pcm.parse_trade(trade_log(*REAL[0], curve=spam, trader='0x' + 'd' * 40)) for _ in range(500)]
+        ts += [pcm.parse_trade(trade_log(*REAL[0], curve=spam, trader=f'0x{i:040x}')) for i in range(1, 31)]
+        self.assertEqual(pcm.concentration(pcm.aggregate(ts)[spam]), ('0x' + 'd' * 40, 500, 94.3))
+        even = [pcm.parse_trade(trade_log(*REAL[0], trader=f'0x{i:040x}')) for i in range(1, 5)]
+        self.assertEqual(pcm.concentration(pcm.aggregate(even)[CURVE])[1:], (1, 25.0))
+        self.assertEqual(pcm.concentration({'buys': 0, 'sells': 0, 'byTrader': pcm.Counter()}), (None, 0, None))
+
+    def test_recipient_kind(self):
+        self.assertEqual(pcm.recipient_kind('0x'), 'wallet')
+        self.assertEqual(pcm.recipient_kind('0xef0100' + 'ab' * 20), 'wallet')     # EIP-7702 delegated EOA
+        self.assertEqual(pcm.recipient_kind('0x6080604052' + '00' * 100), 'contract')  # router bytecode
+        self.assertEqual(pcm.recipient_kind('0xef0100' + 'ab' * 21), 'contract')   # not exactly a delegation
+        for bad in (None, '', '0xzz', '0x123', 42):
+            self.assertIsNone(pcm.recipient_kind(bad))
+
     def test_amount(self):
         self.assertEqual(pcm.amount(26343100000000000000, 18), '26.3431')
         self.assertEqual(pcm.amount(8090000005, 6), '8,090')
@@ -133,13 +151,16 @@ class Maths(unittest.TestCase):
 class Markdown(unittest.TestCase):
     def test_facts_only(self):
         movers = [{'token': TOKEN, 'symbol': 'CHARLIE', 'name': 'Charlie', 'buys': 351, 'sells': 6, 'traders': 110,
-                   'volume': 706800000000000000, 'net': 679500000000000000, 'pairSymbol': 'ETH', 'pairDecimals': 18, 'phase': 0, 'progress': 63.8},
+                   'volume': 706800000000000000, 'net': 679500000000000000, 'pairSymbol': 'ETH', 'pairDecimals': 18, 'phase': 0, 'progress': 63.8,
+                   'topTraderTrades': 12, 'topRecipientKind': 'wallet', 'topTraderShare': 3.4},
                   {'token': '0x' + 'd' * 40, 'symbol': 'REACHY', 'name': 'Reachy Mini', 'buys': 543, 'sells': 244, 'traders': 186,
                    'volume': 216 * E18, 'net': -41 * E18, 'pairSymbol': 'NVDA', 'pairDecimals': 18, 'phase': 2,
-                   'phaseLabel': pcm.PHASE[2], 'progress': None}]
+                   'phaseLabel': pcm.PHASE[2], 'progress': None, 'topTraderTrades': 532, 'topRecipientKind': 'contract', 'topTraderShare': None}]
         md = pcm.to_markdown({'block': 98367569, 'windowHours': 6, 'trades': 9627, 'curves': 540, 'skipped': 1, 'movers': movers})
         self.assertTrue(md.startswith('Pons v2 curve movers · last 6h · block 98,367,569'))
-        self.assertIn('1. CHARLIE (Charlie) · 351 buys / 6 sells · 110 traders · 0.7068 ETH traded, net +0.6795 ETH · 63.8% to graduation', md)
+        self.assertIn('1. CHARLIE (Charlie) · 351 buys / 6 sells · 110 traders (busiest wallet 3.4% of trades) · 0.7068 ETH traded, net +0.6795 ETH · 63.8% to graduation', md)
+        self.assertIn('186 traders (busiest recipient is a router contract) · 216 NVDA traded', md)
+        self.assertNotIn('busiest wallet 41', md)
         self.assertIn('net -41 NVDA · now: Uniswap v4 pool, liquidity locked', md)
         self.assertIn('1 busy emitter(s) skipped', md)
         for word_ in ('scam', 'rug', 'honeypot', 'buy now', 'moon', 'gem', 'ape'):
@@ -149,6 +170,8 @@ class Markdown(unittest.TestCase):
 
 
 class Main(unittest.TestCase):
+    code_for = staticmethod(lambda addr: '0x')
+
     def test_bad_input_exits_3_without_network(self):
         with mock.patch.object(pcm, 'post', side_effect=AssertionError('no network expected')):
             for args in (['--hours', '0'], ['--hours', '25'], ['--top', '0'], ['--top', '26']):
@@ -167,6 +190,8 @@ class Main(unittest.TestCase):
         raised = 2679424940719175500
 
         def fake_post(body):
+            if isinstance(body, list) and body and body[0]['method'] == 'eth_getCode':
+                return [{'id': b['id'], 'result': self.code_for(b['params'][0])} for b in body]
             if isinstance(body, list):
                 out = []
                 for b in body:
@@ -209,8 +234,54 @@ class Main(unittest.TestCase):
         self.assertEqual([m['curve'] for m in r['movers']], [CURVE])
         m = r['movers'][0]
         self.assertEqual((m['symbol'], m['buys'], m['sells'], m['traders'], m['pairSymbol']), ('CHARLIE', 2, 1, 1, 'ETH'))
+        self.assertEqual((m['topTraderTrades'], m['topRecipientKind'], m['topTraderShare']), (3, 'wallet', 100.0))  # all 3 trades, one wallet
         self.assertAlmostEqual(m['progress'], 63.8, places=1)
 
+    def test_end_to_end_router_recipient_gets_no_share(self):
+        """The busiest recipient has router bytecode: labelled 'contract', and no share is published."""
+        head = 1_000_000
+
+        def fake_post(body):
+            if isinstance(body, list) and body and body[0]['method'] == 'eth_getCode':
+                return [{'id': b['id'], 'result': '0x6080604052' + '00' * 50} for b in body]
+            if isinstance(body, list):
+                out = []
+                for b in body:
+                    to, data = b['params'][0]['to'], b['params'][0]['data']
+                    if data == pcm.TOKEN:
+                        res = '0x' + '0' * 24 + TOKEN[2:]
+                    elif to == pcm.FACTORY:
+                        res = record()
+                    elif data == pcm.RESERVES:
+                        res = reserves(10 ** 18)
+                    elif data == pcm.SUPPLY:
+                        res = '0x' + word(SUPPLY)
+                    else:
+                        res = abi_string('RTR')
+                    out.append({'id': b['id'], 'result': res})
+                return out
+            m = body['method']
+            if m == 'eth_chainId':
+                return {'result': hex(4663)}
+            if m == 'eth_blockNumber':
+                return {'result': hex(head)}
+            f = body['params'][0]
+            lo, hi = int(f['fromBlock'], 16), int(f['toBlock'], 16)
+            if f['topics'] == [pcm.BUY] and lo <= head - 5 <= hi:
+                router = '0x' + '7' * 40
+                return {'result': [trade_log(*REAL[0], block=head - 5, trader=router) for _ in range(6)] +
+                        [trade_log(*REAL[0], block=head - 5, trader=f'0x{i:040x}') for i in range(1, 4)]}
+            return {'result': []}
+
+        out = []
+        with mock.patch.object(pcm, 'post', side_effect=fake_post), mock.patch('builtins.print', side_effect=lambda s, **k: out.append(s)):
+            self.assertEqual(pcm.main(['--hours', '1', '--json']), 0)
+        r = json.loads(out[0])
+        m = r['movers'][0]
+        self.assertEqual((m['traders'], m['topTraderTrades'], m['topRecipientKind'], m['topTraderShare']), (4, 6, 'contract', None))
+        md = pcm.to_markdown(r)
+        self.assertIn('4 traders (busiest recipient is a router contract)', md)
+        self.assertNotIn('busiest wallet', md)
 
 if __name__ == '__main__':
     unittest.main()

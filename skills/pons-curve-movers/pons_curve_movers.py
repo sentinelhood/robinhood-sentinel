@@ -14,7 +14,7 @@ Usage:
 Exit codes: 0 ok, 2 RPC unreachable or wrong chain (PONS_MOVERS_RPC_DOWN), 3 bad input (PONS_MOVERS_BAD_INPUT).
 """
 import argparse, json, re, sys, time, unicodedata, urllib.error, urllib.request
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 RPC = 'https://rpc.mainnet.chain.robinhood.com'
 CHAIN_ID = 4663
@@ -123,11 +123,12 @@ def parse_trade(log):
 
 
 def aggregate(trades):
-    per = defaultdict(lambda: {'buys': 0, 'sells': 0, 'traders': set(), 'volume': 0, 'net': 0, 'lastBlock': 0})
+    per = defaultdict(lambda: {'buys': 0, 'sells': 0, 'traders': set(), 'byTrader': Counter(), 'volume': 0, 'net': 0, 'lastBlock': 0})
     for t in trades:
         a = per[t['curve']]
         a['buys' if t['buy'] else 'sells'] += 1
         a['traders'].add(t['trader'])
+        a['byTrader'][t['trader']] += 1
         a['volume'] += t['volume']
         a['net'] += t['net']
         a['lastBlock'] = max(a['lastBlock'], t['block'])
@@ -139,6 +140,26 @@ def rank(per):
 
     Traders lead because one wallet can send thousands of dust buys; seen live on 2026-10-27."""
     return sorted(per, key=lambda c: (-len(per[c]['traders']), -(per[c]['buys'] + per[c]['sells']), c))
+
+
+def concentration(agg):
+    """The busiest recipient address on the curve, its trade count, and that share of all trades, in percent."""
+    total = agg['buys'] + agg['sells']
+    if not agg['byTrader']:
+        return None, 0, None
+    who, top = max(agg['byTrader'].items(), key=lambda kv: (kv[1], kv[0]))
+    return who, top, (round(100 * top / total, 1) if total else None)
+
+
+def recipient_kind(code):
+    """'wallet' for no code or an EIP-7702 delegation (0xef0100 + address), 'contract' for real bytecode, None if unknown.
+
+    Routers and aggregators receive curve trades for many people, so a contract here is not one person."""
+    if not isinstance(code, str) or not re.fullmatch(r'0x(?:[0-9a-fA-F]{2})*', code):
+        return None
+    if code == '0x' or re.fullmatch(r'0xef0100[0-9a-fA-F]{40}', code):
+        return 'wallet'
+    return 'contract'
 
 
 def decode_record(hexdata):
@@ -211,8 +232,14 @@ def to_markdown(r):
             prog = f"{m['progress']:g}% to graduation" if m.get('progress') is not None else 'progress unknown'
         else:
             prog = f"now: {m.get('phaseLabel') or 'phase ' + str(m.get('phase'))}"
+        if m.get('topRecipientKind') == 'wallet' and m.get('topTraderShare') is not None:
+            top = f" (busiest wallet {m['topTraderShare']:g}% of trades)"
+        elif m.get('topRecipientKind') == 'contract':
+            top = ' (busiest recipient is a router contract)'
+        else:
+            top = ''
         lines.append(f"{i}. {m.get('symbol') or '?'} ({m.get('name') or 'unnamed'}) · {m['buys']} buys / {m['sells']} sells · "
-                     f"{m['traders']} traders · {flow} · {prog} · {EXPLORER}/token/{m['token']}")
+                     f"{m['traders']} traders{top} · {flow} · {prog} · {EXPLORER}/token/{m['token']}")
     lines.append('')
     lines.append('Activity on a curve is a fact, not a verdict. Many trades can come from a few wallets.')
     return '\n'.join(lines)
@@ -251,6 +278,11 @@ def main(argv=None):
             if t and r and r['curve'] == c:
                 valid.append({'curve': c, 'token': t, **r})
         movers = valid[:a.top]
+        tops = [concentration(per[m['curve']]) for m in movers]
+        codes = post([{'jsonrpc': '2.0', 'id': i, 'method': 'eth_getCode', 'params': [t[0], block]} for i, t in enumerate(tops)]) if movers else []
+        if not isinstance(codes, list) or len(codes) != len(movers):
+            raise RpcError('batch refused')
+        kinds = {r['id']: recipient_kind(r.get('result')) for r in codes}
         pairs = sorted({m['pairToken'] for m in movers if m['pairToken'] != ZERO})
         meta = calls([(m['curve'], RESERVES) for m in movers] + [(m['token'], s) for m in movers for s in (SUPPLY, NAME, SYMBOL)] +
                      [(p, s) for p in pairs for s in (SYMBOL, DECIMALS)], block) if movers else []
@@ -271,6 +303,8 @@ def main(argv=None):
         ph = m['phase']
         out.append({'token': m['token'], 'curve': m['curve'], 'deployer': m['deployer'], 'name': name, 'symbol': sym,
                     'buys': agg['buys'], 'sells': agg['sells'], 'traders': len(agg['traders']),
+                    'topTraderTrades': tops[i][1], 'topRecipientKind': kinds.get(i),
+                    'topTraderShare': tops[i][2] if kinds.get(i) == 'wallet' else None,
                     'volume': agg['volume'], 'net': agg['net'], 'lastBlock': agg['lastBlock'],
                     'pairToken': m['pairToken'], 'pairSymbol': ps, 'pairDecimals': pd,
                     'phase': ph, 'phaseLabel': PHASE[ph] if 0 <= ph < len(PHASE) else None,

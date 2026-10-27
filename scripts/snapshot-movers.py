@@ -36,6 +36,8 @@ def main():
         movers.append({
             'token': m['token'], 'symbol': text(m.get('symbol')), 'name': text(m.get('name')),
             'buys': int(m['buys']), 'sells': int(m['sells']), 'traders': int(m['traders']),
+            'topTraderTrades': int(m['topTraderTrades']), 'topRecipientKind': m.get('topRecipientKind'),
+            'topTraderShare': m['topTraderShare'] if m.get('topRecipientKind') == 'wallet' else None,
             'volumeRaw': str(int(m['volume'])), 'netRaw': str(int(m['net'])),
             'pairSymbol': text(m.get('pairSymbol')), 'pairDecimals': m.get('pairDecimals'),
             'phase': int(m['phase']), 'progress': m.get('progress'),

@@ -1019,13 +1019,15 @@ async function loadMovers() {
         : `<span>now <b>${escape(PHASE_SHORT[m.phase] || '?')}</b></span>`;
       return `<li style="--d:${i}">
         <div class="who"><strong>${escape(m.symbol || '?')}</strong>${dup ? '<span class="badge wait">Same ticker</span>' : ''}<small>${escape(m.name || 'Unnamed')}</small></div>
-        <span class="facts"><span><b>${m.buys}</b> buys / <b>${m.sells}</b> sells</span><span><b>${m.traders}</b> traders</span><span><b>${escape(vol)}</b> ${escape(unit)} traded · net ${net.startsWith('-') ? '' : '+'}${escape(net)}</span></span>
+        <span class="facts"><span><b>${m.buys}</b> buys / <b>${m.sells}</b> sells</span><span><b>${m.traders}</b> traders</span>${m.topRecipientKind === 'wallet' && m.topTraderShare !== null
+          ? `<span class="${m.topTraderShare >= 50 ? 'conc' : ''}" title="${m.topTraderTrades} of ${m.buys + m.sells} trades went to one wallet">busiest wallet <b>${escape(m.topTraderShare)}%</b></span>`
+          : m.topRecipientKind === 'contract' ? `<span title="The address that received the most trades is a contract, usually a router used by many people. No share is shown.">via router contract</span>` : ''}<span><b>${escape(vol)}</b> ${escape(unit)} traded · net ${net.startsWith('-') ? '' : '+'}${escape(net)}</span></span>
         <span class="facts stage">${stage}</span>
         <span class="meta"><code title="${escape(m.token)}">${escape(short(m.token))}</code></span>
         <button class="btn small" data-check-ca="${escape(m.token)}">Check</button>
       </li>`;
     }).join('') || '<li class="empty">No curve trades in the window.</li>';
-    meta.textContent = `Read at block ${s.block.toLocaleString('en-US')} · ${ago(s.generatedAt) || 'recently'}${s.skipped ? ` · ${s.skipped} look-alike emitter(s) skipped` : ''}. Ranked by distinct traders, then trades.`;
+    meta.textContent = `Read at block ${s.block.toLocaleString('en-US')} · ${ago(s.generatedAt) || 'recently'}${s.skipped ? ` · ${s.skipped} look-alike emitter(s) skipped` : ''}. Ranked by distinct traders, then trades. Busiest wallet = share of trades sent to one wallet; shown only when that address is not a contract.`;
   } catch {
     list.innerHTML = '<li class="error">Snapshot unavailable. Run the pons-curve-movers skill to read it yourself.</li>';
   }

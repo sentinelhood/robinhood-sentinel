@@ -44,7 +44,8 @@ The helper `skills/pons-curve-movers/pons_curve_movers.py` uses the Python stand
 ## Reading the output
 
 - **buys / sells** - curve trades in the window.
-- **traders** - distinct recipient addresses. One person can use many wallets, so this is an upper bound on people, not a count of them.
+- **traders** - distinct recipient addresses. This is not a count of people: one person can use many wallets, and a router contract receives trades for many people under one address.
+- **busiest wallet** - the share of the curve's trades sent to its single busiest recipient, shown only when that recipient is a wallet. When it is a contract (usually a router or aggregator used by many people), the line says so and gives no share.
 - **Order** - most distinct traders first, then most trades, so curves priced in different pair tokens compare fairly. Traders come first because one wallet can send thousands of dust buys: on 2026-10-27 a single address sent one 100-wei buy per block to one curve, hundreds of times, which topped a trade-count ranking.
 - **traded / net** - quote moved by trades before fees, and the change in the curve's real quote reserve. A large volume with a net near zero means trades mostly offset each other.
 - **% to graduation** - quote raised so far divided by the threshold the factory records for that curve. Graduated curves show their phase instead.
