@@ -1,7 +1,7 @@
 {
   "name": "Sentinel Pack",
-  "version": "1.6.0",
-  "description": "Keyless Robinhood Chain (4663) monitoring for Aeon: address diffs, real usage of Aeon's v4 hooks, lookalike alerts for new Pons launches, one-shot Pons token checks, alerts when a watched deployer launches again, alerts when a Pons token graduates to a locked Uniswap v4 pool, and the busiest Pons bonding curves that DEX scanners cannot see yet. Read-only, never signs.",
+  "version": "1.7.0",
+  "description": "Keyless Robinhood Chain (4663) monitoring for Aeon: address diffs, real usage of Aeon's v4 hooks, an on-chain check of every address in Aeon's hook registry, lookalike alerts for new Pons launches, one-shot Pons token checks, alerts when a watched deployer launches again, alerts when a Pons token graduates to a locked Uniswap v4 pool, and the busiest Pons bonding curves that DEX scanners cannot see yet. Read-only, never signs.",
   "author": "sentinelhood",
   "license": "MIT",
   "homepage": "https://sentinelhood.com",
@@ -72,6 +72,16 @@
       "description": "The most active Pons v2 bonding curves on Robinhood Chain in the last few hours - buys, sells, distinct traders, volume, net flow and progress toward graduation, for tokens DEX scanners cannot see yet - keyless, read-only",
       "category": "crypto",
       "schedule": "0 */6 * * *",
+      "default_enabled": false,
+      "secrets_required": [],
+      "capabilities": ["read_only", "sends_notifications"]
+    },
+    {
+      "slug": "hook-registry-check",
+      "path": "skills/hook-registry-check",
+      "description": "Check every address in Aeon's public Uniswap v4 hook registry against its chain - code present, flag bits match the address, same functions on every chain - and report only what changed, keyless, read-only",
+      "category": "crypto",
+      "schedule": "0 7 * * *",
       "default_enabled": false,
       "secrets_required": [],
       "capabilities": ["read_only", "sends_notifications"]
