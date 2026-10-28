@@ -42,6 +42,12 @@ test('movers: one-wallet curve must report 100% from that wallet', () => {
   assert.throws(() => validateMovers({...snap, movers: [{...solo, topTraderTrades: 40, topTraderShare: 80}]}));
 });
 
+test('movers: a half-way share rounds up, as the skill now writes it', () => {
+  const half = {...mover, buys: 16, sells: 0, traders: 16, topTraderTrades: 1, topRecipientKind: 'wallet', topTraderShare: 6.3};
+  assert.equal(validateMovers({...snap, movers: [half]}).movers[0].topTraderShare, 6.3);
+  assert.throws(() => validateMovers({...snap, movers: [{...half, topTraderShare: 6.2}]}), undefined, 'half-even 6.2 is not what the skill writes');
+});
+
 test('movers: a contract recipient must not carry a share', () => {
   const router = snap.movers[1];
   assert.equal(validateMovers({...snap, movers: [router]}).movers[0].topTraderShare, null);

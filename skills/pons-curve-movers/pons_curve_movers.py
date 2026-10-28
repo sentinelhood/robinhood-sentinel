@@ -148,7 +148,8 @@ def concentration(agg):
     if not agg['byTrader']:
         return None, 0, None
     who, top = max(agg['byTrader'].items(), key=lambda kv: (kv[1], kv[0]))
-    return who, top, (round(100 * top / total, 1) if total else None)
+    # Half up in integers, like the site's Math.round; Python's round() is half-even (1/16 -> 6.2, site wants 6.3).
+    return who, top, ((2000 * top + total) // (2 * total) / 10 if total else None)
 
 
 def recipient_kind(code):

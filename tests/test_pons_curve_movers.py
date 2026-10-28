@@ -133,6 +133,9 @@ class Maths(unittest.TestCase):
         even = [pcm.parse_trade(trade_log(*REAL[0], trader=f'0x{i:040x}')) for i in range(1, 5)]
         self.assertEqual(pcm.concentration(pcm.aggregate(even)[CURVE])[1:], (1, 25.0))
         self.assertEqual(pcm.concentration({'buys': 0, 'sells': 0, 'byTrader': pcm.Counter()}), (None, 0, None))
+        # Halves round up, matching validateMovers on the site (Python's round() would give 6.2 and 31.2).
+        for top, total, want in ((1, 16, 6.3), (5, 16, 31.3), (1, 8, 12.5), (1, 3, 33.3), (2, 3, 66.7), (16, 16, 100.0)):
+            self.assertEqual(pcm.concentration({'buys': total, 'sells': 0, 'byTrader': pcm.Counter({'0x' + 'a' * 40: top})})[2], want)
 
     def test_recipient_kind(self):
         self.assertEqual(pcm.recipient_kind('0x'), 'wallet')
