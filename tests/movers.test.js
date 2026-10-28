@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { validateMovers, quoteAmount } from '../src/movers.ts';
+import { validateMovers, quoteAmount, displayAmount } from '../src/movers.ts';
 
 const published = JSON.parse(readFileSync(new URL('../public/movers.json', import.meta.url)));
 const mover = {token: '0x5fea0f4e7239907602bb779c52a559279f542f45', symbol: 'CHARLIE', name: 'Charlie', buys: 351, sells: 6, traders: 110,
@@ -62,4 +62,15 @@ test('quoteAmount formats with BigInt, any decimals, sign kept', () => {
   assert.equal(quoteAmount('193502872457166550000000', 18, 2), '193,502.87');
   assert.equal(quoteAmount('0', 18), '0');
   assert.equal(quoteAmount('123', 0), '123');
+});
+
+test('displayAmount: never "-0", tiny non-zero is <0.0001, unknown decimals is ?', () => {
+  assert.equal(displayAmount('-99999999999999', 18, true), '-<0.0001');
+  assert.equal(displayAmount('-100000000000000', 18, true), '-0.0001');
+  assert.equal(displayAmount('1', 18, true), '+<0.0001');
+  assert.equal(displayAmount('0', 18, true), '+0');
+  assert.equal(displayAmount('59100', 18), '<0.0001');
+  assert.equal(displayAmount('19999999999999999999', 18), '19.9999');
+  assert.equal(displayAmount('-41600000000000000170', 18), '-41.6');
+  assert.equal(displayAmount('5', null, true), '?');
 });

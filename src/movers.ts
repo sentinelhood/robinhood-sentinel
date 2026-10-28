@@ -50,6 +50,17 @@ export function validateMovers(value: unknown): MoversSnapshot {
   return s;
 }
 
+// What the movers list shows: '?' without decimals, '<0.0001' for non-zero amounts too small for 4 places, never '-0'.
+// Must match amount() in skills/pons-curve-movers/pons_curve_movers.py.
+export function displayAmount(raw: string, decimals: number | null, signed = false): string {
+  if (decimals === null) return '?';
+  const negative = raw.startsWith('-');
+  const abs = negative ? raw.slice(1) : raw;
+  let s = quoteAmount(abs, decimals);
+  if (s === '0' && BigInt(abs) !== 0n) s = '<0.0001';
+  return signed ? (negative ? '-' : '+') + s : (negative ? '-' : '') + s;
+}
+
 // Integer string with `decimals` places -> "1,234.5678" (at most `places` decimals, trailing zeros dropped).
 export function quoteAmount(raw: string, decimals: number, places = 4): string {
   const negative = raw.startsWith('-');

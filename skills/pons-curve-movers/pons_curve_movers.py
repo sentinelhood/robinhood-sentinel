@@ -207,10 +207,16 @@ def decode_string(hexdata):
     return s or None
 
 
-def amount(raw, decimals):
+def amount(raw, decimals, signed=False):
+    """Integer math, truncated to 4 decimals, same as quoteAmount on the site. Non-zero below that shows '<0.0001'."""
     if decimals is None:
         return None
-    return f'{raw / 10 ** decimals:,.4f}'.rstrip('0').rstrip('.')
+    n, unit = abs(raw), 10 ** decimals
+    frac = str(n % unit).rjust(decimals, '0')[:4].rstrip('0') if decimals else ''
+    s = f'{n // unit:,}' + (f'.{frac}' if frac else '')
+    if s == '0' and n:
+        s = '<0.0001'
+    return ('+' if raw >= 0 else '-') + s if signed else ('-' + s if raw < 0 else s)
 
 
 def short(a):
@@ -227,8 +233,8 @@ def to_markdown(r):
         lines.append('No curve trades in the window.')
     for i, m in enumerate(r['movers'], 1):
         unit = m.get('pairSymbol') or '?'
-        vol, net = amount(m['volume'], m.get('pairDecimals')), amount(abs(m['net']), m.get('pairDecimals'))
-        flow = f"{vol} {unit} traded, net {'+' if m['net'] >= 0 else '-'}{net} {unit}" if vol is not None else 'volume unknown'
+        vol, net = amount(m['volume'], m.get('pairDecimals')), amount(m['net'], m.get('pairDecimals'), signed=True)
+        flow = f"{vol} {unit} traded, net {net} {unit}" if vol is not None else 'volume unknown'
         if m.get('phase') == 0:
             prog = f"{m['progress']:g}% to graduation" if m.get('progress') is not None else 'progress unknown'
         else:

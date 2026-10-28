@@ -1,6 +1,6 @@
 import './app.css';
 import { validateBurn, validateCopies, validateGuards, guardCalldata, tokenAmount, burnPercent } from './burn';
-import { validateMovers, quoteAmount } from './movers';
+import { validateMovers, displayAmount } from './movers';
 
 type Watch = { address: string; label: string };
 
@@ -1011,9 +1011,8 @@ async function loadMovers() {
     list.innerHTML = s.movers.map((m, i) => {
       const dup = m.symbol && (seen.get(m.symbol.toUpperCase()) || 0) > 1;
       const unit = m.pairSymbol || '?';
-      const known = m.pairDecimals !== null;
-      const vol = known ? quoteAmount(m.volumeRaw, m.pairDecimals as number) : '?';
-      const net = known ? quoteAmount(m.netRaw, m.pairDecimals as number) : '?';
+      const vol = displayAmount(m.volumeRaw, m.pairDecimals);
+      const net = displayAmount(m.netRaw, m.pairDecimals, true);
       const stage = m.phase === 0
         ? (m.progress === null ? '<span>progress unknown</span>' : `<span class="prog" role="img" aria-label="${m.progress}% to graduation"><i style="--w:${Math.max(1, m.progress)}%"></i></span><span><b>${escape(m.progress)}%</b> to graduation</span>`)
         : `<span>now <b>${escape(PHASE_SHORT[m.phase] || '?')}</b></span>`;
@@ -1021,7 +1020,7 @@ async function loadMovers() {
         <div class="who"><strong>${escape(m.symbol || '?')}</strong>${dup ? '<span class="badge wait">Same ticker</span>' : ''}<small>${escape(m.name || 'Unnamed')}</small></div>
         <span class="facts"><span><b>${m.buys}</b> buys / <b>${m.sells}</b> sells</span><span><b>${m.traders}</b> traders</span>${m.topRecipientKind === 'wallet' && m.topTraderShare !== null
           ? `<span class="${m.topTraderShare >= 50 ? 'conc' : ''}" title="${m.topTraderTrades} of ${m.buys + m.sells} trades went to one wallet">busiest wallet <b>${escape(m.topTraderShare)}%</b></span>`
-          : m.topRecipientKind === 'contract' ? `<span title="The address that received the most trades is a contract, usually a router used by many people. No share is shown.">via router contract</span>` : ''}<span><b>${escape(vol)}</b> ${escape(unit)} traded · net ${net.startsWith('-') ? '' : '+'}${escape(net)}</span></span>
+          : m.topRecipientKind === 'contract' ? `<span title="The address that received the most trades is a contract, usually a router used by many people. No share is shown.">via router contract</span>` : ''}<span><b>${escape(vol)}</b> ${escape(unit)} traded · net ${escape(net)}</span></span>
         <span class="facts stage">${stage}</span>
         <span class="meta"><code title="${escape(m.token)}">${escape(short(m.token))}</code></span>
         <button class="btn small" data-check-ca="${escape(m.token)}">Check</button>

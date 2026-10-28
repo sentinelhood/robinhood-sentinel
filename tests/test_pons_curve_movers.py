@@ -149,6 +149,15 @@ class Maths(unittest.TestCase):
         self.assertEqual(pcm.amount(26343100000000000000, 18), '26.3431')
         self.assertEqual(pcm.amount(8090000005, 6), '8,090')
         self.assertIsNone(pcm.amount(1, None))
+        # Same output as the site's displayAmount: truncated, never "-0", tiny non-zero shown as <0.0001.
+        self.assertEqual(pcm.amount(-99999999999999, 18, signed=True), '-<0.0001')
+        self.assertEqual(pcm.amount(-100000000000000, 18, signed=True), '-0.0001')
+        self.assertEqual(pcm.amount(1, 18, signed=True), '+<0.0001')
+        self.assertEqual(pcm.amount(0, 18, signed=True), '+0')
+        self.assertEqual(pcm.amount(59100, 18), '<0.0001')
+        self.assertEqual(pcm.amount(19999999999999999999, 18), '19.9999')  # truncated, not rounded to 20
+        self.assertEqual(pcm.amount(-41600000000000000170, 18), '-41.6')
+        self.assertEqual(pcm.amount(123, 0), '123')
 
 
 class Markdown(unittest.TestCase):
