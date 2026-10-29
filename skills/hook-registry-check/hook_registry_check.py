@@ -13,6 +13,7 @@ Usage:
 Exit codes: 0 ok (problems are reported, not an error), 2 registry or chain table unreachable (HOOK_REGISTRY_DOWN).
 """
 import argparse, hashlib, json, os, sys, tempfile, time, urllib.error, urllib.request
+import http.client
 from pathlib import Path
 
 HOOKLIST = 'https://raw.githubusercontent.com/aeonfun/univ4-hooks/main/hooklist.json'
@@ -41,7 +42,7 @@ def post(url, body):
             if e.code not in (429, 502, 503, 504):
                 raise RpcError(f'HTTP {e.code}') from e
             reason = f'HTTP {e.code}'
-        except (urllib.error.URLError, TimeoutError, ValueError) as e:
+        except (urllib.error.URLError, TimeoutError, ValueError, ConnectionError, http.client.HTTPException) as e:
             reason = type(e).__name__
         time.sleep(2 * (attempt + 1))
     raise RpcError(f'gave up after retries ({reason})')

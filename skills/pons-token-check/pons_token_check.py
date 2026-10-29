@@ -13,6 +13,7 @@ Exit codes: 0 report written, 2 RPC unreachable or wrong chain (PONS_CHECK_RPC_D
 3 bad input (PONS_CHECK_BAD_TARGET).
 """
 import argparse, json, re, sys, time, urllib.error, urllib.request, unicodedata
+import http.client
 
 RPC = 'https://rpc.mainnet.chain.robinhood.com'
 CHAIN_ID = 4663
@@ -45,7 +46,7 @@ def post(body):
                 time.sleep(1.5 * (attempt + 1))
                 continue
             raise RpcError(f'HTTP {e.code}') from e
-        except (urllib.error.URLError, TimeoutError):
+        except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.HTTPException):
             time.sleep(1.5 * (attempt + 1))
             continue
         if isinstance(data, dict) and (data.get('error') or {}).get('code') == 429:

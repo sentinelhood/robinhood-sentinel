@@ -5,6 +5,7 @@ Run: python3 scripts/snapshot-burn.py
 Only replaces public/burn.json after all checks pass.
 """
 import json
+import http.client
 import os
 from pathlib import Path
 import tempfile
@@ -34,7 +35,7 @@ def rpc(method, params):
                 time.sleep(2 * (attempt + 1))
                 continue
             raise
-        except (URLError, TimeoutError):
+        except (URLError, TimeoutError, ConnectionError, http.client.HTTPException):
             # Socket timeouts and dropped connections are transient on the public RPC too.
             if attempt < 4:
                 time.sleep(2 * (attempt + 1))

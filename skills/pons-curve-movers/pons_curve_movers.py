@@ -14,6 +14,7 @@ Usage:
 Exit codes: 0 ok, 2 RPC unreachable or wrong chain (PONS_MOVERS_RPC_DOWN), 3 bad input (PONS_MOVERS_BAD_INPUT).
 """
 import argparse, json, re, sys, time, unicodedata, urllib.error, urllib.request
+import http.client
 from collections import Counter, defaultdict
 
 RPC = 'https://rpc.mainnet.chain.robinhood.com'
@@ -52,7 +53,7 @@ def post(body):
                 time.sleep(1.5 * (attempt + 1))
                 continue
             raise RpcError(f'HTTP {e.code}') from e
-        except (urllib.error.URLError, TimeoutError):
+        except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.HTTPException):
             time.sleep(1.5 * (attempt + 1))
             continue
         if isinstance(data, dict) and (data.get('error') or {}).get('code') == 429:

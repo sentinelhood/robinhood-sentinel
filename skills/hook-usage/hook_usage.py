@@ -12,6 +12,7 @@ The state file caches the pools found so far plus the last block scanned. The fi
 run backfills from the first registry date; later runs only scan new blocks.
 """
 import argparse, json, sys, time, urllib.error, urllib.request
+import http.client
 from pathlib import Path
 
 RPC = 'https://rpc.mainnet.chain.robinhood.com'
@@ -43,7 +44,7 @@ def rpc(method, params):
                 time.sleep(min(30, 3 * (attempt + 1)))
                 continue
             raise RpcError(f'{method}: HTTP {e.code}') from e
-        except (urllib.error.URLError, TimeoutError):
+        except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.HTTPException):
             time.sleep(min(30, 3 * (attempt + 1)))
             continue
         if 'error' in body:

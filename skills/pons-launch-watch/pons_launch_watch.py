@@ -15,6 +15,7 @@ seen inside the window (so later runs only read new tokens) and the lookalikes a
 reported, so each one is reported once.
 """
 import argparse, json, re, sys, time, unicodedata, urllib.error, urllib.request
+import http.client
 from collections import Counter
 from pathlib import Path
 
@@ -49,7 +50,7 @@ def post(body):
                 time.sleep(min(20, 1.5 * (attempt + 1)))
                 continue
             raise RpcError(f'HTTP {e.code}') from e
-        except (urllib.error.URLError, TimeoutError):
+        except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.HTTPException):
             time.sleep(min(20, 1.5 * (attempt + 1)))
             continue
         if isinstance(data, dict) and (data.get('error') or {}).get('code') == 429:
