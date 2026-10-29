@@ -5,9 +5,28 @@
 ## API
 - [OpenAPI 3.1 spec](https://sentinelhood.com/openapi.json): one operation, `GET /api/service?action=network|address|transaction|aeon|contributions|token|launches|shiplog|deployer&value=...`. Share links: `https://sentinelhood.com/?ca=0x...` opens the token check for that address.
 
-## Aeon
-- [robinhood-chain-monitor skill](https://sentinelhood.com/skills/robinhood-chain-monitor.md): drop-in Aeon skill that watches Robinhood Chain addresses for nonce, balance and bytecode changes. Reads only from the official RPC (rpc.mainnet.chain.robinhood.com), not from this API. Requires no keys. Robinhood Chain is not covered by Aeon's `onchain-monitor`.
+## Snapshots
+Static JSON, refreshed by a server cron from the official RPC. Each carries the block it was read at.
+- [burn.json](https://sentinelhood.com/burn.json): SNTL burned through the token's own burn(), with the latest burns.
+- [copies.json](https://sentinelhood.com/copies.json): Pons v2 launches that copy the official SNTL ticker or name.
+- [guards.json](https://sentinelhood.com/guards.json): Tokens guarded by a Sentinel Guard burn, and the copies each guard lists.
+- [movers.json](https://sentinelhood.com/movers.json): Busiest Pons v2 bonding curves in the last hours, ranked by distinct traders (pons-curve-movers).
+- [hook-usage.json](https://sentinelhood.com/hook-usage.json): Pools and swaps per Aeon univ4-hooks hook on Robinhood Chain (hook-usage).
+- [registry.json](https://sentinelhood.com/registry.json): Every aeonfun/univ4-hooks address read on its own chain: code present, flag bits (hook-registry-check).
+- [token.json](https://sentinelhood.com/token.json): The official Sentinel token, if live; the page only shows it when it has code on chain 4663.
+
+## Aeon skills (Sentinel Pack 1.7.0, 8 skills)
+Install all: `bin/install-skill-pack sentinelhood/robinhood-sentinel` from an Aeon checkout. Every skill is read-only, needs no keys and ships `default_enabled: false`.
+- [robinhood-chain-monitor](https://sentinelhood.com/skills/robinhood-chain-monitor.md): Watch Robinhood Chain addresses for balance, nonce and bytecode changes - keyless, read-only, block-stamped
+- [hook-usage](https://sentinelhood.com/skills/hook-usage.md): Measure real usage of Aeon's Uniswap v4 hooks on Robinhood Chain: pools per hook and recent swaps, keyless from the official RPC
+- [pons-launch-watch](https://sentinelhood.com/skills/pons-launch-watch.md): Alert when a new Pons v2 launch on Robinhood Chain copies your token's ticker or name, plus daily launch volume, repeated tickers and busiest deployers - keyless, read-only
+- [pons-token-check](https://sentinelhood.com/skills/pons-token-check.md): One-shot check of any Robinhood Chain token: Pons v2 launch record, real trading cost, phase, the deployer's full launch history and holdings - keyless, read-only, block-stamped
+- [pons-deployer-watch](https://sentinelhood.com/skills/pons-deployer-watch.md): Alert when a deployer you watch launches a new token on Pons v2 (Robinhood Chain), plus the busiest deployers of the day - watch by deployer or by any token they made, keyless, read-only
+- [pons-graduation-watch](https://sentinelhood.com/skills/pons-graduation-watch.md): Alert when a Pons v2 token on Robinhood Chain graduates from its bonding curve to a locked Uniswap v4 pool, with the amount moved into the pool and the day's graduation rate - all tokens or only ones you watch, keyless, read-only
+- [pons-curve-movers](https://sentinelhood.com/skills/pons-curve-movers.md): The most active Pons v2 bonding curves on Robinhood Chain in the last few hours - buys, sells, distinct traders, volume, net flow and progress toward graduation, for tokens DEX scanners cannot see yet - keyless, read-only
+- [hook-registry-check](https://sentinelhood.com/skills/hook-registry-check.md): Check every address in Aeon's public Uniswap v4 hook registry against its chain - code present, flag bits match the address, same functions on every chain - and report only what changed, keyless, read-only
 
 ## Limits
-- Native ETH only; no token or USD indexing.
-- Historical reads, not pre-sign simulation. No result is a safety guarantee.
+- Read-only: no signing, no broadcasting, no keys.
+- Historical reads, not pre-sign simulation. No result is a safety guarantee or a buy/sell signal.
+- Counts are of addresses and events, not people: routers and one person with many wallets both distort them.

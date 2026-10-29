@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://sentinelhood.com/</loc></url>
   <url><loc>https://sentinelhood.com/llms.txt</loc></url>
+  <url><loc>https://sentinelhood.com/openapi.json</loc></url>
   <url><loc>https://sentinelhood.com/skills/robinhood-chain-monitor.md</loc></url>
   <url><loc>https://sentinelhood.com/skills/hook-usage.md</loc></url>
+  <url><loc>https://sentinelhood.com/skills/pons-launch-watch.md</loc></url>
+  <url><loc>https://sentinelhood.com/skills/pons-token-check.md</loc></url>
+  <url><loc>https://sentinelhood.com/skills/pons-deployer-watch.md</loc></url>
+  <url><loc>https://sentinelhood.com/skills/pons-graduation-watch.md</loc></url>
+  <url><loc>https://sentinelhood.com/skills/pons-curve-movers.md</loc></url>
+  <url><loc>https://sentinelhood.com/skills/hook-registry-check.md</loc></url>
 </urlset>
