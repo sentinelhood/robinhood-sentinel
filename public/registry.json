@@ -1,0 +1,516 @@
+{
+ "generatedAt": "2026-10-29T09:27:47+00:00",
+ "summary": {
+  "addresses": 53,
+  "hooks": 15,
+  "chains": 7,
+  "withCode": 43,
+  "noCode": 0,
+  "unchecked": 10,
+  "flagMismatch": 0
+ },
+ "chains": [
+  {
+   "chain": "arbitrum",
+   "chainId": 42161,
+   "addresses": 2,
+   "block": 519317346,
+   "checked": true
+  },
+  {
+   "chain": "base",
+   "chainId": 8453,
+   "addresses": 15,
+   "block": 53238315,
+   "checked": true
+  },
+  {
+   "chain": "bnb",
+   "chainId": 56,
+   "addresses": 2,
+   "block": 130448965,
+   "checked": true
+  },
+  {
+   "chain": "ethereum",
+   "chainId": 1,
+   "addresses": 10,
+   "block": 26297491,
+   "checked": true
+  },
+  {
+   "chain": "monad",
+   "chainId": 143,
+   "addresses": 10,
+   "block": null,
+   "checked": false
+  },
+  {
+   "chain": "robinhood",
+   "chainId": 4663,
+   "addresses": 12,
+   "block": 100798514,
+   "checked": true
+  },
+  {
+   "chain": "unichain",
+   "chainId": 130,
+   "addresses": 2,
+   "block": 62517703,
+   "checked": true
+  }
+ ],
+ "hooks": [
+  {
+   "hook": "BlockEcho",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0x5e48f905661d75501ca756edb3403da98f0400c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "ethereum",
+     "address": "0x66f4a8433885d2838ae760393c3bdbdcbd8d40c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "monad",
+     "address": "0x15d90705718d052d32eb8e34271e8743c26e40c4",
+     "status": "no-rpc",
+     "flagsOk": true
+    },
+    {
+     "chain": "robinhood",
+     "address": "0xf2f992fe611f64ecfcc413c420f558c85a7480c4",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 2,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "CapGate",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "arbitrum",
+     "address": "0x81e4fdb9a9787800aef889ba112aadddd43c80c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "base",
+     "address": "0xa12bf4fc954b37cbe7acc2fa652328071f8b00c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "bnb",
+     "address": "0x58caa0d759d282d4c505a15681d8dd3a724580c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "ethereum",
+     "address": "0x62edc83dc155f9de77a58c65d9ad5762158f00c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "monad",
+     "address": "0x00f39795c6d49b24de38a232b0f5d4bdfe4200c4",
+     "status": "no-rpc",
+     "flagsOk": true
+    },
+    {
+     "chain": "robinhood",
+     "address": "0x57777eb796b2b01aef0a0a6752217c5dbe9a00c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "unichain",
+     "address": "0x27d5fdf460643eb270b6e836d218968d6d7400c4",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 1,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "CrownClash",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0xd24d29a47adb8786072ab2cb9925dc8ba36bc044",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "ethereum",
+     "address": "0xb09aba41d397474e6c25a625f87ef8c200480044",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "monad",
+     "address": "0xb268d7930580e7717b72804190fe910d2c200044",
+     "status": "no-rpc",
+     "flagsOk": true
+    },
+    {
+     "chain": "robinhood",
+     "address": "0xcbbc0818c555bff795a2ab6261d224e793678044",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 2,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "DailyWindowGate",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0x752b180116f5110dcbea9564a43acbef82ebc080",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 1,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "DynamicFee",
+   "stage": "template",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0x723b16ef13a1b9a2bd63238bec47cdf1d4a010c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "ethereum",
+     "address": "0x80f48fdca095d081a3fe7843ab234c5533a450c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "monad",
+     "address": "0x86037d62ececd7e380984ad9d24dd0c5112d50c4",
+     "status": "no-rpc",
+     "flagsOk": true
+    },
+    {
+     "chain": "robinhood",
+     "address": "0x7566a3bfbe88c06bc5f33fea927f461e8279d0c4",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 2,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "ExactInGate",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0xec78ee3f1fc117415a8006a0344ccaff30aa40c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "ethereum",
+     "address": "0x95c9fa3cd4067a0fd69fb41d291c79193b5500c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "monad",
+     "address": "0x7810753d326c0e4b9755b5fa09a8b8998c75c0c4",
+     "status": "no-rpc",
+     "flagsOk": true
+    },
+    {
+     "chain": "robinhood",
+     "address": "0x2c10afb513a6505befb74dfdf5800b392c9f00c4",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 2,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "HeavierHand",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "arbitrum",
+     "address": "0xdac850494b2a31c21b8ab6d22c4af846a9f790c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "base",
+     "address": "0x69072454d019c4167007c070ee49cf06c8ac50c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "bnb",
+     "address": "0x26589e4873e7f5e0f3e0d20782a61c2495fe90c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "ethereum",
+     "address": "0xbc674333e0f06c24b164dee6bde1caa3e44710c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "monad",
+     "address": "0x4429a70f33907c1b5f7471675d56cdf5090190c4",
+     "status": "no-rpc",
+     "flagsOk": true
+    },
+    {
+     "chain": "robinhood",
+     "address": "0x368575b8712e7a6b56b309f6b3ce20549e9c90c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "unichain",
+     "address": "0xc3bfb8010f83e013fe9de2525a8be575310bd0c4",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 1,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "LastBuyerWins",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0x5d505d56d4b62f5f83493b4acb03353bbde760cc",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "robinhood",
+     "address": "0x94de41e76700443f3d6673a397b00d41cf6ea0cc",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 1,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "LegacyLedger",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0xdb4a0eb0410407d6c22a35c27288834e0d9f4044",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "ethereum",
+     "address": "0x9c9f5e18c8530e96c735704471542e72a7a00044",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "monad",
+     "address": "0xf50c9b994a5a0aba3eb1b7e044f88b2f12f1c044",
+     "status": "no-rpc",
+     "flagsOk": true
+    },
+    {
+     "chain": "robinhood",
+     "address": "0x70dec3a54943fd96fe460ff74172038f57208044",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 2,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "MarketHoursGate",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0x82086452fe75cb217f44cf8c33af638bf9018080",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 1,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "NoOp",
+   "stage": "template",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0xfba729a7d8fc48cbb261a845a0f26281ed7800c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "ethereum",
+     "address": "0xc8fa143077d632a056a9a970ce71e3bdcf01c0c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "monad",
+     "address": "0x707a3072e285a2e2398253a30bf6bd7b5a7b40c4",
+     "status": "no-rpc",
+     "flagsOk": true
+    },
+    {
+     "chain": "robinhood",
+     "address": "0x8ef1699f78f830375239f6f3165cb72d5b64c0c4",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 2,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "TailTwins",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0x9818ddd1102c9606cd693ac17a7b8b17609480c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "ethereum",
+     "address": "0x50220c80da4280afb2d86ad4a6b28f9dff46c0c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "monad",
+     "address": "0x75e7b5a738884f37086c2be7789a883ca6ce80c4",
+     "status": "no-rpc",
+     "flagsOk": true
+    },
+    {
+     "chain": "robinhood",
+     "address": "0x971df49844604e44514120682eac3fcdc4f5c0c4",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 2,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "TeamWar",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0x8dfa52588d4423e96a93e6923bde3240af6320cc",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "robinhood",
+     "address": "0x9c657d8637e98b9299be6e4e23d52fd2713aa0cc",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 1,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "TotalizerTrap",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0xa7a62422d13c7648ca53ad91e9268ac4bfc6c0c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "ethereum",
+     "address": "0x190bca1a2f6cad09efae5d0bab9564553ba640c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "monad",
+     "address": "0x57e6eff5cc442efeeebb79d108ccb7c01086c0c4",
+     "status": "no-rpc",
+     "flagsOk": true
+    },
+    {
+     "chain": "robinhood",
+     "address": "0x1e27183e12a9c108dd850e022f26870b12a200c4",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 2,
+   "selectorsMatch": true
+  },
+  {
+   "hook": "Twigpine Wrap Hook",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0xf7423f48886f86f551b517254d21af4267732888",
+     "status": "code",
+     "flagsOk": true
+    }
+   ],
+   "builds": 1,
+   "selectorsMatch": true
+  }
+ ],
+ "problems": [
+  "BlockEcho@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked",
+  "CapGate@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked",
+  "CrownClash@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked",
+  "DynamicFee@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked",
+  "ExactInGate@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked",
+  "HeavierHand@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked",
+  "LegacyLedger@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked",
+  "NoOp@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked",
+  "TailTwins@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked",
+  "TotalizerTrap@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked"
+ ],
+ "source": "skills/hook-registry-check/hook_registry_check.py \u00b7 RPCs from aeonfun/aeon deploy-uni-hook chains.tsv"
+}

@@ -1,6 +1,7 @@
 import './app.css';
 import { validateBurn, validateCopies, validateGuards, guardCalldata, tokenAmount, burnPercent } from './burn';
 import { validateMovers, displayAmount } from './movers';
+import { validateRegistry } from './registry';
 
 type Watch = { address: string; label: string };
 
@@ -31,7 +32,10 @@ try {
 // Aeon pull requests by sentinelhood. Fallback only: statuses are refreshed live from GitHub on load.
 type Contribution = { pr: number; title: string; what?: string; state: 'merged' | 'open' | 'closed'; review?: 'approved' | 'changes_requested' | 'review'; when: string };
 const CONTRIBUTIONS: Contribution[] = [
-  { pr: 1251, title: 'feat(onchain-monitor): add reorg-safe evidence replay', what: 'Reorg-aware replay and per-chain evidence receipts for onchain-monitor.', state: 'open', review: 'changes_requested', when: '2026-10-20' },
+  { pr: 1287, title: 'docs(packs): update the Sentinel Pack listing to its 8 skills', what: 'Aeon\u2019s registry lists all eight Sentinel skills, including hook-registry-check.', state: 'merged', when: '2026-10-28' },
+  { pr: 1269, title: 'docs(packs): update the Sentinel Pack listing to its 6 skills', what: 'The registry entry catches up with the pack manifest.', state: 'merged', when: '2026-10-26' },
+  { pr: 1266, title: 'feat(onchain-monitor): verify evidence receipts offline', what: 'Anyone can re-check an onchain-monitor evidence receipt with no network calls.', state: 'merged', when: '2026-10-24' },
+  { pr: 1251, title: 'feat(onchain-monitor): add reorg-safe evidence replay', what: 'Reorg-aware replay and per-chain evidence receipts for onchain-monitor.', state: 'merged', when: '2026-10-24' },
   { pr: 1244, title: 'feat(onchain-monitor): watch wallets and contracts on Robinhood Chain', what: 'Aeon\u2019s on-chain alerts learn Robinhood Chain, with a keyless path through the public RPC.', state: 'merged', when: '2026-10-20' },
   { pr: 1243, title: 'fix(deploy-uni-hook): add Alchemy slug for Robinhood Chain', what: 'Hook deploys to Robinhood use Alchemy when a key is set, instead of always the public RPC.', state: 'merged', when: '2026-10-18' },
   { pr: 1227, title: 'docs(packs): list the Sentinel Pack', what: 'The Sentinel Pack joins Aeon\u2019s community skill-pack registry.', state: 'merged', when: '2026-10-16' },
@@ -93,7 +97,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
           <li><a href="#launches"><b>Pons launches</b><span>New tokens from the factory, with tax, phase and repeated tickers.</span></a></li>
           <li><a href="#movers"><b>Curve movers</b><span>The busiest bonding curves, before any DEX lists them.</span></a></li>
           <li><a href="#guard"><b>Sentinel Guard</b><span>Burn $SNTL from a deployer to list copies of that ticker.</span></a></li>
-          <li><a href="#aeon"><b>Sentinel Pack</b><span>Seven keyless Aeon skills for Robinhood Chain and Pons.</span></a></li>
+          <li><a href="#aeon"><b>Sentinel Pack</b><span>Eight keyless Aeon skills for Robinhood Chain, Pons and Aeon's hook registry.</span></a></li>
         </ul>
       </nav>
     </div>
@@ -228,6 +232,24 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
     <ul class="bars" id="hookBars" aria-live="polite"><li class="hint">Loading the latest snapshot…</li></ul>
     <p class="hint" id="hookMeta"></p>
     <p class="links"><a href="/hook-usage.json" target="_blank" rel="noopener">Raw JSON ${arrow}</a><a href="/skills/hook-usage.md" target="_blank" rel="noopener">SKILL.md ${arrow}</a></p>
+
+    <div class="registry" id="registry">
+      <div class="hooks-head">
+        <div>
+          <h3 id="registryTitle">Is every registry hook really on chain?</h3>
+          <p class="muted">Each address listed in <a href="https://github.com/aeonfun/univ4-hooks" target="_blank" rel="noopener noreferrer">univ4-hooks</a>, read on its own chain by the <code>hook-registry-check</code> skill: code present, flag bits equal to the address's low 14 bits. RPCs come from Aeon's own <code>chains.tsv</code>.</p>
+        </div>
+        <dl class="stats hook-stats" id="registryStats">
+          <div><dt>Have code</dt><dd>…</dd></div>
+          <div><dt>Flag mismatch</dt><dd>…</dd></div>
+          <div><dt>Not checked</dt><dd>…</dd></div>
+        </dl>
+      </div>
+      <ul class="registry-chains" id="registryChains" aria-live="polite"><li class="hint">Loading the latest snapshot…</li></ul>
+      <ul class="registry-notes" id="registryNotes"></ul>
+      <p class="hint" id="registryMeta"></p>
+      <p class="links"><a href="/registry.json" target="_blank" rel="noopener">Raw JSON ${arrow}</a><a href="/skills/hook-registry-check.md" target="_blank" rel="noopener">SKILL.md ${arrow}</a></p>
+    </div>
   </section>
 
   <section class="card contrib reveal" id="contrib" aria-labelledby="contribTitle">
@@ -795,6 +817,42 @@ async function loadHookUsage() {
   }
 }
 
+// ---------- hook registry on chain (public/registry.json from scripts/snapshot-registry.py) ----------
+async function loadRegistry() {
+  const list = el('registryChains'), notes = el('registryNotes'), meta = el('registryMeta');
+  try {
+    const response = await fetch('/registry.json', { cache: 'no-store', signal: AbortSignal.timeout(10000) });
+    if (!response.ok) throw new Error('unavailable');
+    const s = validateRegistry(await response.json());
+    const t = s.summary, checked = t.addresses - t.unchecked;
+    const dd = el('registryStats').querySelectorAll('dd');
+    dd[0].textContent = `${t.withCode}/${checked}`;
+    dd[1].textContent = String(t.flagMismatch);
+    dd[2].textContent = String(t.unchecked);
+    list.innerHTML = s.chains.map((c, i) => {
+      const rows = s.hooks.flatMap((h) => h.chains.filter((e) => e.chain === c.chain));
+      const ok = rows.filter((e) => e.status === 'code' && e.flagsOk).length;
+      const state = !c.checked ? '<span class="badge wait">not checked</span>'
+        : ok === rows.length ? '<span class="badge ok">all on chain</span>' : `<span class="badge bad">${rows.length - ok} to look at</span>`;
+      return `<li style="--d:${i}"><strong>${escape(c.chain)}</strong><span class="num">${ok}/${c.addresses}</span>${state}`
+        + `<small>${c.checked ? `block ${Number(c.block).toLocaleString('en-US')}` : 'no RPC in Aeon chains.tsv'}</small></li>`;
+    }).join('');
+    const builds = s.hooks.filter((h) => h.builds > 1 && h.selectorsMatch).length;
+    const split = s.hooks.filter((h) => !h.selectorsMatch).map((h) => h.hook);
+    const unchecked = s.chains.filter((c) => !c.checked).map((c) => c.chain);
+    notes.innerHTML = [
+      t.noCode ? `<li class="bad">${t.noCode} listed address(es) have no code on their chain.</li>` : '',
+      t.flagMismatch ? `<li class="bad">${t.flagMismatch} address(es) whose flag bits do not match the listing.</li>` : '',
+      split.length ? `<li class="bad">Different functions on different chains: ${split.map(escape).join(', ')}.</li>` : '',
+      unchecked.length ? `<li>${escape(unchecked.join(', '))}: listed in the registry but missing from Aeon's <code>chains.tsv</code>, so Aeon's own tools cannot read it.</li>` : '',
+      builds ? `<li>${builds} hook(s) run a different build on some chains with the same functions: a compiler-setting difference, not a different contract.</li>` : '',
+    ].join('');
+    meta.textContent = `${t.addresses} addresses · ${t.hooks} hooks · ${t.chains} chains · read ${ago(s.generatedAt) || 'recently'}. A fact about the listing and the chain, not a verdict on any hook.`;
+  } catch {
+    list.innerHTML = '<li class="error">Snapshot unavailable. Run the hook-registry-check skill to read it yourself.</li>';
+  }
+}
+
 // ---------- official token panel (driven by /token.json) ----------
 // The site only shows a contract address when token.json says live AND the address
 // has bytecode on chain 4663 right now. Anything else falls back to "not live".
@@ -1059,6 +1117,7 @@ async function loadShiplog() {
 
 renderWatch();
 void loadHookUsage();
+void loadRegistry();
 void loadToken();
 void loadContributions();
 void loadLaunches();

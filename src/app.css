@@ -255,6 +255,15 @@ pre { overflow: auto; max-height: 280px; margin: 10px 0 0; padding: 12px; backgr
 .links a { font-size: 13px; font-weight: 600; }
 /* ---------- hook usage ---------- */
 .hooks { margin: 20px 0 0; }
+.registry { margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); }
+.registry h3 { margin: 0 0 8px; font-size: 20px; }
+.registry-chains { list-style: none; margin: 22px 0 10px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+.registry-chains li { display: grid; grid-template-columns: 1fr auto; gap: 6px 10px; align-items: center; padding: 12px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); font: 13px var(--mono); }
+.registry-chains .num { color: var(--text); font-variant-numeric: tabular-nums; }
+.registry-chains .badge { grid-column: 1 / -1; justify-self: start; }
+.registry-chains small { grid-column: 1 / -1; color: var(--dim); }
+.registry-notes { margin: 0 0 12px; padding-left: 18px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.registry-notes .bad { color: var(--red); }
 .hooks-head { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: end; }
 .hook-stats { grid-template-columns: repeat(3, 1fr); margin: 0; }
 .hook-stats dd { font-size: 17px; }
@@ -343,6 +352,9 @@ pre { overflow: auto; max-height: 280px; margin: 10px 0 0; padding: 12px; backgr
 }
 @media (max-width: 1000px) {
   .hooks-head { grid-template-columns: 1fr; gap: 18px; }
+}
+@media (max-width: 520px) {
+  .registry-chains { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 720px) {
   .launch-list li { grid-template-columns: 1fr auto; gap: 6px 12px; }
