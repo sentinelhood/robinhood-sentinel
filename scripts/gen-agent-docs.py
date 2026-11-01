@@ -15,6 +15,7 @@ SNAPSHOTS = [
     ('copies.json', 'Pons v2 launches that copy the official SNTL ticker or name.'),
     ('guards.json', 'Tokens guarded by a Sentinel Guard burn, and the copies each guard lists.'),
     ('movers.json', 'Busiest Pons v2 bonding curves in the last hours, ranked by distinct traders (pons-curve-movers).'),
+    ('graduations.json', 'Pons v2 tokens that graduated to a locked Uniswap v4 pool in the last 24 hours (pons-graduation-watch).'),
     ('hook-usage.json', 'Pools and swaps per Aeon univ4-hooks hook on Robinhood Chain (hook-usage).'),
     ('registry.json', 'Every aeonfun/univ4-hooks address read on its own chain: code present, flag bits (hook-registry-check).'),
     ('token.json', 'The official Sentinel token, if live; the page only shows it when it has code on chain 4663.'),

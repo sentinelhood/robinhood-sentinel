@@ -1,0 +1,95 @@
+{
+ "chainId": 4663,
+ "block": 103338527,
+ "windowHours": 24.0,
+ "generatedAt": "2026-11-01T11:10:35+00:00",
+ "launches": 781,
+ "graduations": 7,
+ "graduated": [
+  {
+   "token": "0xf65762c40e3f0488384d2c2f43a2636a79fdf0b9",
+   "symbol": "BIAO",
+   "name": "Biaoqing",
+   "deployer": "0x1910028e2b6113b1918911b4702318d84741364a",
+   "block": 103336800,
+   "tx": "0xf62c39dccd33eb87da8d1d38ec11ef0054d94801e5f752f60cf4d322f7c4f68f",
+   "quoteRaw": "11146474875652736698",
+   "pairSymbol": "QQQ",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0x3f9ff9f1d40369f99c281375bd19d6ecbebfecd7",
+   "symbol": "ZKBLAST",
+   "name": "ZKBLAST",
+   "deployer": "0x1c5b99c2d3809b18a8b8324766c93585f3be65dd",
+   "block": 103208666,
+   "tx": "0x13e2b294cec2118e8543aa0dff049144892a088e3c6944be7cee11a4ef8cf079",
+   "quoteRaw": "4200000000000000352",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0xfda080f64d84c989cfc50ff18253542cfe502db3",
+   "symbol": "WAFERMAP",
+   "name": "WAFERMAP",
+   "deployer": "0xcbf636c3a28fd95dde80e7cd888df344e6c5296f",
+   "block": 103202684,
+   "tx": "0xb32315aaf610141ff89f54f54d739d027dcdc824c5c5fff5a032fe81e4e9fcdf",
+   "quoteRaw": "4200000000000000245",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0x090980a62d5007f6190b04782d0ea690ab53c210",
+   "symbol": "INSULA",
+   "name": "Insula World",
+   "deployer": "0x0f28bba728c581d523cc70933524797fa85984e1",
+   "block": 103172834,
+   "tx": "0x6c432f47a40a6bf02f9ae1e2e76204a38325a9aa54de052b83a1d645bc05be15",
+   "quoteRaw": "4200000000000000210",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0xc4bea7e18409b2d1042cea57243964b76a3fc4bb",
+   "symbol": "SLIPPYGME",
+   "name": "SLIPPY",
+   "deployer": "0x5dc0e03ced85d3b9472dc4a2c387498b5bb46746",
+   "block": 103136495,
+   "tx": "0xa1c8c415dc910b24c48f41acce3493e1ac54b1652359291a928ca2127906ccc5",
+   "quoteRaw": "369000000000000000034",
+   "pairSymbol": "GME",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0xf722b7b078b4b69430586b907ce82122d603c3ba",
+   "symbol": "ORIGO",
+   "name": "Origo",
+   "deployer": "0x1880083e1f97030fbc4c17a5049cfa32f3f60886",
+   "block": 102913895,
+   "tx": "0xaec8dfacae3dcd44e9e77ba6d7032d100ffa3b35a978207107be933027fd4162",
+   "quoteRaw": "4200000000000000281",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0xb961886115fb9e4f732e20e89efd6d0406c3527f",
+   "symbol": "SHRP",
+   "name": "Sharpe",
+   "deployer": "0x0e1651aec67b2a049a4fa6aeb6c1c305aabfc35b",
+   "block": 102778883,
+   "tx": "0x3e981defa34635b8aa69c86422e52cebd199ce3eb281be97b026429473c30223",
+   "quoteRaw": "193502872457166537181002",
+   "pairSymbol": "ORBIO",
+   "pairDecimals": 18,
+   "phase": 2
+  }
+ ],
+ "source": "skills/pons-graduation-watch/pons_graduation_watch.py via rpc.mainnet.chain.robinhood.com"
+}

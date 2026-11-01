@@ -1,5 +1,6 @@
 import './app.css';
 import { validateBurn, validateCopies, validateGuards, guardCalldata, tokenAmount, burnPercent } from './burn';
+import { validateGraduations } from './graduations';
 import { validateMovers, displayAmount } from './movers';
 import { validateRegistry } from './registry';
 
@@ -64,7 +65,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
 <header class="top">
   <a class="brand" href="#" aria-label="Sentinel home">${mark}<span><strong>SENTINEL</strong><small>ROBINHOOD CHAIN · 4663</small></span></a>
   <nav aria-label="Sections" id="nav">
-    <a href="#inspect" data-section>Inspect</a><a href="#watch" data-section>Watchlist</a><a href="#aeon" data-section>Aeon</a><a href="#hooks" data-section>Hooks</a><a href="#launches" data-section>Launches</a><a href="#movers" data-section>Movers</a><a href="#guard" data-section>Guard</a><a href="#contrib" data-section>Contributions</a><a href="#shiplog" data-section>Log</a>
+    <a href="#inspect" data-section>Inspect</a><a href="#watch" data-section>Watchlist</a><a href="#aeon" data-section>Aeon</a><a href="#hooks" data-section>Hooks</a><a href="#launches" data-section>Launches</a><a href="#movers" data-section>Movers</a><a href="#graduations" data-section>Graduations</a><a href="#guard" data-section>Guard</a><a href="#contrib" data-section>Contributions</a><a href="#shiplog" data-section>Log</a>
     <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">X ${arrow}</a>
     <span class="nav-ind" aria-hidden="true"></span>
   </nav>
@@ -96,6 +97,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
           <li><a href="#watch"><b>Watchlist</b><span>Quiet balance and nonce checks, stored only in this browser.</span></a></li>
           <li><a href="#launches"><b>Pons launches</b><span>New tokens from the factory, with tax, phase and repeated tickers.</span></a></li>
           <li><a href="#movers"><b>Curve movers</b><span>The busiest bonding curves, before any DEX lists them.</span></a></li>
+          <li><a href="#graduations"><b>Graduations</b><span>Pons tokens that filled their curve and moved to a locked v4 pool.</span></a></li>
           <li><a href="#guard"><b>Sentinel Guard</b><span>Burn $SNTL from a deployer to list copies of that ticker.</span></a></li>
           <li><a href="#aeon"><b>Sentinel Pack</b><span>Eight keyless Aeon skills for Robinhood Chain, Pons and Aeon's hook registry.</span></a></li>
         </ul>
@@ -182,6 +184,24 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
     <p class="hint" id="moverMeta"></p>
     <p class="hint">Activity is a fact, not a verdict. Many trades can come from a few wallets, and tickers on Pons are not unique: check the address.</p>
     <p class="links"><a href="/movers.json" target="_blank" rel="noopener">Raw JSON ${arrow}</a><a href="/skills/pons-curve-movers.md" target="_blank" rel="noopener">Run it in Aeon: SKILL.md ${arrow}</a></p>
+  </section>
+
+  <section class="card graduations reveal" id="graduations" aria-labelledby="gradTitle">
+    <div class="launch-head">
+      <div>
+        <span class="tag gold">PONS V2 · GRADUATIONS</span>
+        <h2 id="gradTitle">Out of the curve, into a locked pool.</h2>
+        <p class="muted">When a Pons bonding curve fills, the factory moves the raised quote and the reserved tokens into a Uniswap v4 pool with locked liquidity. Few tokens get there. These are the ones that did, read from the factory's own graduation events.</p>
+      </div>
+      <dl class="stats hook-stats" id="gradStats">
+        <div><dt>Graduated</dt><dd>…</dd></div>
+        <div><dt>Launched</dt><dd>…</dd></div>
+      </dl>
+    </div>
+    <ul class="launch-list grad-list" id="gradList" aria-live="polite"><li class="hint">Loading the latest snapshot…</li></ul>
+    <p class="hint" id="gradMeta"></p>
+    <p class="hint">Graduation is a fact about the curve, not a quality signal. Graduations and launches are counted over the same window: a rate, not a cohort.</p>
+    <p class="links"><a href="/graduations.json" target="_blank" rel="noopener">Raw JSON ${arrow}</a><a href="/skills/pons-graduation-watch.md" target="_blank" rel="noopener">Get alerted in Aeon: SKILL.md ${arrow}</a></p>
   </section>
 
   <section class="card guard reveal" id="guard" aria-labelledby="guardTitle">
@@ -721,7 +741,7 @@ addEventListener('keydown', (e) => { if (e.key === 'Escape') { setPop(false); pi
 // The position is saved relative to the nearest section ("12px into #watch"), not as a
 // raw scrollY. Web fonts and live data change heights after load, so a raw pixel value
 // lands in the wrong place; an anchor + offset still points at the same content.
-const ANCHORS = ['.hero', '#inspect', '#watch', '#launches', '#movers', '#guard', '#aeon', '#hooks', '#contrib', '#shiplog', '.foot'];
+const ANCHORS = ['.hero', '#inspect', '#watch', '#launches', '#movers', '#graduations', '#guard', '#aeon', '#hooks', '#contrib', '#shiplog', '.foot'];
 const SCROLL_KEY = 'sentinel.scroll.v1';
 type Saved = { path: string; anchor: string; offset: number };
 
@@ -1094,6 +1114,41 @@ el('moverList').addEventListener('click', (e) => {
   if (ca && ADDRESS.test(ca)) inspectAddress(ca);
 });
 
+// ---------- graduations (public/graduations.json from scripts/snapshot-graduations.py) ----------
+async function loadGraduations() {
+  const list = el('gradList'), meta = el('gradMeta');
+  try {
+    const response = await fetch('/graduations.json', { cache: 'no-store', signal: AbortSignal.timeout(10000) });
+    if (!response.ok) throw new Error('unavailable');
+    const s = validateGraduations(await response.json());
+    const dd = el('gradStats').querySelectorAll('dd');
+    const rate = s.launches ? (100 * s.graduations / s.launches).toFixed(1) : '0';
+    dd[0].textContent = `${s.graduations.toLocaleString('en-US')} · ${rate}%`;
+    dd[1].textContent = `${s.launches.toLocaleString('en-US')} / ${s.windowHours}h`;
+    const seen = new Map<string, number>();
+    for (const g of s.graduated) if (g.symbol) seen.set(g.symbol.toUpperCase(), (seen.get(g.symbol.toUpperCase()) || 0) + 1);
+    list.innerHTML = s.graduated.map((g, i) => {
+      const dup = g.symbol && (seen.get(g.symbol.toUpperCase()) || 0) > 1;
+      const hoursAgo = Math.max(0, (s.block - g.block) * 0.102 / 3600);
+      const when = hoursAgo < 1 ? `${Math.round(hoursAgo * 60)}m ago` : `${hoursAgo.toFixed(1)}h ago`;
+      return `<li style="--d:${i}">
+        <div class="who"><strong>${escape(g.symbol || '?')}</strong>${dup ? '<span class="badge wait">Same ticker</span>' : ''}<small>${escape(g.name || 'Unnamed')}</small></div>
+        <span class="facts"><span><b>${escape(displayAmount(g.quoteRaw, g.pairDecimals))}</b> ${escape(g.pairSymbol || '?')} into the pool</span>${g.deployer ? `<span>deployer <code title="${escape(g.deployer)}">${escape(short(g.deployer))}</code></span>` : ''}</span>
+        <span class="facts stage"><span>now <b>${escape(PHASE_SHORT[g.phase as number] || '?')}</b></span></span>
+        <span class="meta"><a href="https://robinhoodchain.blockscout.com/tx/${escape(g.tx)}" target="_blank" rel="noopener noreferrer">${escape(when)}</a><code title="${escape(g.token)}">${escape(short(g.token))}</code></span>
+        <button class="btn small" data-check-ca="${escape(g.token)}">Check</button>
+      </li>`;
+    }).join('') || '<li class="empty">No graduations in the window. Most Pons tokens never leave the curve.</li>';
+    meta.textContent = `Read at block ${s.block.toLocaleString('en-US')} · ${ago(s.generatedAt) || 'recently'}. Newest first${s.graduations > s.graduated.length ? `, ${s.graduated.length} of ${s.graduations} shown` : ''}.`;
+  } catch {
+    list.innerHTML = '<li class="error">Snapshot unavailable. Run the pons-graduation-watch skill to read it yourself.</li>';
+  }
+}
+el('gradList').addEventListener('click', (e) => {
+  const ca = (e.target as HTMLElement).closest<HTMLElement>('[data-check-ca]')?.dataset.checkCa;
+  if (ca && ADDRESS.test(ca)) inspectAddress(ca);
+});
+
 // ---------- shipping log (this repo's commits) ----------
 type Ship = { sha: string; url: string; title: string; type: string; date: string };
 const SHIP_TYPE: Record<string, string> = { feat: 'Feature', fix: 'Fix', ui: 'Design', site: 'Site', token: 'Token', docs: 'Docs', skill: 'Skill' };
@@ -1122,6 +1177,7 @@ void loadToken();
 void loadContributions();
 void loadLaunches();
 void loadMovers();
+void loadGraduations();
 void loadGuards();
 void loadShiplog();
 // Share links: sentinelhood.com/?ca=0x... opens the Inspector on that address.
