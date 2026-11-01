@@ -1,11 +1,23 @@
 {
  "chainId": 4663,
- "block": 103576965,
+ "block": 103680803,
  "windowHours": 24.0,
- "generatedAt": "2026-11-01T18:00:47+00:00",
- "launches": 795,
+ "generatedAt": "2026-11-01T21:00:56+00:00",
+ "launches": 805,
  "graduations": 8,
  "graduated": [
+  {
+   "token": "0x50ae9929e5954c3f06b927351ecfe40732a6a6f8",
+   "symbol": "ARCADE",
+   "name": "MEME ARCADE",
+   "deployer": "0xcd2488c13d6c84a89dbc4cf809137c43e5118247",
+   "block": 103630955,
+   "tx": "0xc8bfc446b12944f3228bfee1828eb5105606afe08dc9784c65800f39b5d3e27a",
+   "quoteRaw": "191347838750403524965799",
+   "pairSymbol": "BUN",
+   "pairDecimals": 18,
+   "phase": 2
+  },
   {
    "token": "0x4ad0d62059ee0f4a5d7483e81b82ff40c4a7091c",
    "symbol": "WANDER",
@@ -87,18 +99,6 @@
    "tx": "0xaec8dfacae3dcd44e9e77ba6d7032d100ffa3b35a978207107be933027fd4162",
    "quoteRaw": "4200000000000000281",
    "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0xb961886115fb9e4f732e20e89efd6d0406c3527f",
-   "symbol": "SHRP",
-   "name": "Sharpe",
-   "deployer": "0x0e1651aec67b2a049a4fa6aeb6c1c305aabfc35b",
-   "block": 102778883,
-   "tx": "0x3e981defa34635b8aa69c86422e52cebd199ce3eb281be97b026429473c30223",
-   "quoteRaw": "193502872457166537181002",
-   "pairSymbol": "ORBIO",
    "pairDecimals": 18,
    "phase": 2
   }
