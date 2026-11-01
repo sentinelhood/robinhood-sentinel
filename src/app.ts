@@ -1035,7 +1035,7 @@ async function loadContributions() {
 }
 
 // ---------- live Pons v2 launches ----------
-type Launch = { token: string; deployer: string; block: number; tx: string; name: string | null; symbol: string | null; launchedAt: string | null; creatorTaxBps: number | null; phase: number | null; nativePair: boolean | null };
+type Launch = { token: string; deployer: string; block: number; tx: string; name: string | null; symbol: string | null; launchedAt: string | null; creatorTaxBps: number | null; phase: number | null; nativePair: boolean | null; launchBuy?: { buys: number; wallets: number; byDeployer: boolean; supplyPercent: string | null } | null };
 const PHASE_SHORT = ['Curve', 'Swept', 'v4 pool', 'Rescued'];
 function ago(iso: string | null) {
   const s = iso ? Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 1000)) : NaN;
@@ -1054,9 +1054,15 @@ async function loadLaunches() {
     list.innerHTML = rows.map((l, i) => {
       const dup = l.symbol && (seen.get(l.symbol.toUpperCase()) || 0) > 1;
       const tax = Number.isSafeInteger(l.creatorTaxBps) ? bps(l.creatorTaxBps) : '—';
+      // Tokens bought inside the launch transaction. Shown only when the API answered with a well-formed value.
+      const lb = l.launchBuy;
+      const lbOk = lb && Number.isSafeInteger(lb.buys) && lb.buys >= 0 && Number.isSafeInteger(lb.wallets) && lb.wallets >= 0 && typeof lb.byDeployer === 'boolean'
+        && typeof lb.supplyPercent === 'string' && /^\d{1,3}\.\d{4}$/.test(lb.supplyPercent) && Number(lb.supplyPercent) <= 100;
+      const launchBuyText = !lbOk ? '' : lb.buys === 0 ? '<span>no launch buy</span>'
+        : `<span title="Tokens bought inside the launch transaction, as a share of the 1B supply">launch buy <b>${escape(Number(lb.supplyPercent).toFixed(2))}%</b>${lb.byDeployer ? ' by deployer' : ''}${lb.wallets > 1 ? ` · ${lb.wallets} wallets` : ''}</span>`;
       return `<li style="--d:${i}">
         <div class="who"><strong>${escape(l.symbol || '?')}</strong>${dup ? '<span class="badge wait">Same ticker</span>' : ''}<small>${escape(l.name || 'Unnamed')}</small></div>
-        <span class="facts"><span>tax <b>${escape(tax)}</b></span><span>${escape(PHASE_SHORT[l.phase as number] || '?')}</span><span>${l.nativePair === false ? 'token pair' : 'ETH'}</span></span>
+        <span class="facts"><span>tax <b>${escape(tax)}</b></span><span>${escape(PHASE_SHORT[l.phase as number] || '?')}</span><span>${l.nativePair === false ? 'token pair' : 'ETH'}</span>${launchBuyText}</span>
         <span class="meta"><a href="https://robinhoodchain.blockscout.com/tx/${escape(l.tx)}" target="_blank" rel="noopener noreferrer">${escape(ago(l.launchedAt) || `#${l.block}`)}</a><code title="${escape(l.token)}">${escape(short(l.token))}</code></span>
         <button class="btn small" data-check-ca="${escape(l.token)}">Check</button>
       </li>`;

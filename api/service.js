@@ -116,6 +116,26 @@ export function parseLaunchLog(log) {
   if (!token || !curve || !deployer) return null;
   return {token: wAddr(token), curve: wAddr(curve), deployer: wAddr(deployer), block, logIndex: index, tx: log.transactionHash.toLowerCase()};
 }
+// Curve Buy event (verified 2026-10-26 on live curves): topics = [sig, sender, recipient], data = quoteIn, tokensOut, fee1, fee2.
+export const CURVE_BUY = '0xec36bf571f136799e8dc0b0b8bea4b04d8bd3d43de838aab0d5fc21d4cbfc455';
+const PONS_SUPPLY = 10n ** 27n; // 1e9 tokens, 18 decimals: Pons v2 launch config 0
+// Buys emitted by THIS launch's curve inside the launch transaction (launchAndBuy). Logs from any other contract are ignored.
+export function launchBuy(receipt, curve, deployer) {
+  if (!receipt || !Array.isArray(receipt.logs)) return null;
+  const c = String(curve).toLowerCase(), d = String(deployer).toLowerCase();
+  let tokens = 0n, buys = 0;
+  const to = new Set();
+  for (const log of receipt.logs) {
+    const t = log?.topics;
+    if (String(log?.address).toLowerCase() !== c || !Array.isArray(t) || t.length !== 3 || String(t[0]).toLowerCase() !== CURVE_BUY) continue;
+    const w = words(log.data);
+    if (w.length !== 4 || !/^0x[0-9a-fA-F]{64}$/.test(t[2])) continue;
+    tokens += wUint(w[1]);
+    buys += 1;
+    to.add(wAddr(t[2].slice(2)));
+  }
+  return {buys, wallets: to.size, byDeployer: to.has(d), supplyPercent: percentOf(tokens, PONS_SUPPLY)};
+}
 async function launches(head) {
   const found = [];
   for (let to = head, pages = 0; found.length < LAUNCH_LIMIT && to > 0 && pages < 4; pages++, to -= LAUNCH_WINDOW) {
@@ -126,12 +146,13 @@ async function launches(head) {
   const latest = found.sort((a, b) => b.block - a.block || b.logIndex - a.logIndex).slice(0, LAUNCH_LIMIT);
   const tag = '0x' + head.toString(16);
   const rows = await Promise.all(latest.map(async (l) => {
-    const [nameHex, symbolHex, launchHex, header] = await Promise.all([call(l.token, SEL.name, tag), call(l.token, SEL.symbol, tag), call(PONS_FACTORY, SEL.launch + pad(l.token), tag), rpc('eth_getBlockByNumber', ['0x' + l.block.toString(16), false]).catch(() => null)]);
+    const [nameHex, symbolHex, launchHex, header, receipt] = await Promise.all([call(l.token, SEL.name, tag), call(l.token, SEL.symbol, tag), call(PONS_FACTORY, SEL.launch + pad(l.token), tag), rpc('eth_getBlockByNumber', ['0x' + l.block.toString(16), false]).catch(() => null), rpc('eth_getTransactionReceipt', [l.tx]).catch(() => null)]);
     let rec = null;
     try { rec = launchHex && decodeLaunch(launchHex); } catch { rec = null; }
     const ts = header && Number.parseInt(header.timestamp, 16);
     return {...l, name: decodeString(nameHex), symbol: decodeString(symbolHex), launchedAt: Number.isSafeInteger(ts) ? new Date(ts * 1000).toISOString() : null,
-      creatorTaxBps: rec ? rec.creatorTaxBps : null, buybackEnabled: rec ? rec.buybackEnabled : null, phase: rec ? rec.phase : null, nativePair: rec ? rec.pairToken === ZERO_ADDR : null};
+      creatorTaxBps: rec ? rec.creatorTaxBps : null, buybackEnabled: rec ? rec.buybackEnabled : null, phase: rec ? rec.phase : null, nativePair: rec ? rec.pairToken === ZERO_ADDR : null,
+      launchBuy: launchBuy(receipt, l.curve, l.deployer)};
   }));
   return {factory: PONS_FACTORY, scannedTo: head, launches: rows, warning: 'Newest launches straight from the Pons v2 factory. Listing is not an endorsement. Names and symbols are not unique: always check the address.'};
 }
