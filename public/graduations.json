@@ -1,11 +1,23 @@
 {
  "chainId": 4663,
- "block": 103471768,
+ "block": 103576965,
  "windowHours": 24.0,
- "generatedAt": "2026-11-01T15:00:37+00:00",
- "launches": 821,
- "graduations": 7,
+ "generatedAt": "2026-11-01T18:00:47+00:00",
+ "launches": 795,
+ "graduations": 8,
  "graduated": [
+  {
+   "token": "0x4ad0d62059ee0f4a5d7483e81b82ff40c4a7091c",
+   "symbol": "WANDER",
+   "name": "Wander Forest",
+   "deployer": "0x274208a00441b27b2defbb68a67e537c24ec1898",
+   "block": 103488198,
+   "tx": "0x829a98ef94d3105e94bca52c308997a4b55d441c5aee7d6dc0dcfa2e77e55c7a",
+   "quoteRaw": "4200000000000000002",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
   {
    "token": "0xf65762c40e3f0488384d2c2f43a2636a79fdf0b9",
    "symbol": "BIAO",
