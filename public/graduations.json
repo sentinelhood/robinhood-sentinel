@@ -1,11 +1,71 @@
 {
  "chainId": 4663,
- "block": 104305218,
+ "block": 104411673,
  "windowHours": 24.0,
- "generatedAt": "2026-11-02T15:00:51+00:00",
- "launches": 1088,
- "graduations": 12,
+ "generatedAt": "2026-11-02T18:01:06+00:00",
+ "launches": 1142,
+ "graduations": 16,
  "graduated": [
+  {
+   "token": "0x3c9f88e44ddd7de04c35400966a3a1c7c826c6eb",
+   "symbol": "LORD",
+   "name": "Lord Hood",
+   "deployer": "0x4525fe3f8f36ae0f5d83f035679ad0d49124279d",
+   "block": 104405767,
+   "tx": "0x7dedce60f17b3340182d6ac31d23c19e144b53346bb264bfa9daad1735e28747",
+   "quoteRaw": "4200000000000000002",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0x8290a77be1546e8a4f219fc0cb3f309deabc691c",
+   "symbol": "ASHEN",
+   "name": "AshenOS",
+   "deployer": "0x034874cbb4929887a41ad7196700d2d7eb0a453c",
+   "block": 104393255,
+   "tx": "0x966a3fca7aaba6ea1d4c0f0f77f45dc7efb906ba37a50a8938ca175336c43fb8",
+   "quoteRaw": "4200000000000000142",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0x0e63a08d33af2ead484045cb818744c8622894fc",
+   "symbol": "LORD",
+   "name": "Lord Hood",
+   "deployer": "0x466d306367051a81c8ad1e69e48e96eb396931a8",
+   "block": 104386613,
+   "tx": "0xc9e61f0fdae25d408a4127c9458594ee0187ab21ac2d8cd826828252456f167f",
+   "quoteRaw": "4200000000000000002",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0xd39142cf605e31988153718fc6487b4d95389eca",
+   "symbol": "MHD",
+   "name": "Minehood",
+   "deployer": "0x21d1d288b90a46343d6c05d7d511b1a2343d51d3",
+   "block": 104313800,
+   "tx": "0xce69d5cdf66eb42dd4d59b48d012b4f5ab92274a846c5bbd9a2ce174749c1337",
+   "quoteRaw": "4200000000000000003",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0xccd635fc3aa4b8e969fc48ba62b0f86c6a1a5c9a",
+   "symbol": "MINE",
+   "name": "MineHood Game Token",
+   "deployer": "0xa36c490f41d16f3e2e0f0e513f5f387d958edbe3",
+   "block": 104312475,
+   "tx": "0xd3b712312fc71fe604d2a74114c634f7fcc36b7dd7fbe03034d799d97a97cb71",
+   "quoteRaw": "4200000000000000003",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
   {
    "token": "0x4ddb087ec53decf24f9dcee77dd9adae793e6f87",
    "symbol": "VAUBAN",
@@ -135,18 +195,6 @@
    "tx": "0xc8bfc446b12944f3228bfee1828eb5105606afe08dc9784c65800f39b5d3e27a",
    "quoteRaw": "191347838750403524965799",
    "pairSymbol": "BUN",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0x4ad0d62059ee0f4a5d7483e81b82ff40c4a7091c",
-   "symbol": "WANDER",
-   "name": "Wander Forest",
-   "deployer": "0x274208a00441b27b2defbb68a67e537c24ec1898",
-   "block": 103488198,
-   "tx": "0x829a98ef94d3105e94bca52c308997a4b55d441c5aee7d6dc0dcfa2e77e55c7a",
-   "quoteRaw": "4200000000000000002",
-   "pairSymbol": "ETH",
    "pairDecimals": 18,
    "phase": 2
   }
