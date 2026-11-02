@@ -1059,7 +1059,7 @@ async function loadLaunches() {
       const lbOk = lb && Number.isSafeInteger(lb.buys) && lb.buys >= 0 && Number.isSafeInteger(lb.wallets) && lb.wallets >= 0 && typeof lb.byDeployer === 'boolean'
         && typeof lb.supplyPercent === 'string' && /^\d{1,3}\.\d{4}$/.test(lb.supplyPercent) && Number(lb.supplyPercent) <= 100;
       const launchBuyText = !lbOk ? '' : lb.buys === 0 ? '<span>no launch buy</span>'
-        : `<span title="Tokens bought inside the launch transaction, as a share of the 1B supply">launch buy <b>${escape(Number(lb.supplyPercent).toFixed(2))}%</b>${lb.byDeployer ? ' by deployer' : ''}${lb.wallets > 1 ? ` · ${lb.wallets} wallets` : ''}</span>`;
+        : `<span title="Tokens bought inside the launch transaction, as a share of the 1B supply">launch buy <b>${escape(Number(lb.supplyPercent) < 0.01 ? '<0.01' : Number(lb.supplyPercent).toFixed(2))}%</b>${lb.byDeployer ? ' by deployer' : ''}${lb.wallets > 1 ? ` · ${lb.wallets} wallets` : ''}</span>`;
       // Of the deployer's own launch buy, the share still in the deployer wallet at the read block.
       const held = l.deployerHoldsPercent;
       const heldText = lbOk && lb.byDeployer && typeof held === 'string' && /^\d{1,3}\.\d{4}$/.test(held) && Number(held) <= 100
