@@ -1035,7 +1035,7 @@ async function loadContributions() {
 }
 
 // ---------- live Pons v2 launches ----------
-type Launch = { token: string; deployer: string; block: number; tx: string; name: string | null; symbol: string | null; launchedAt: string | null; creatorTaxBps: number | null; phase: number | null; nativePair: boolean | null; launchBuy?: { buys: number; wallets: number; byDeployer: boolean; supplyPercent: string | null } | null; deployerHoldsPercent?: string | null };
+type Launch = { token: string; deployer: string; block: number; tx: string; name: string | null; symbol: string | null; launchedAt: string | null; creatorTaxBps: number | null; phase: number | null; nativePair: boolean | null; launchBuy?: { buys: number; wallets: number; byDeployer: boolean; supplyPercent: string | null } | null; deployerHoldsPercent?: string | null; deployerExit?: { soldPercent: string | null; burnedPercent: string | null; sentPercent: string | null; sentTo: number } | null };
 const PHASE_SHORT = ['Curve', 'Swept', 'v4 pool', 'Rescued'];
 function ago(iso: string | null) {
   const s = iso ? Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 1000)) : NaN;
@@ -1063,10 +1063,18 @@ async function loadLaunches() {
       // Of the deployer's own launch buy, the share still in the deployer wallet at the read block.
       const held = l.deployerHoldsPercent;
       const heldText = lbOk && lb.byDeployer && typeof held === 'string' && /^\d{1,3}\.\d{4}$/.test(held) && Number(held) <= 100
-        ? `<span title="Share of the deployer's launch buy still in the deployer wallet now. Where the rest went (sold or moved) is not shown here.">dev holds <b>${escape(String(Math.round(Number(held))))}%</b> of it</span>` : '';
+        ? `<span title="Share of the deployer's launch buy still in the deployer wallet now.">dev holds <b>${escape(String(Math.round(Number(held))))}%</b> of it</span>` : '';
+      // Where tokens that left the deployer went, from its Transfer logs since launch. Shares of everything that left.
+      const ex = l.deployerExit;
+      const pctOk = (v: unknown) => v === null || (typeof v === 'string' && /^\d{1,3}\.\d{4}$/.test(v) && Number(v) <= 100);
+      const exOk = heldText && ex && pctOk(ex.soldPercent) && pctOk(ex.burnedPercent) && pctOk(ex.sentPercent) && Number.isSafeInteger(ex.sentTo) && ex.sentTo >= 0;
+      const parts = !exOk ? [] : ([['sold', ex.soldPercent], ['burned', ex.burnedPercent], [ex.sentTo === 1 ? 'sent to 1 wallet' : `sent to ${ex.sentTo} wallets`, ex.sentPercent]] as [string, string | null][])
+        .filter(([, v]) => v !== null && Number(v) > 0).map(([k, v]) => Number(v) >= 99.995 ? k : `${Math.round(Number(v))}% ${k}`);
+      const exitText = parts.length
+        ? `<span title="Tokens that left the deployer wallet since launch, by destination. Sold = its own curve or the Uniswap v4 pool. Burned = zero or dead address. Sent = any other address, which may be the same person.">out: <b>${escape(parts.join(', '))}</b></span>` : '';
       return `<li style="--d:${i}">
         <div class="who"><strong>${escape(l.symbol || '?')}</strong>${dup ? '<span class="badge wait">Same ticker</span>' : ''}<small>${escape(l.name || 'Unnamed')}</small></div>
-        <span class="facts"><span>tax <b>${escape(tax)}</b></span><span>${escape(PHASE_SHORT[l.phase as number] || '?')}</span><span>${l.nativePair === false ? 'token pair' : 'ETH'}</span>${launchBuyText}${heldText}</span>
+        <span class="facts"><span>tax <b>${escape(tax)}</b></span><span>${escape(PHASE_SHORT[l.phase as number] || '?')}</span><span>${l.nativePair === false ? 'token pair' : 'ETH'}</span>${launchBuyText}${heldText}${exitText}</span>
         <span class="meta"><a href="https://robinhoodchain.blockscout.com/tx/${escape(l.tx)}" target="_blank" rel="noopener noreferrer">${escape(ago(l.launchedAt) || `#${l.block}`)}</a><code title="${escape(l.token)}">${escape(short(l.token))}</code></span>
         <button class="btn small" data-check-ca="${escape(l.token)}">Check</button>
       </li>`;

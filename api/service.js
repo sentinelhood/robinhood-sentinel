@@ -147,6 +147,32 @@ export function deployerHolds(deployerTokens, balanceHex) {
   if (bought === 0n) return null;
   return percentOf(bal < bought ? bal : bought, bought);
 }
+export const TRANSFER = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
+export const V4_POOL_MANAGER = '0x8366a39cc670b4001a1121b8f6a443a643e40951'; // Robinhood Chain, same as Aeon deploy-uni-hook chains.tsv
+const BURN_ADDRS = new Set([ZERO_ADDR, '0x000000000000000000000000000000000000dead']);
+// Where tokens leaving the deployer went, as shares of everything that left: sold (to its own curve or the v4 PoolManager,
+// or through a router in a transaction that moved this token into one of them), burned, or sent to any other address.
+// saleTxs = hashes of transactions that moved this token into the curve or PoolManager.
+export function deployerExit(logs, token, curve, deployer, saleTxs = new Set()) {
+  if (!Array.isArray(logs)) return null;
+  const tk = String(token).toLowerCase(), c = String(curve).toLowerCase(), d = String(deployer).toLowerCase();
+  const sums = {sold: 0n, burned: 0n, sent: 0n};
+  const others = new Set();
+  for (const log of logs) {
+    const t = log?.topics;
+    if (log?.removed || String(log?.address).toLowerCase() !== tk || !Array.isArray(t) || t.length !== 3 || String(t[0]).toLowerCase() !== TRANSFER) continue;
+    if (!/^0x[0-9a-fA-F]{64}$/.test(t[1]) || !/^0x[0-9a-fA-F]{64}$/.test(t[2]) || wAddr(t[1].slice(2)).toLowerCase() !== d) continue;
+    const w = words(log.data);
+    if (w.length !== 1) continue;
+    const to = wAddr(t[2].slice(2)).toLowerCase(), amt = wUint(w[0]);
+    if (to === c || to === V4_POOL_MANAGER || saleTxs.has(String(log.transactionHash).toLowerCase())) sums.sold += amt;
+    else if (BURN_ADDRS.has(to)) sums.burned += amt;
+    else { sums.sent += amt; others.add(to); }
+  }
+  const total = sums.sold + sums.burned + sums.sent;
+  if (total === 0n) return {soldPercent: null, burnedPercent: null, sentPercent: null, sentTo: 0};
+  return {soldPercent: percentOf(sums.sold, total), burnedPercent: percentOf(sums.burned, total), sentPercent: percentOf(sums.sent, total), sentTo: others.size};
+}
 async function launches(head) {
   const found = [];
   for (let to = head, pages = 0; found.length < LAUNCH_LIMIT && to > 0 && pages < 4; pages++, to -= LAUNCH_WINDOW) {
@@ -162,10 +188,24 @@ async function launches(head) {
     try { rec = launchHex && decodeLaunch(launchHex); } catch { rec = null; }
     const buy = launchBuy(receipt, l.curve, l.deployer);
     const holds = buy && buy.byDeployer ? deployerHolds(buy.deployerTokens, await call(l.token, SEL.balanceOf + pad(l.deployer), tag)) : null;
+    // Only when some of it left: one address+topic log read, launch block to the read block.
+    let exit = null;
+    if (holds !== null && holds !== '100.0000') {
+      const range = {address: l.token, fromBlock: '0x' + l.block.toString(16), toBlock: tag};
+      // One value per topic position: the public RPC caps OR-topic filters at 100k blocks, single values at 10M.
+      const [outs, toCurve, toPool] = await Promise.all([
+        rpc('eth_getLogs', [{...range, topics: [TRANSFER, '0x' + pad(l.deployer)]}]).catch(() => null),
+        rpc('eth_getLogs', [{...range, topics: [TRANSFER, null, '0x' + pad(l.curve)]}]).catch(() => null),
+        rpc('eth_getLogs', [{...range, topics: [TRANSFER, null, '0x' + pad(V4_POOL_MANAGER)]}]).catch(() => null)]);
+      // Without the sale list a router sell would read as "sent", so show nothing rather than mislabel it.
+      exit = Array.isArray(toCurve) && Array.isArray(toPool)
+        ? deployerExit(outs, l.token, l.curve, l.deployer, new Set([...toCurve, ...toPool].map((s) => String(s?.transactionHash).toLowerCase())))
+        : null;
+    }
     const ts = header && Number.parseInt(header.timestamp, 16);
     return {...l, name: decodeString(nameHex), symbol: decodeString(symbolHex), launchedAt: Number.isSafeInteger(ts) ? new Date(ts * 1000).toISOString() : null,
       creatorTaxBps: rec ? rec.creatorTaxBps : null, buybackEnabled: rec ? rec.buybackEnabled : null, phase: rec ? rec.phase : null, nativePair: rec ? rec.pairToken === ZERO_ADDR : null,
-      launchBuy: buy, deployerHoldsPercent: holds};
+      launchBuy: buy, deployerHoldsPercent: holds, deployerExit: exit};
   }));
   return {factory: PONS_FACTORY, scannedTo: head, launches: rows, warning: 'Newest launches straight from the Pons v2 factory. Listing is not an endorsement. Names and symbols are not unique: always check the address.'};
 }
