@@ -1,11 +1,23 @@
 {
  "chainId": 4663,
- "block": 104411673,
+ "block": 104518030,
  "windowHours": 24.0,
- "generatedAt": "2026-11-02T18:01:06+00:00",
- "launches": 1142,
+ "generatedAt": "2026-11-02T21:00:37+00:00",
+ "launches": 1201,
  "graduations": 16,
  "graduated": [
+  {
+   "token": "0xb0196ea2df69b4c26b949ac78ee3d7483796acee",
+   "symbol": "LORD",
+   "name": "Lord Hood",
+   "deployer": "0xb51926818718e2eda9524fc4854058bbbb93ae33",
+   "block": 104441425,
+   "tx": "0xe5aa6ae4f9bd1c28199469b278cc64e769bdbbddd3c5c2f2f8a7c5557fced5e1",
+   "quoteRaw": "4200000000000000002",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
   {
    "token": "0x3c9f88e44ddd7de04c35400966a3a1c7c826c6eb",
    "symbol": "LORD",
@@ -183,18 +195,6 @@
    "tx": "0xa7823fd1110c496331e8fcbc5681fab12afbac80ca9f95e78e05eb4ee9f3bdef",
    "quoteRaw": "4200000000000000008",
    "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0x50ae9929e5954c3f06b927351ecfe40732a6a6f8",
-   "symbol": "ARCADE",
-   "name": "MEME ARCADE",
-   "deployer": "0xcd2488c13d6c84a89dbc4cf809137c43e5118247",
-   "block": 103630955,
-   "tx": "0xc8bfc446b12944f3228bfee1828eb5105606afe08dc9784c65800f39b5d3e27a",
-   "quoteRaw": "191347838750403524965799",
-   "pairSymbol": "BUN",
    "pairDecimals": 18,
    "phase": 2
   }
