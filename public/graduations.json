@@ -1,11 +1,23 @@
 {
  "chainId": 4663,
- "block": 103888377,
+ "block": 103992206,
  "windowHours": 24.0,
- "generatedAt": "2026-11-02T03:00:38+00:00",
- "launches": 850,
+ "generatedAt": "2026-11-02T06:00:41+00:00",
+ "launches": 859,
  "graduations": 8,
  "graduated": [
+  {
+   "token": "0x6511c233790ec10f7d673c64dc82c3f941d57828",
+   "symbol": "OAK",
+   "name": "Oak",
+   "deployer": "0x84b1b9e5d1cafd9543e684bb39e9cbd478189ee2",
+   "block": 103957011,
+   "tx": "0x94cef47d60b0edcfe3aa5ca8712b37074cd30c3a68ae4349362dd0023e30f99a",
+   "quoteRaw": "4200000000000000136",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
   {
    "token": "0xe4d2422ed4d203a0f1ec2043a4db1eda426fca18",
    "symbol": "BURSAR",
@@ -87,18 +99,6 @@
    "tx": "0x6c432f47a40a6bf02f9ae1e2e76204a38325a9aa54de052b83a1d645bc05be15",
    "quoteRaw": "4200000000000000210",
    "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0xc4bea7e18409b2d1042cea57243964b76a3fc4bb",
-   "symbol": "SLIPPYGME",
-   "name": "SLIPPY",
-   "deployer": "0x5dc0e03ced85d3b9472dc4a2c387498b5bb46746",
-   "block": 103136495,
-   "tx": "0xa1c8c415dc910b24c48f41acce3493e1ac54b1652359291a928ca2127906ccc5",
-   "quoteRaw": "369000000000000000034",
-   "pairSymbol": "GME",
    "pairDecimals": 18,
    "phase": 2
   }
