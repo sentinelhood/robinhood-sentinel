@@ -1,6 +1,6 @@
 ---
 name: pons-token-check
-description: One-shot check of any token on Robinhood Chain - Pons v2 launch record, real trading cost (base fee + creator tax), phase, deployer's full launch history and what the deployer holds - keyless, read-only, block-stamped
+description: One-shot check of any token on Robinhood Chain - Pons v2 launch record, real trading cost (base fee + creator tax), phase, deployer's full launch history, what the deployer holds, and how much of its own launch buy the deployer still holds - keyless, read-only, block-stamped
 metadata:
   title: Pons Token Check
   category: crypto
@@ -24,12 +24,13 @@ Aeon's token skills (`investigation-report`, `tx-explain`, `token-movers`) read 
 - What does a trade really cost (Pons base fee + the creator tax set at launch)?
 - Who deployed it, how many Pons tokens has that address launched, and is this one of many?
 - How much of the supply do the deployer and fee recipient hold right now?
+- Did the deployer buy in the launch transaction itself, and does it still hold those tokens?
 
 ## Network note
 
 Public, unauthenticated reads only. `./secretcurl` is not needed because no secret is involved.
 
-- `https://rpc.mainnet.chain.robinhood.com` - the official RPC, called only with `eth_chainId`, `eth_blockNumber`, `eth_getCode`, `eth_call` (`name`, `symbol`, `decimals`, `totalSupply`, `balanceOf`, the Pons factory's `getLaunchedToken`, the curve's fee) and `eth_getLogs` (`TokenLaunched` on the Pons v2 factory `0x7eD598BcEf8bd9Edd8C97A195C6d13f40801EC7e`, from docs.ponsfamily.com/v2#contracts, filtered by deployer).
+- `https://rpc.mainnet.chain.robinhood.com` - the official RPC, called only with `eth_chainId`, `eth_blockNumber`, `eth_getCode`, `eth_call` (`name`, `symbol`, `decimals`, `totalSupply`, `balanceOf`, the Pons factory's `getLaunchedToken`, the curve's fee), `eth_getLogs` (`TokenLaunched` on the Pons v2 factory `0x7eD598BcEf8bd9Edd8C97A195C6d13f40801EC7e`, from docs.ponsfamily.com/v2#contracts, filtered by deployer) and `eth_getTransactionReceipt` (the launch transaction only, for the curve's own Buy events).
 
 The helper `skills/pons-token-check/pons_token_check.py` uses the Python standard library only. Every read is pinned to one block number, and that block is printed in the report.
 
@@ -52,7 +53,8 @@ The helper `skills/pons-token-check/pons_token_check.py` uses the Python standar
 - **Phase** - `bonding curve` (0), `swept, pool pending` (1), `Uniswap v4 pool, liquidity locked` (2), `rescued` (3), as the Pons factory records it.
 - **Trading cost** - Pons base fee read from the token's curve, plus the creator tax fixed at launch. Pons does not let the creator raise the tax later.
 - **Deployer** - `wallet`, `wallet, EIP-7702 delegated` or `contract`, from the code at that address. Launch count covers every Pons v2 launch since the factory went live.
-- **Facts worth a look** - plain facts only: creator tax, still on the curve, the deployer or fee recipient holding 5% or more, a deployer with 10 or more launches, no Pons record, not an ERC-20.
+- **Launch buy** - tokens bought from this token's own curve inside the launch transaction, as a share of supply, and the part the deployer received. `still holds` compares that part with the deployer's balance now, capped at 100%. A low number means the tokens left the deployer wallet: sold to the curve or moved to another wallet, which a balance cannot tell apart.
+- **Facts worth a look** - plain facts only: creator tax, still on the curve, the deployer or fee recipient holding 5% or more, a deployer with 10 or more launches, a deployer holding less than 10% of its own launch buy, no Pons record, not an ERC-20.
 
 ## Hard limits
 

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """One-shot check of a token on Robinhood Chain (chain ID 4663): ERC-20 metadata, its Pons v2
 factory record (phase, creator tax, base fee, buyback, pair), the deployer's full Pons launch
-history, and what the deployer and fee recipient currently hold.
+history, what the deployer and fee recipient currently hold, and how much the deployer bought inside
+the launch transaction and still holds.
 
 Read-only and keyless. Data source: the official public RPC, via eth_chainId, eth_blockNumber,
-eth_getCode, eth_call and eth_getLogs. Every read is pinned to one block.
+eth_getCode, eth_call, eth_getLogs and eth_getTransactionReceipt. Every read is pinned to one block.
 
 Usage:
   python3 pons_token_check.py 0xTOKEN [--json]
@@ -19,6 +20,8 @@ RPC = 'https://rpc.mainnet.chain.robinhood.com'
 CHAIN_ID = 4663
 FACTORY = '0x7ed598bcef8bd9edd8c97a195c6d13f40801ec7e'  # Pons v2, docs.ponsfamily.com/v2#contracts
 TOKEN_LAUNCHED = '0x8d4aad4953d0ca700d468f3753aa14432d1b35b43ec6409f051fb6aa43a89607'
+# Curve Buy: topics [sig, sender, recipient], data [quoteIn, tokensOut, fee, fee]. Verified on live Pons v2 curves.
+CURVE_BUY = '0xec36bf571f136799e8dc0b0b8bea4b04d8bd3d43de838aab0d5fc21d4cbfc455'
 FIRST_BLOCK = 28_000_000      # first Pons v2 launch is just after 28.58M
 LOG_WINDOW = 10_000_000       # address + topic filter: the public RPC allows 10M-block ranges
 SEL = {'launch': '0x3cf28b5a', 'fee': '0x24a9d853', 'name': '0x06fdde03', 'symbol': '0x95d89b41',
@@ -29,6 +32,7 @@ ADDRESS = re.compile(r'^0x[0-9a-fA-F]{40}$')
 HEADERS = {'Content-Type': 'application/json', 'User-Agent': 'aeon-pons-token-check/1.0'}
 SERIAL = 10            # launches from one deployer at which the history is called out
 BIG_HOLDER_PCT = 5.0   # deployer / fee recipient share of supply worth calling out
+LOW_KEPT_PCT = 10.0    # deployer kept less than this share of its own launch buy
 EXPLORER = 'https://robinhoodchain.blockscout.com'
 
 
@@ -143,6 +147,43 @@ def history(logs, deployer, token):
             'number': tokens.index(token) + 1 if token in tokens else None}
 
 
+def launch_tx(logs, deployer, token):
+    """Transaction hash of this token's TokenLaunched event, from the deployer's own launch logs."""
+    for log in logs:
+        t = log.get('topics') or []
+        if (len(t) == 4 and str(t[0]).lower() == TOKEN_LAUNCHED and str(log.get('address', '')).lower() == FACTORY
+                and not log.get('removed') and '0x' + t[1][-40:].lower() == token and '0x' + t[3][-40:].lower() == deployer):
+            return log.get('transactionHash')
+    return None
+
+
+def launch_buy(receipt, curve, deployer):
+    """Tokens bought from this token's own curve inside the launch tx: all of them, and the part sent to the deployer."""
+    if not isinstance(receipt, dict) or not isinstance(receipt.get('logs'), list):
+        return None
+    total = to_dep = buys = 0
+    for log in receipt['logs']:
+        t = (log or {}).get('topics') or []
+        if str((log or {}).get('address', '')).lower() != curve or len(t) != 3 or str(t[0]).lower() != CURVE_BUY:
+            continue
+        w = words(log.get('data'))
+        if len(w) != 4:
+            continue
+        out = int(w[1], 16)
+        total += out
+        buys += 1
+        if '0x' + str(t[2])[-40:].lower() == deployer:
+            to_dep += out
+    return {'buys': buys, 'tokens': total, 'deployerTokens': to_dep}
+
+
+def kept(bought, balance):
+    """Share of the deployer's launch buy still in its wallet, capped at 100 (it may have bought more later)."""
+    if not bought or balance is None:
+        return None
+    return pct(min(balance, bought), bought)
+
+
 def pct(part, total):
     return round(100 * part / total, 2) if total else None
 
@@ -175,6 +216,10 @@ def facts(r):
     hist = p['deployerHistory']
     if hist and hist['launches'] >= SERIAL:
         out.append(f"Deployer has launched {hist['launches']} Pons tokens" + (f" (this is #{hist['number']})." if hist['number'] else '.'))
+    lb = p.get('launchBuy')
+    if lb and lb.get('deployerPercent') and lb.get('deployerKeptPercent') is not None and lb['deployerKeptPercent'] < LOW_KEPT_PCT:
+        out.append(f"Deployer bought {lb['deployerPercent']}% of supply in the launch transaction and now holds "
+                   f"{lb['deployerKeptPercent']}% of that. The balance does not show whether the rest was sold or moved.")
     return out
 
 
@@ -194,6 +239,15 @@ def to_markdown(r):
         dh = p['holdings'].get('deployer')
         hist_txt = (f"{hist['launches']} Pons launch{'es' if hist['launches'] != 1 else ''}" + (f" (this is #{hist['number']})" if hist['number'] else '')) if hist else 'history unavailable'
         lines.append(f"Deployer: {short(p['deployer'])} ({p['deployerKind']}) · holds {dh['percent'] if dh else '?'}% · {hist_txt}")
+        lb = p.get('launchBuy')
+        if lb is None:
+            lines.append('Launch buy: unavailable')
+        elif not lb['percent']:
+            lines.append('Launch buy: none in the launch transaction')
+        else:
+            who = (f"deployer received {lb['deployerPercent']}%, still holds {lb['deployerKeptPercent'] if lb['deployerKeptPercent'] is not None else '?'}% of it"
+                   if lb['deployerPercent'] else 'none to the deployer')
+            lines.append(f"Launch buy: {lb['percent']}% of supply in the launch transaction · {who}")
         if p['feeRecipient'] == p['deployer']:
             lines.append('Fee recipient: same as deployer')
         elif p['feeRecipient'] != ZERO:
@@ -237,15 +291,26 @@ def check(token):
         fee = uint(res[0])
         launch['baseFeeBps'] = fee if fee is not None and fee <= 10000 else None
         launch['holdings'] = {}
+        raw_bal = {}
         for k, raw in zip(roles, res[1:1 + len(roles)]):
-            bal = uint(raw)
+            bal = raw_bal[k] = uint(raw)
             launch['holdings'][k] = {'address': holders[k], 'percent': pct(bal, total) if bal is not None and erc20 else None}
         launch['pairSymbol'] = decode_string(res[-1]) if pair_q else None
         launch['deployerKind'] = account_kind(rpc('eth_getCode', [launch['deployer'], block]))
         try:
-            launch['deployerHistory'] = deployer_history(launch['deployer'], token, block_n)
+            launch['deployerHistory'], tx = deployer_history(launch['deployer'], token, block_n)
         except RpcError:
-            launch['deployerHistory'] = None
+            launch['deployerHistory'], tx = None, None
+        launch['launchBuy'] = None
+        if tx and erc20 and total:
+            try:
+                lb = launch_buy(rpc('eth_getTransactionReceipt', [tx]), launch['curve'], launch['deployer'])
+            except RpcError:
+                lb = None
+            if lb:
+                launch['launchBuy'] = {'tx': tx, 'buys': lb['buys'], 'percent': pct(lb['tokens'], total),
+                                       'deployerPercent': pct(lb['deployerTokens'], total),
+                                       'deployerKeptPercent': kept(lb['deployerTokens'], raw_bal.get('deployer'))}
         r['pons'] = launch
     r['facts'] = facts(r)
     return r
@@ -265,7 +330,7 @@ def deployer_history(deployer, token, head):
             logs += rpc('eth_getLogs', [f])
     else:
         logs = [log for x in sorted(res, key=lambda x: x['id']) for log in x['result']]
-    return history(logs, deployer, token)
+    return history(logs, deployer, token), launch_tx(logs, deployer, token)
 
 
 def main(argv=None):

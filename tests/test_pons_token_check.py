@@ -87,9 +87,51 @@ def report(**pons):
             'totalSupply': '1,000,000,000', 'pons': {**base, **pons}}
 
 
+CURVE = '0x' + '1' * 40
+
+
+def buy_log(to, tokens, address=CURVE):
+    return {'address': address, 'topics': [ptc.CURVE_BUY, '0x' + '3' * 64, '0x' + to[2:].rjust(64, '0')],
+            'data': '0x' + format(10 ** 15, '064x') + format(tokens, '064x') + format(1, '064x') + format(2, '064x')}
+
+
+class LaunchBuy(unittest.TestCase):
+    def test_launch_tx_picks_this_token(self):
+        a, b = '0x' + 'a' * 40, '0x' + 'b' * 40
+        logs = [{**launch_log(a, DEP, 1), 'transactionHash': '0xaa'}, {**launch_log(b, DEP, 2), 'transactionHash': '0xbb'},
+                {**launch_log(b, DEP, 3), 'transactionHash': '0xcc', 'removed': True}]
+        self.assertEqual(ptc.launch_tx(logs, DEP, b), '0xbb')
+        self.assertIsNone(ptc.launch_tx(logs, '0x' + '9' * 40, b))
+
+    def test_sums_curve_buys_and_deployer_part(self):
+        other = '0x' + '4' * 40
+        r = {'logs': [buy_log(DEP, 5 * 10 ** 25), buy_log(other, 10 ** 25), buy_log(DEP, 10 ** 26, address=other),
+                      {**buy_log(DEP, 10 ** 26), 'data': '0x' + '0' * 64}, None]}
+        self.assertEqual(ptc.launch_buy(r, CURVE, DEP), {'buys': 2, 'tokens': 6 * 10 ** 25, 'deployerTokens': 5 * 10 ** 25})
+        self.assertIsNone(ptc.launch_buy(None, CURVE, DEP))
+        self.assertIsNone(ptc.launch_buy({}, CURVE, DEP))
+
+    def test_kept(self):
+        self.assertEqual(ptc.kept(100, 100), 100.0)
+        self.assertEqual(ptc.kept(100, 25), 25.0)
+        self.assertEqual(ptc.kept(100, 500), 100.0)
+        self.assertEqual(ptc.kept(100, 0), 0.0)
+        self.assertIsNone(ptc.kept(0, 5))
+        self.assertIsNone(ptc.kept(100, None))
+
+
 class Facts(unittest.TestCase):
     def test_quiet_token_has_no_facts(self):
         self.assertEqual(ptc.facts(report()), [])
+
+    def test_launch_buy_fact_only_when_deployer_kept_little(self):
+        lb = {'tx': '0x1', 'buys': 1, 'percent': 9.09, 'deployerPercent': 9.09, 'deployerKeptPercent': 0.0}
+        self.assertEqual(ptc.facts(report(launchBuy=lb)), [
+            'Deployer bought 9.09% of supply in the launch transaction and now holds 0.0% of that. '
+            'The balance does not show whether the rest was sold or moved.'])
+        self.assertEqual(ptc.facts(report(launchBuy={**lb, 'deployerKeptPercent': 100.0})), [])
+        self.assertEqual(ptc.facts(report(launchBuy={**lb, 'deployerPercent': 0.0, 'deployerKeptPercent': None})), [])
+        self.assertIn('Launch buy: 9.09% of supply', ptc.to_markdown({**report(launchBuy=lb), 'facts': []}))
 
     def test_each_fact(self):
         f = ptc.facts(report(creatorTaxBps=300, phase=0, holdings={'deployer': {'address': DEP, 'percent': 12.5}},
