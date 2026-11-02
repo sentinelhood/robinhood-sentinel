@@ -123,18 +123,29 @@ const PONS_SUPPLY = 10n ** 27n; // 1e9 tokens, 18 decimals: Pons v2 launch confi
 export function launchBuy(receipt, curve, deployer) {
   if (!receipt || !Array.isArray(receipt.logs)) return null;
   const c = String(curve).toLowerCase(), d = String(deployer).toLowerCase();
-  let tokens = 0n, buys = 0;
+  let tokens = 0n, toDeployer = 0n, buys = 0;
   const to = new Set();
   for (const log of receipt.logs) {
     const t = log?.topics;
     if (String(log?.address).toLowerCase() !== c || !Array.isArray(t) || t.length !== 3 || String(t[0]).toLowerCase() !== CURVE_BUY) continue;
     const w = words(log.data);
     if (w.length !== 4 || !/^0x[0-9a-fA-F]{64}$/.test(t[2])) continue;
+    const recipient = wAddr(t[2].slice(2));
     tokens += wUint(w[1]);
+    if (recipient === d) toDeployer += wUint(w[1]);
     buys += 1;
-    to.add(wAddr(t[2].slice(2)));
+    to.add(recipient);
   }
-  return {buys, wallets: to.size, byDeployer: to.has(d), supplyPercent: percentOf(tokens, PONS_SUPPLY)};
+  return {buys, wallets: to.size, byDeployer: to.has(d), supplyPercent: percentOf(tokens, PONS_SUPPLY), deployerTokens: toDeployer.toString()};
+}
+// Share of the deployer's launch-buy tokens still in the deployer wallet, capped at 100 (it may have bought more later).
+// A balance read says nothing about where the rest went: sold to the curve, or moved to another wallet.
+export function deployerHolds(deployerTokens, balanceHex) {
+  const w = words(balanceHex);
+  if (w.length !== 1 || !/^\d+$/.test(String(deployerTokens))) return null;
+  const bought = BigInt(deployerTokens), bal = wUint(w[0]);
+  if (bought === 0n) return null;
+  return percentOf(bal < bought ? bal : bought, bought);
 }
 async function launches(head) {
   const found = [];
@@ -149,10 +160,12 @@ async function launches(head) {
     const [nameHex, symbolHex, launchHex, header, receipt] = await Promise.all([call(l.token, SEL.name, tag), call(l.token, SEL.symbol, tag), call(PONS_FACTORY, SEL.launch + pad(l.token), tag), rpc('eth_getBlockByNumber', ['0x' + l.block.toString(16), false]).catch(() => null), rpc('eth_getTransactionReceipt', [l.tx]).catch(() => null)]);
     let rec = null;
     try { rec = launchHex && decodeLaunch(launchHex); } catch { rec = null; }
+    const buy = launchBuy(receipt, l.curve, l.deployer);
+    const holds = buy && buy.byDeployer ? deployerHolds(buy.deployerTokens, await call(l.token, SEL.balanceOf + pad(l.deployer), tag)) : null;
     const ts = header && Number.parseInt(header.timestamp, 16);
     return {...l, name: decodeString(nameHex), symbol: decodeString(symbolHex), launchedAt: Number.isSafeInteger(ts) ? new Date(ts * 1000).toISOString() : null,
       creatorTaxBps: rec ? rec.creatorTaxBps : null, buybackEnabled: rec ? rec.buybackEnabled : null, phase: rec ? rec.phase : null, nativePair: rec ? rec.pairToken === ZERO_ADDR : null,
-      launchBuy: launchBuy(receipt, l.curve, l.deployer)};
+      launchBuy: buy, deployerHoldsPercent: holds};
   }));
   return {factory: PONS_FACTORY, scannedTo: head, launches: rows, warning: 'Newest launches straight from the Pons v2 factory. Listing is not an endorsement. Names and symbols are not unique: always check the address.'};
 }

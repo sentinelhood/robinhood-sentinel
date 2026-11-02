@@ -1035,7 +1035,7 @@ async function loadContributions() {
 }
 
 // ---------- live Pons v2 launches ----------
-type Launch = { token: string; deployer: string; block: number; tx: string; name: string | null; symbol: string | null; launchedAt: string | null; creatorTaxBps: number | null; phase: number | null; nativePair: boolean | null; launchBuy?: { buys: number; wallets: number; byDeployer: boolean; supplyPercent: string | null } | null };
+type Launch = { token: string; deployer: string; block: number; tx: string; name: string | null; symbol: string | null; launchedAt: string | null; creatorTaxBps: number | null; phase: number | null; nativePair: boolean | null; launchBuy?: { buys: number; wallets: number; byDeployer: boolean; supplyPercent: string | null } | null; deployerHoldsPercent?: string | null };
 const PHASE_SHORT = ['Curve', 'Swept', 'v4 pool', 'Rescued'];
 function ago(iso: string | null) {
   const s = iso ? Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 1000)) : NaN;
@@ -1060,9 +1060,13 @@ async function loadLaunches() {
         && typeof lb.supplyPercent === 'string' && /^\d{1,3}\.\d{4}$/.test(lb.supplyPercent) && Number(lb.supplyPercent) <= 100;
       const launchBuyText = !lbOk ? '' : lb.buys === 0 ? '<span>no launch buy</span>'
         : `<span title="Tokens bought inside the launch transaction, as a share of the 1B supply">launch buy <b>${escape(Number(lb.supplyPercent).toFixed(2))}%</b>${lb.byDeployer ? ' by deployer' : ''}${lb.wallets > 1 ? ` · ${lb.wallets} wallets` : ''}</span>`;
+      // Of the deployer's own launch buy, the share still in the deployer wallet at the read block.
+      const held = l.deployerHoldsPercent;
+      const heldText = lbOk && lb.byDeployer && typeof held === 'string' && /^\d{1,3}\.\d{4}$/.test(held) && Number(held) <= 100
+        ? `<span title="Share of the deployer's launch buy still in the deployer wallet now. Where the rest went (sold or moved) is not shown here.">dev holds <b>${escape(String(Math.round(Number(held))))}%</b> of it</span>` : '';
       return `<li style="--d:${i}">
         <div class="who"><strong>${escape(l.symbol || '?')}</strong>${dup ? '<span class="badge wait">Same ticker</span>' : ''}<small>${escape(l.name || 'Unnamed')}</small></div>
-        <span class="facts"><span>tax <b>${escape(tax)}</b></span><span>${escape(PHASE_SHORT[l.phase as number] || '?')}</span><span>${l.nativePair === false ? 'token pair' : 'ETH'}</span>${launchBuyText}</span>
+        <span class="facts"><span>tax <b>${escape(tax)}</b></span><span>${escape(PHASE_SHORT[l.phase as number] || '?')}</span><span>${l.nativePair === false ? 'token pair' : 'ETH'}</span>${launchBuyText}${heldText}</span>
         <span class="meta"><a href="https://robinhoodchain.blockscout.com/tx/${escape(l.tx)}" target="_blank" rel="noopener noreferrer">${escape(ago(l.launchedAt) || `#${l.block}`)}</a><code title="${escape(l.token)}">${escape(short(l.token))}</code></span>
         <button class="btn small" data-check-ca="${escape(l.token)}">Check</button>
       </li>`;
