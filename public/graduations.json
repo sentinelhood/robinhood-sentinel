@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 104095472,
+ "block": 104199010,
  "windowHours": 24.0,
- "generatedAt": "2026-11-02T09:00:40+00:00",
- "launches": 886,
- "graduations": 5,
+ "generatedAt": "2026-11-02T12:00:45+00:00",
+ "launches": 968,
+ "graduations": 4,
  "graduated": [
   {
    "token": "0x6511c233790ec10f7d673c64dc82c3f941d57828",
@@ -51,18 +51,6 @@
    "tx": "0x829a98ef94d3105e94bca52c308997a4b55d441c5aee7d6dc0dcfa2e77e55c7a",
    "quoteRaw": "4200000000000000002",
    "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0xf65762c40e3f0488384d2c2f43a2636a79fdf0b9",
-   "symbol": "BIAO",
-   "name": "Biaoqing",
-   "deployer": "0x1910028e2b6113b1918911b4702318d84741364a",
-   "block": 103336800,
-   "tx": "0xf62c39dccd33eb87da8d1d38ec11ef0054d94801e5f752f60cf4d322f7c4f68f",
-   "quoteRaw": "11146474875652736698",
-   "pairSymbol": "QQQ",
    "pairDecimals": 18,
    "phase": 2
   }
