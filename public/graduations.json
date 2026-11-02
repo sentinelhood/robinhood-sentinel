@@ -1,11 +1,23 @@
 {
  "chainId": 4663,
- "block": 103680803,
+ "block": 103783735,
  "windowHours": 24.0,
- "generatedAt": "2026-11-01T21:00:56+00:00",
- "launches": 805,
+ "generatedAt": "2026-11-02T00:00:38+00:00",
+ "launches": 853,
  "graduations": 8,
  "graduated": [
+  {
+   "token": "0xe4d2422ed4d203a0f1ec2043a4db1eda426fca18",
+   "symbol": "BURSAR",
+   "name": "Bursar",
+   "deployer": "0x63c17961efee664a92cf0b95fcc0ebc6b4e1d83e",
+   "block": 103695364,
+   "tx": "0xa7823fd1110c496331e8fcbc5681fab12afbac80ca9f95e78e05eb4ee9f3bdef",
+   "quoteRaw": "4200000000000000008",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
   {
    "token": "0x50ae9929e5954c3f06b927351ecfe40732a6a6f8",
    "symbol": "ARCADE",
@@ -87,18 +99,6 @@
    "tx": "0xa1c8c415dc910b24c48f41acce3493e1ac54b1652359291a928ca2127906ccc5",
    "quoteRaw": "369000000000000000034",
    "pairSymbol": "GME",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0xf722b7b078b4b69430586b907ce82122d603c3ba",
-   "symbol": "ORIGO",
-   "name": "Origo",
-   "deployer": "0x1880083e1f97030fbc4c17a5049cfa32f3f60886",
-   "block": 102913895,
-   "tx": "0xaec8dfacae3dcd44e9e77ba6d7032d100ffa3b35a978207107be933027fd4162",
-   "quoteRaw": "4200000000000000281",
-   "pairSymbol": "ETH",
    "pairDecimals": 18,
    "phase": 2
   }
