@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 103992206,
+ "block": 104095472,
  "windowHours": 24.0,
- "generatedAt": "2026-11-02T06:00:41+00:00",
- "launches": 859,
- "graduations": 8,
+ "generatedAt": "2026-11-02T09:00:40+00:00",
+ "launches": 886,
+ "graduations": 5,
  "graduated": [
   {
    "token": "0x6511c233790ec10f7d673c64dc82c3f941d57828",
@@ -63,42 +63,6 @@
    "tx": "0xf62c39dccd33eb87da8d1d38ec11ef0054d94801e5f752f60cf4d322f7c4f68f",
    "quoteRaw": "11146474875652736698",
    "pairSymbol": "QQQ",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0x3f9ff9f1d40369f99c281375bd19d6ecbebfecd7",
-   "symbol": "ZKBLAST",
-   "name": "ZKBLAST",
-   "deployer": "0x1c5b99c2d3809b18a8b8324766c93585f3be65dd",
-   "block": 103208666,
-   "tx": "0x13e2b294cec2118e8543aa0dff049144892a088e3c6944be7cee11a4ef8cf079",
-   "quoteRaw": "4200000000000000352",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0xfda080f64d84c989cfc50ff18253542cfe502db3",
-   "symbol": "WAFERMAP",
-   "name": "WAFERMAP",
-   "deployer": "0xcbf636c3a28fd95dde80e7cd888df344e6c5296f",
-   "block": 103202684,
-   "tx": "0xb32315aaf610141ff89f54f54d739d027dcdc824c5c5fff5a032fe81e4e9fcdf",
-   "quoteRaw": "4200000000000000245",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0x090980a62d5007f6190b04782d0ea690ab53c210",
-   "symbol": "INSULA",
-   "name": "Insula World",
-   "deployer": "0x0f28bba728c581d523cc70933524797fa85984e1",
-   "block": 103172834,
-   "tx": "0x6c432f47a40a6bf02f9ae1e2e76204a38325a9aa54de052b83a1d645bc05be15",
-   "quoteRaw": "4200000000000000210",
-   "pairSymbol": "ETH",
    "pairDecimals": 18,
    "phase": 2
   }
