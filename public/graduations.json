@@ -1,9 +1,9 @@
 {
  "chainId": 4663,
- "block": 104623859,
+ "block": 104728299,
  "windowHours": 24.0,
- "generatedAt": "2026-11-03T00:00:59+00:00",
- "launches": 1160,
+ "generatedAt": "2026-11-03T03:00:50+00:00",
+ "launches": 1143,
  "graduations": 18,
  "graduated": [
   {
