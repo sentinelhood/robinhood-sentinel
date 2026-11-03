@@ -1,11 +1,23 @@
 {
  "chainId": 4663,
- "block": 105253977,
+ "block": 105359540,
  "windowHours": 24.0,
- "generatedAt": "2026-11-03T18:01:05+00:00",
- "launches": 911,
+ "generatedAt": "2026-11-03T21:00:41+00:00",
+ "launches": 871,
  "graduations": 8,
  "graduated": [
+  {
+   "token": "0x7c5856b65308453a8ec106fa8d62aa9fa70da5bf",
+   "symbol": "b",
+   "name": "bdell",
+   "deployer": "0xcc2021cccabf9e3daab84b09d1956f7de4f8b777",
+   "block": 105313555,
+   "tx": "0x0251a6dfd20b2c4e96a608e4e4f2026711387beec709eafafb836bb3a28ad501",
+   "quoteRaw": "4200000000000000066",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
   {
    "token": "0xc6cd13683ad05a60d1ae45923dcd79b36d583e49",
    "symbol": "MONKEYBOX",
@@ -86,18 +98,6 @@
    "block": 104555732,
    "tx": "0x39fde6eb7463c53cdfb54936b2bf870745882bc21bb72abec74171998474c5ad",
    "quoteRaw": "4200000000000000069",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0xb0196ea2df69b4c26b949ac78ee3d7483796acee",
-   "symbol": "LORD",
-   "name": "Lord Hood",
-   "deployer": "0xb51926818718e2eda9524fc4854058bbbb93ae33",
-   "block": 104441425,
-   "tx": "0xe5aa6ae4f9bd1c28199469b278cc64e769bdbbddd3c5c2f2f8a7c5557fced5e1",
-   "quoteRaw": "4200000000000000002",
    "pairSymbol": "ETH",
    "pairDecimals": 18,
    "phase": 2
