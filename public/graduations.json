@@ -1,11 +1,47 @@
 {
  "chainId": 4663,
- "block": 104518030,
+ "block": 104623859,
  "windowHours": 24.0,
- "generatedAt": "2026-11-02T21:00:37+00:00",
- "launches": 1201,
- "graduations": 16,
+ "generatedAt": "2026-11-03T00:00:59+00:00",
+ "launches": 1160,
+ "graduations": 18,
  "graduated": [
+  {
+   "token": "0x7ab225fcc0231deb5381a1bab854a4f951e3f83a",
+   "symbol": "TT",
+   "name": "TENET",
+   "deployer": "0x21e4460bd83384758decd090d04c87af295d208b",
+   "block": 104616784,
+   "tx": "0xe70d05c849d38faf310c784f53b54ca099935e0d2fafeb69d7a0c007a1fbac25",
+   "quoteRaw": "4200000000000000450",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0xcb27216a02bfa9ef2b5df12734c48323faa49702",
+   "symbol": "PEAK",
+   "name": "OffPeak",
+   "deployer": "0xd202fe08b3fabad5d1db97491bad9d9c5f0c569a",
+   "block": 104595286,
+   "tx": "0x04fba96a48da02414192c6149ade7c34c058b76cdc506ce83bd64c7d1cb30314",
+   "quoteRaw": "4200000000000000036",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0xe8c47d30afe82b7b159518b357c6eeba85e43265",
+   "symbol": "FARTCOIN",
+   "name": "Fartcoin",
+   "deployer": "0x05b43106ce340640296480b16230214d7b1d7c1f",
+   "block": 104555732,
+   "tx": "0x39fde6eb7463c53cdfb54936b2bf870745882bc21bb72abec74171998474c5ad",
+   "quoteRaw": "4200000000000000069",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
   {
    "token": "0xb0196ea2df69b4c26b949ac78ee3d7483796acee",
    "symbol": "LORD",
@@ -182,18 +218,6 @@
    "block": 103957011,
    "tx": "0x94cef47d60b0edcfe3aa5ca8712b37074cd30c3a68ae4349362dd0023e30f99a",
    "quoteRaw": "4200000000000000136",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0xe4d2422ed4d203a0f1ec2043a4db1eda426fca18",
-   "symbol": "BURSAR",
-   "name": "Bursar",
-   "deployer": "0x63c17961efee664a92cf0b95fcc0ebc6b4e1d83e",
-   "block": 103695364,
-   "tx": "0xa7823fd1110c496331e8fcbc5681fab12afbac80ca9f95e78e05eb4ee9f3bdef",
-   "quoteRaw": "4200000000000000008",
    "pairSymbol": "ETH",
    "pairDecimals": 18,
    "phase": 2
