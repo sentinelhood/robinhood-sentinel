@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 104728299,
+ "block": 104831884,
  "windowHours": 24.0,
- "generatedAt": "2026-11-03T03:00:50+00:00",
- "launches": 1143,
- "graduations": 18,
+ "generatedAt": "2026-11-03T06:00:48+00:00",
+ "launches": 1156,
+ "graduations": 17,
  "graduated": [
   {
    "token": "0x7ab225fcc0231deb5381a1bab854a4f951e3f83a",
@@ -206,18 +206,6 @@
    "block": 104246058,
    "tx": "0xc719349f063c9411fea0c492b163ae20d282c142e19b7fb09af33fd5d9b55543",
    "quoteRaw": "4200000000000000092",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0x6511c233790ec10f7d673c64dc82c3f941d57828",
-   "symbol": "OAK",
-   "name": "Oak",
-   "deployer": "0x84b1b9e5d1cafd9543e684bb39e9cbd478189ee2",
-   "block": 103957011,
-   "tx": "0x94cef47d60b0edcfe3aa5ca8712b37074cd30c3a68ae4349362dd0023e30f99a",
-   "quoteRaw": "4200000000000000136",
    "pairSymbol": "ETH",
    "pairDecimals": 18,
    "phase": 2
