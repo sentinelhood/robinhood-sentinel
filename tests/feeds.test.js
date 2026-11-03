@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validate, CACHE, parseLaunchLog, toCommit, summariseHistory, TOKEN_LAUNCHED, PONS_FACTORY } from '../api/service.js';
+import { validate, CACHE, parseLaunchLog, toCommit, summariseHistory, trackRecord, pastLaunch, PAST_LIMIT, TOKEN_LAUNCHED, PONS_FACTORY } from '../api/service.js';
 
 // Real TokenLaunched log captured from the Pons v2 factory on chain 4663.
 const LOG = {
@@ -56,6 +56,8 @@ test('deployer history: counts own launches only, dedupes, numbers the current t
   assert.equal(s.latestBlock, 300);
   assert.equal(s.launchNumber, 2); // blocks 100, 200, 300 -> the token at 200 is the 2nd launch
   assert.deepEqual(s.recent.map((r) => r.block), [300, 200, 100]);
+  assert.deepEqual(s.past.map((r) => r.block), [300, 100]); // the current token (block 200) is not a past launch
+  assert.ok(s.past.every((r) => r.curve && r.tx));
   assert.equal(summariseHistory([], dep, tok(3)).launches, 0);
   assert.equal(summariseHistory(logs, dep, tok(9)).launchNumber, null);
 });
@@ -68,4 +70,21 @@ test('commits: conventional prefix stripped, type kept, junk dropped', () => {
   assert.equal(c('Plain message').title, 'Plain message');
   assert.equal(c('x'.repeat(300)).title.length, 140);
   for (const bad of [c(''), c('ok', 'nothex'), c('ok', 'a'.repeat(40), 'not a date'), toCommit(null), toCommit({})]) assert.equal(bad, null);
+});
+
+test('track record: graduated = phase 1 or 2, kept = 90%+, exited = under 10%', () => {
+  const buy = (dep) => ({ byDeployer: dep, deployerTokens: dep ? '1000' : '0' });
+  const items = [
+    pastLaunch(2, buy(true), '100.0000'),   // graduated, dev kept
+    pastLaunch(1, buy(true), '0.0000'),     // swept, dev exited
+    pastLaunch(0, buy(true), '0.0000'),     // curve, dev exited
+    pastLaunch(0, buy(true), '50.0000'),    // curve, dev holds half: neither kept nor exited
+    pastLaunch(3, buy(false), null),        // rescued: not a graduation, no dev buy
+    pastLaunch(0, null, null),              // no receipt
+    null,                                   // factory read failed: not counted
+  ];
+  assert.deepEqual(trackRecord(items), { checked: 6, graduated: 2, devBuys: 4, devKept: 1, devExited: 2 });
+  assert.deepEqual(trackRecord([]), { checked: 0, graduated: 0, devBuys: 0, devKept: 0, devExited: 0 });
+  assert.equal(pastLaunch('2', buy(true), '1.0000').graduated, false); // only a real integer phase counts
+  assert.equal(PAST_LIMIT, 10);
 });

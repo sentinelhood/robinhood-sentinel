@@ -225,13 +225,28 @@ async function publicLogs(filter) {
     throw new Error('Launch history unavailable');
   }
 }
+export const PAST_LIMIT = 10;
+// One past launch, read from chain: graduated = the factory moved it out of the curve (phase 1 swept or 2 v4 pool).
+export function pastLaunch(phase, buy, holds) {
+  const ph = Number.isSafeInteger(phase) ? phase : null;
+  const devBuy = !!(buy && buy.byDeployer && buy.deployerTokens !== '0');
+  return {phase: ph, graduated: ph === 1 || ph === 2, devBuy, holdsPercent: devBuy && typeof holds === 'string' ? holds : null};
+}
+// Counts over the past launches that could be read. Facts only: kept = still holds 90%+, exited = under 10%.
+export function trackRecord(items) {
+  const ok = items.filter((x) => x && x.phase !== null);
+  const devBuys = ok.filter((x) => x.devBuy && x.holdsPercent !== null);
+  return {checked: ok.length, graduated: ok.filter((x) => x.graduated).length, devBuys: devBuys.length,
+    devKept: devBuys.filter((x) => Number(x.holdsPercent) >= 90).length, devExited: devBuys.filter((x) => Number(x.holdsPercent) < 10).length};
+}
 export function summariseHistory(logs, deployer, current) {
   const own = logs.map(parseLaunchLog).filter((l) => l && l.deployer === deployer.toLowerCase());
   const unique = [...new Map(own.map((l) => [l.token, l])).values()].sort((a, b) => b.block - a.block || b.logIndex - a.logIndex);
   const idx = current ? unique.findIndex((l) => l.token === current.toLowerCase()) : -1;
   return {deployer: deployer.toLowerCase(), launches: unique.length, firstBlock: unique.length ? unique[unique.length - 1].block : null,
     latestBlock: unique.length ? unique[0].block : null, launchNumber: idx >= 0 ? unique.length - idx : null,
-    recent: unique.slice(0, 6).map(({token, block, tx}) => ({token, block, tx}))};
+    recent: unique.slice(0, 6).map(({token, block, tx}) => ({token, block, tx})),
+    past: unique.filter((l) => !current || l.token !== current.toLowerCase()).slice(0, PAST_LIMIT).map(({token, curve, block, tx}) => ({token, curve, block, tx}))};
 }
 // All windows in one JSON-RPC batch: one round trip (~0.5 s) instead of one per window (~3 s).
 // Returns null if the batch is refused or any window errors, so the caller can fall back.
@@ -260,9 +275,24 @@ async function deployerHistory(deployer, current, head) {
     for (const f of filters) { logs.push(...await publicLogs(f)); await sleep(120); }
   }
   const s = summariseHistory(logs, deployer, current);
+  const tag = '0x' + head.toString(16);
+  const items = [];
+  for (let i = 0; i < s.past.length; i += 5) {
+    items.push(...await Promise.all(s.past.slice(i, i + 5).map(async (p) => {
+      const [recHex, receipt, balHex] = await Promise.all([call(PONS_FACTORY, SEL.launch + pad(p.token), tag),
+        rpc('eth_getTransactionReceipt', [p.tx]).catch(() => null), call(p.token, SEL.balanceOf + pad(deployer), tag)]);
+      let rec = null;
+      try { rec = recHex && decodeLaunch(recHex); } catch { rec = null; }
+      if (!rec) return null;
+      const buy = launchBuy(receipt, p.curve, deployer);
+      return pastLaunch(rec.phase, buy, buy && buy.byDeployer ? deployerHolds(buy.deployerTokens, balHex) : null);
+    })));
+  }
+  const track = {...trackRecord(items), of: s.past.length};
+  delete s.past;
   const [first, latest] = await Promise.all([s.firstBlock, s.latestBlock].map((b) => b === null ? null : rpc('eth_getBlockByNumber', ['0x' + b.toString(16), false]).catch(() => null)));
   const iso = (h) => { const t = h && Number.parseInt(h.timestamp, 16); return Number.isSafeInteger(t) ? new Date(t * 1000).toISOString() : null; };
-  return {...s, firstAt: iso(first), latestAt: iso(latest), scannedFrom: PONS_FIRST_BLOCK, scannedTo: head,
+  return {...s, track, firstAt: iso(first), latestAt: iso(latest), scannedFrom: PONS_FIRST_BLOCK, scannedTo: head,
     warning: 'Counts Pons v2 launches from this address only. Many launches is not proof of bad intent, and one launch is not proof of good intent.'};
 }
 

@@ -33,6 +33,7 @@ try {
 // Aeon pull requests by sentinelhood. Fallback only: statuses are refreshed live from GitHub on load.
 type Contribution = { pr: number; title: string; what?: string; state: 'merged' | 'open' | 'closed'; review?: 'approved' | 'changes_requested' | 'review'; when: string };
 const CONTRIBUTIONS: Contribution[] = [
+  { pr: 1305, title: "docs(packs): Sentinel Pack token check reports the deployer's launch buy", what: 'Aeon\u2019s listing says the token check now shows whether the deployer still holds its own launch buy.', state: 'merged', when: '2026-11-02' },
   { pr: 1287, title: 'docs(packs): update the Sentinel Pack listing to its 8 skills', what: 'Aeon\u2019s registry lists all eight Sentinel skills, including hook-registry-check.', state: 'merged', when: '2026-10-28' },
   { pr: 1269, title: 'docs(packs): update the Sentinel Pack listing to its 6 skills', what: 'The registry entry catches up with the pack manifest.', state: 'merged', when: '2026-10-26' },
   { pr: 1266, title: 'feat(onchain-monitor): verify evidence receipts offline', what: 'Anyone can re-check an onchain-monitor evidence receipt with no network calls.', state: 'merged', when: '2026-10-24' },
@@ -118,10 +119,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
 
       <article class="card notice reveal" style="--d:3" aria-labelledby="tokenTitle" id="tokenCard">
         <span class="tag gold" id="tokenTitle">OFFICIAL TOKEN</span>
-        <div id="tokenBody">
-          <p class="notice-big">Not live yet.</p>
-          <p>Sentinel has no token today. Any contract address that claims to be Sentinel is not ours. Announcements come only from <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">@sentinelhood</a>.</p>
-        </div>
+        <div id="tokenBody"><p class="hint">Reading the official token config…</p></div>
       </article>
     </aside>
   </section>
@@ -416,9 +414,28 @@ async function deployerHistory(token: string, pending?: Promise<any>) {
     cell.innerHTML = d.launches === 1
       ? '<b>First Pons launch</b> <small>from this address</small>'
       : `<b>${escape(Number(d.launches).toLocaleString())} Pons launches</b> <small>${since ? `since ${escape(since)}` : ''}${nth ? ` · ${escape(nth)}` : ''}</small>${d.launches >= 10 ? ' <span class="badge wait">Serial deployer</span>' : ''}`;
+    pastLaunches(d.track);
   } catch {
     cell.innerHTML = '<span class="hint">History unavailable right now</span>';
+    pastLaunches(null);
   }
+}
+
+// What the deployer did on its other Pons launches (newest 10). Counts only; each one is a fact read at this block.
+function pastLaunches(t: any) {
+  const cell = document.getElementById('pastLaunches');
+  if (!cell) return;
+  const n = (v: unknown) => Number.isSafeInteger(v) && (v as number) >= 0;
+  if (!t || ![t.checked, t.graduated, t.devBuys, t.devKept, t.devExited, t.of].every(n) || t.graduated > t.checked || t.devBuys > t.checked
+    || t.devKept + t.devExited > t.devBuys) {
+    cell.innerHTML = '<span class="hint">Unavailable right now</span>';
+    return;
+  }
+  if (t.of === 0) { cell.innerHTML = '<span class="hint">None: this is the first Pons launch from this address</span>'; return; }
+  const dev = t.devBuys === 0 ? 'no dev buy on any of them'
+    : `dev bought on <b>${t.devBuys}</b>: still holds it on ${t.devKept}, holds under 10% on <b>${t.devExited}</b>`;
+  cell.innerHTML = `${t.checked === t.of && t.of < 10 ? `All ${t.checked}` : `Newest ${t.checked}`}: <b>${t.graduated}</b> graduated · ${dev}`
+    + `<small title="Read now from the factory record, each launch transaction and the deployer's balance. Under 10% means the tokens left the wallet: sold or moved."> (read now)</small>`;
 }
 
 const shareLink = (address: string) => `${location.origin}/?ca=${address}`;
@@ -462,6 +479,7 @@ async function tokenCheck(address: string, pending?: { token: Promise<any>; depl
       ${row('Pair', p.pairToken === '0x' + '0'.repeat(40) ? 'Native ETH' : `<code>${escape(short(p.pairToken))}</code>`)}
       ${row('Deployer', `<a href="https://robinhoodchain.blockscout.com/address/${escape(p.deployer)}" target="_blank" rel="noopener noreferrer">${escape(short(p.deployer))}</a>`)}
       <div><dt>Deployer history</dt><dd id="deployerHistory"><span class="hint">Reading every Pons launch…</span></dd></div>
+      <div><dt>Other launches</dt><dd id="pastLaunches"><span class="hint">Reading the deployer's other launches…</span></dd></div>
       <div><dt>Sentinel Guard</dt><dd id="guardStatus"><span class="hint">Checking…</span></dd></div>
       ${holders}${meta}
     </dl><p class="hint">Tax is fixed at launch and cannot be raised. ${p.phase === 2 ? 'Pool liquidity is locked by the Pons locker. ' : ''}${escape(d.warning)}</p>
@@ -877,15 +895,17 @@ async function loadRegistry() {
 // The site only shows a contract address when token.json says live AND the address
 // has bytecode on chain 4663 right now. Anything else falls back to "not live".
 type TokenInfo = { live: boolean; name?: string; symbol?: string; address?: string; chainId?: number; announcement?: string; launchpad?: string };
+const NOT_LIVE = '<p class="notice-big">Not live yet.</p><p>Sentinel has no token today. Any contract address that claims to be Sentinel is not ours. Announcements come only from <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">@sentinelhood</a>.</p>';
 async function loadToken() {
+  const body = el('tokenBody');
   let info: TokenInfo;
   try {
     info = await (await fetch(`/token.json?t=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(10000) })).json();
   } catch {
+    body.innerHTML = '<p class="hint">Token config unavailable right now. Trust only announcements from <a href="https://x.com/sentinelhood" target="_blank" rel="noopener noreferrer">@sentinelhood</a>.</p>';
     return;
   }
-  if (!info.live) return;
-  const body = el('tokenBody');
+  if (!info.live) { body.innerHTML = NOT_LIVE; return; }
   const ca = info.address || '';
   const announcementOk = info.announcement === undefined || (typeof info.announcement === 'string' && /^https:\/\/(x|twitter)\.com\/sentinelhood\/status\/\d+$/.test(info.announcement));
   const source = info.announcement || 'https://x.com/sentinelhood';
