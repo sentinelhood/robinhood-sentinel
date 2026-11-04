@@ -1,11 +1,23 @@
 {
  "chainId": 4663,
- "block": 105569899,
+ "block": 105674776,
  "windowHours": 24.0,
- "generatedAt": "2026-11-04T03:00:46+00:00",
- "launches": 942,
- "graduations": 8,
+ "generatedAt": "2026-11-04T06:00:39+00:00",
+ "launches": 963,
+ "graduations": 9,
  "graduated": [
+  {
+   "token": "0x63b5c2b1eb93ad62ea06560370f4f317ee1b97d3",
+   "symbol": "LMNI",
+   "name": "Lemniscate",
+   "deployer": "0xb74811d9b157dfcfc4198a82bcdeba763050adfa",
+   "block": 105579512,
+   "tx": "0xf53497e86e20233fc4e0f0392cf25ae06a3843652c054edf05435195e73ac423",
+   "quoteRaw": "4200000000000000153",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
   {
    "token": "0x5de206d1b29364e7a543f7a5d388ca3e2dc25b81",
    "symbol": "PURSUIT",
