@@ -1,11 +1,47 @@
 {
  "chainId": 4663,
- "block": 106093713,
+ "block": 106198640,
  "windowHours": 24.0,
- "generatedAt": "2026-11-04T18:00:51+00:00",
- "launches": 1133,
- "graduations": 14,
+ "generatedAt": "2026-11-04T21:00:36+00:00",
+ "launches": 1195,
+ "graduations": 16,
  "graduated": [
+  {
+   "token": "0xe23c6618091c137f56d8486d25492311ccf33ab8",
+   "symbol": "PARANOID",
+   "name": "Paranoid",
+   "deployer": "0x12dae27afc9d87e2e18eb2854aa2ea2b1d1d91a5",
+   "block": 106140194,
+   "tx": "0x8b2171483f569dcd0e60ab833f0fcd5c9df14d75afe7420923727f8e92d4547f",
+   "quoteRaw": "4200000000000000218",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0x6b28fb65fe80a113386541134f6a22801d2e234c",
+   "symbol": "CNTB",
+   "name": "Chongning Tongbao",
+   "deployer": "0xdda508b213cb90fd7fbf72f073dd2398ab659a50",
+   "block": 106119636,
+   "tx": "0x6aaba5a7fbac5cc907beef821bfc663a721da33abc3eabf07c744ea0d5b077b8",
+   "quoteRaw": "4200000000000000065",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0x4a4fc33a4bf80d7bab0e1bab6d82af1e2942e917",
+   "symbol": "ZHOOK",
+   "name": "ZeroHook",
+   "deployer": "0x80e7a9cbbded990e481fb8bbcf971133bf217cdf",
+   "block": 106100346,
+   "tx": "0x286ab2dab4dab3a84d32944e600e7e6115fa8eccba00a6937f4d7527eff1061b",
+   "quoteRaw": "4200000000000000447",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
   {
    "token": "0xdafaa1ed0b9f5746a0cfa2be80371cf06a986977",
    "symbol": "UPOCH",
@@ -160,18 +196,6 @@
    "quoteRaw": "8090000053",
    "pairSymbol": "USDG",
    "pairDecimals": 6,
-   "phase": 2
-  },
-  {
-   "token": "0x7c5856b65308453a8ec106fa8d62aa9fa70da5bf",
-   "symbol": "b",
-   "name": "bdell",
-   "deployer": "0xcc2021cccabf9e3daab84b09d1956f7de4f8b777",
-   "block": 105313555,
-   "tx": "0x0251a6dfd20b2c4e96a608e4e4f2026711387beec709eafafb836bb3a28ad501",
-   "quoteRaw": "4200000000000000066",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
    "phase": 2
   }
  ],
