@@ -1,11 +1,35 @@
 {
  "chainId": 4663,
- "block": 105779206,
+ "block": 105883897,
  "windowHours": 24.0,
- "generatedAt": "2026-11-04T09:00:55+00:00",
- "launches": 964,
- "graduations": 9,
+ "generatedAt": "2026-11-04T12:00:37+00:00",
+ "launches": 978,
+ "graduations": 11,
  "graduated": [
+  {
+   "token": "0xfc483d90946ecc6ef18280b58cbbdfc77b35d56b",
+   "symbol": "RBCAT",
+   "name": "Robin cat",
+   "deployer": "0x1de40fa713c636c6e31f1c08fd1abbc33950eb89",
+   "block": 105809315,
+   "tx": "0xaa0d4719aaea8fc5c16cbef988bcd4a720e5b55ba5c2db3112581c99a305764a",
+   "quoteRaw": "4200000000000000148",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0x63a209b0b41f0e5de845baebd8c8f7c438a96edc",
+   "symbol": "RURU",
+   "name": "Ruru the Kangaroo",
+   "deployer": "0x03dff5c8d2fa947246eb20c3564b5dd49164b582",
+   "block": 105802969,
+   "tx": "0x9f9920140fb21c331f7c64b03714dd45357d544b89d3d8c85f93cd5c852b3ab7",
+   "quoteRaw": "4200000000000000034",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
   {
    "token": "0x63b5c2b1eb93ad62ea06560370f4f317ee1b97d3",
    "symbol": "LMNI",
