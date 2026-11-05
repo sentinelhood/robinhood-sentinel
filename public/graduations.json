@@ -1,11 +1,23 @@
 {
  "chainId": 4663,
- "block": 106198640,
+ "block": 106303018,
  "windowHours": 24.0,
- "generatedAt": "2026-11-04T21:00:36+00:00",
- "launches": 1195,
- "graduations": 16,
+ "generatedAt": "2026-11-05T00:00:46+00:00",
+ "launches": 1187,
+ "graduations": 14,
  "graduated": [
+  {
+   "token": "0xf7c31a6df1f0997dcadd216ea48f8bfcbbf9d570",
+   "symbol": "GENT",
+   "name": "Gent",
+   "deployer": "0x78d01d4ad3c4e543e0cc689d8a14f90894e56612",
+   "block": 106199922,
+   "tx": "0x2c309262896bbad58fb21893558e3ef56422119a63d1bb89e8004d2e261772fc",
+   "quoteRaw": "8090000003",
+   "pairSymbol": "USDG",
+   "pairDecimals": 6,
+   "phase": 2
+  },
   {
    "token": "0xe23c6618091c137f56d8486d25492311ccf33ab8",
    "symbol": "PARANOID",
@@ -160,42 +172,6 @@
    "quoteRaw": "4200000000000000153",
    "pairSymbol": "ETH",
    "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0x5de206d1b29364e7a543f7a5d388ca3e2dc25b81",
-   "symbol": "PURSUIT",
-   "name": "Pursuit Tools",
-   "deployer": "0x96da40cc87b545c5f3cdfe21a2bd24022ced75f4",
-   "block": 105428837,
-   "tx": "0x502970027e1e645f1f76adf18c57f5ff2fbe4ef5402793bd0efea8f17e741c99",
-   "quoteRaw": "4200000000000000152",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0xe27136f29472596bf42c6bf8798ab295d85e7716",
-   "symbol": "GS",
-   "name": "Greatest Shitcoin",
-   "deployer": "0xdf2237114d595e0bf4d35cbcdebcdf43c55c4669",
-   "block": 105405140,
-   "tx": "0xc98825c60947a0a59d48cc6611e92dec552e70254bc15f2762db83ee575a50d8",
-   "quoteRaw": "369000000000000000124",
-   "pairSymbol": "GME",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0xd8fb90d4c818e1174a6ece94bb380ce266f27d0d",
-   "symbol": "USELESS",
-   "name": "Useless Coin",
-   "deployer": "0x6e5823a9f398549158ad3769b99f1fcb541038b4",
-   "block": 105376107,
-   "tx": "0x312d46703af86613cc595c65378fb3ec91eb68963a1ef1827962f5f63011a3a7",
-   "quoteRaw": "8090000053",
-   "pairSymbol": "USDG",
-   "pairDecimals": 6,
    "phase": 2
   }
  ],
