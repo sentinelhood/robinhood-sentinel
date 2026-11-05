@@ -1,11 +1,35 @@
 {
  "chainId": 4663,
- "block": 106303018,
+ "block": 106406900,
  "windowHours": 24.0,
- "generatedAt": "2026-11-05T00:00:46+00:00",
- "launches": 1187,
- "graduations": 14,
+ "generatedAt": "2026-11-05T03:00:41+00:00",
+ "launches": 1178,
+ "graduations": 16,
  "graduated": [
+  {
+   "token": "0x775f392231ac4f95b2ab9d21a4a7e50576e05b71",
+   "symbol": "TACKLE",
+   "name": "Tackle",
+   "deployer": "0xf8827c1034ae08e3eea167173028130f39961cc4",
+   "block": 106351734,
+   "tx": "0xbdd1ee50e11670689e75f7c685ff91f714edd76cb2f0773456c9f965d7f7782f",
+   "quoteRaw": "4200000000000000388",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0x134e52ed8ee01cbb1fb714098b606c57366369fd",
+   "symbol": "MERY",
+   "name": "Meryal",
+   "deployer": "0x1f941ba7008641625c1581d5d82068881cbf5620",
+   "block": 106328659,
+   "tx": "0xa3bb509eae33970ef33ad5587d94c84d1cbd26932a93903edb184f8dfe4deedf",
+   "quoteRaw": "4200000000000000257",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
   {
    "token": "0xf7c31a6df1f0997dcadd216ea48f8bfcbbf9d570",
    "symbol": "GENT",
