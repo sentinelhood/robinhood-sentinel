@@ -1,11 +1,23 @@
 {
  "chainId": 4663,
- "block": 106720914,
+ "block": 106826377,
  "windowHours": 24.0,
- "generatedAt": "2026-11-05T12:00:37+00:00",
- "launches": 1149,
- "graduations": 13,
+ "generatedAt": "2026-11-05T15:00:46+00:00",
+ "launches": 1107,
+ "graduations": 12,
  "graduated": [
+  {
+   "token": "0x97a27ec0fc776e284dec3a36b20ea5e27e69304d",
+   "symbol": "COLLECTIBLE",
+   "name": "Collectible Coin",
+   "deployer": "0x6e5823a9f398549158ad3769b99f1fcb541038b4",
+   "block": 106755345,
+   "tx": "0xa11b3d57aed3b2c55a5d70a98931d16fc8db1b18d13240767e7dae34d9e28a67",
+   "quoteRaw": "8090000068",
+   "pairSymbol": "USDG",
+   "pairDecimals": 6,
+   "phase": 2
+  },
   {
    "token": "0x775f392231ac4f95b2ab9d21a4a7e50576e05b71",
    "symbol": "TACKLE",
@@ -134,30 +146,6 @@
    "block": 106017666,
    "tx": "0x58d772c8e285eb7f5f8f2e2a392f6ead2ade75e47a5653d6e75332e0af118021",
    "quoteRaw": "4200000000000000216",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0xb05cd6554521921c9c621fceba0369b6182cf186",
-   "symbol": "OOPSIE",
-   "name": "Oopsie Dappsie",
-   "deployer": "0x0e1651aec67b2a049a4fa6aeb6c1c305aabfc35b",
-   "block": 105964986,
-   "tx": "0xb5b29a503d34bc728a7b028b4faaa663944fca178bb94ada2deaa136d1f359c0",
-   "quoteRaw": "193502872457166537181143",
-   "pairSymbol": "ORBIO",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0x938d767f1cd789850867a881fdf09631f2e43714",
-   "symbol": "CUBE",
-   "name": "Cube Computer",
-   "deployer": "0xbe3c1c76b7e9db6c3100862076f25a18730da0bb",
-   "block": 105903495,
-   "tx": "0x231c14e6908e0b1de90ea0ae6aeb853556e46cedd6c0d229b100e8807aa19661",
-   "quoteRaw": "4200000000000000145",
    "pairSymbol": "ETH",
    "pairDecimals": 18,
    "phase": 2
