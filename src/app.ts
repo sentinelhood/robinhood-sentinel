@@ -100,7 +100,7 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
           <li><a href="#movers"><b>Curve movers</b><span>The busiest bonding curves, before any DEX lists them.</span></a></li>
           <li><a href="#graduations"><b>Graduations</b><span>Pons tokens that filled their curve and moved to a locked v4 pool.</span></a></li>
           <li><a href="#guard"><b>Sentinel Guard</b><span>Burn $SNTL from a deployer to list copies of that ticker.</span></a></li>
-          <li><a href="#aeon"><b>Sentinel Pack</b><span>Nine keyless Aeon skills for Robinhood Chain, Pons and Aeon's registries.</span></a></li>
+          <li><a href="#aeon"><b>Sentinel Pack</b><span>Ten keyless Aeon skills for Robinhood Chain, Pons and Aeon's registries.</span></a></li>
         </ul>
       </nav>
     </div>

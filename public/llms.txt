@@ -16,7 +16,7 @@ Static JSON, refreshed by a server cron from the official RPC. Each carries the 
 - [registry.json](https://sentinelhood.com/registry.json): Every aeonfun/univ4-hooks address read on its own chain: code present, flag bits (hook-registry-check).
 - [token.json](https://sentinelhood.com/token.json): The official Sentinel token, if live; the page only shows it when it has code on chain 4663.
 
-## Aeon skills (Sentinel Pack 1.9.0, 9 skills)
+## Aeon skills (Sentinel Pack 1.10.0, 10 skills)
 Install all: `bin/install-skill-pack sentinelhood/robinhood-sentinel` from an Aeon checkout. Every skill is read-only, needs no keys and ships `default_enabled: false`.
 - [robinhood-chain-monitor](https://sentinelhood.com/skills/robinhood-chain-monitor.md): Watch Robinhood Chain addresses for balance, nonce and bytecode changes - keyless, read-only, block-stamped
 - [hook-usage](https://sentinelhood.com/skills/hook-usage.md): Measure real usage of Aeon's Uniswap v4 hooks on Robinhood Chain: pools per hook and recent swaps, keyless from the official RPC
@@ -27,6 +27,7 @@ Install all: `bin/install-skill-pack sentinelhood/robinhood-sentinel` from an Ae
 - [pons-curve-movers](https://sentinelhood.com/skills/pons-curve-movers.md): The most active Pons v2 bonding curves on Robinhood Chain in the last few hours - buys, sells, distinct traders, volume, net flow and progress toward graduation, for tokens DEX scanners cannot see yet - keyless, read-only
 - [hook-registry-check](https://sentinelhood.com/skills/hook-registry-check.md): Check every address in Aeon's public Uniswap v4 hook registry against its chain - code present, flag bits match the address, same functions on every chain - and report only what changed, keyless, read-only
 - [pack-registry-drift](https://sentinelhood.com/skills/pack-registry-drift.md): Compare every pack in Aeon's community skill-pack registry with the pack's own skills-pack.json - skills shipped but not listed, listed but gone, missing SKILL.md, capabilities the listing hides - and report only what changed, keyless, read-only
+- [pons-pool-check](https://sentinelhood.com/skills/pons-pool-check.md): For any Pons v2 token on Robinhood Chain, find its official Uniswap v4 pool from the factory record and the Pons hook, and list every other v4 pool made for the same token by anyone - fee, hook, liquidity and recent swaps - keyless, read-only
 
 ## Limits
 - Read-only: no signing, no broadcasting, no keys.
