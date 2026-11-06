@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 107038146,
+ "block": 107143646,
  "windowHours": 24.0,
- "generatedAt": "2026-11-05T21:00:42+00:00",
- "launches": 1265,
- "graduations": 10,
+ "generatedAt": "2026-11-06T00:00:47+00:00",
+ "launches": 1225,
+ "graduations": 9,
  "graduated": [
   {
    "token": "0x7a9194934e9e87689dfbb18a36d844ba737ea731",
@@ -112,18 +112,6 @@
    "quoteRaw": "4200000000000000257",
    "pairSymbol": "ETH",
    "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0xf7c31a6df1f0997dcadd216ea48f8bfcbbf9d570",
-   "symbol": "GENT",
-   "name": "Gent",
-   "deployer": "0x78d01d4ad3c4e543e0cc689d8a14f90894e56612",
-   "block": 106199922,
-   "tx": "0x2c309262896bbad58fb21893558e3ef56422119a63d1bb89e8004d2e261772fc",
-   "quoteRaw": "8090000003",
-   "pairSymbol": "USDG",
-   "pairDecimals": 6,
    "phase": 2
   }
  ],
