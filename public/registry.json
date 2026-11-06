@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-05T09:00:55+00:00",
+ "generatedAt": "2026-11-06T09:00:58+00:00",
  "summary": {
   "addresses": 53,
   "hooks": 15,
@@ -14,28 +14,28 @@
    "chain": "arbitrum",
    "chainId": 42161,
    "addresses": 2,
-   "block": 521430034,
+   "block": 521743300,
    "checked": true
   },
   {
    "chain": "base",
    "chainId": 8453,
    "addresses": 15,
-   "block": 53539946,
+   "block": 53826335,
    "checked": true
   },
   {
    "chain": "bnb",
    "chainId": 56,
    "addresses": 2,
-   "block": 131789123,
+   "block": 131981086,
    "checked": true
   },
   {
    "chain": "ethereum",
    "chainId": 1,
    "addresses": 10,
-   "block": 26347597,
+   "block": 26354776,
    "checked": true
   },
   {
@@ -49,14 +49,14 @@
    "chain": "robinhood",
    "chainId": 4663,
    "addresses": 12,
-   "block": 106616812,
+   "block": 107456905,
    "checked": true
   },
   {
    "chain": "unichain",
    "chainId": 130,
    "addresses": 2,
-   "block": 63120893,
+   "block": 63207296,
    "checked": true
   }
  ],
