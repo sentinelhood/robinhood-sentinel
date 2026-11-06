@@ -1,11 +1,68 @@
 {
  "chainId": 4663,
- "block": 107541692,
+ "block": 107667705,
  "windowHours": 24.0,
- "generatedAt": "2026-11-06T11:27:58+00:00",
- "launches": 1216,
- "graduations": 11,
+ "generatedAt": "2026-11-06T15:02:55+00:00",
+ "launches": 1215,
+ "graduations": 13,
  "graduated": [
+  {
+   "token": "0x05ab5974839cbef493a0958751185f1a45fb2a3b",
+   "symbol": "FINK",
+   "name": "frong.ink",
+   "deployer": "0x33881254a97a01767978617515961fe54518c0de",
+   "block": 107630512,
+   "tx": "0x1a656badfc2140d5663f9b77c376ef7dd4fd6c228801903cccbb0dfd49c93153",
+   "quoteRaw": "4200000000000000039",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x83da31f2fa1d872ccbdfd4cc73b13cac58f5269bad7370292fe4fe96e6fb5550",
+    "officialSwaps": 103,
+    "others": 3,
+    "othersHalfFee": 3,
+    "othersSwaps": 1
+   }
+  },
+  {
+   "token": "0x78544c8974a41d26246a814da90143c2707ae7eb",
+   "symbol": "AKENO",
+   "name": "Akeno OS",
+   "deployer": "0x2d5f63967f26b4f910de7d4d43994af68f3cd59c",
+   "block": 107604307,
+   "tx": "0xe7a17a42d6f334e444b40ac95d37bf0b29371f8693c2e2084d0a080ee5225d30",
+   "quoteRaw": "4200000000000000083",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0xfe50c758d152fbd2638446cf07f3722f648bf19f642579c43857802eb64bd396",
+    "officialSwaps": 673,
+    "others": 8,
+    "othersHalfFee": 8,
+    "othersSwaps": 8
+   }
+  },
+  {
+   "token": "0x072d88c2f31f568c0f4b8f613692eb489541ed45",
+   "symbol": "KYTE",
+   "name": "Kyte",
+   "deployer": "0x9e1b43a7068371e0b0b96fd86e219639a951edee",
+   "block": 107581013,
+   "tx": "0x7bd6465cc2b0b1c308358e88344b1598dd2cd497280cde35cbd0a889646a23a2",
+   "quoteRaw": "4200000000000000228",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0xe25ab929558cc6d69208ac1533224c1885ccedcfdeafefff72ea83887471229e",
+    "officialSwaps": 1147,
+    "others": 7,
+    "othersHalfFee": 4,
+    "othersSwaps": 5
+   }
+  },
   {
    "token": "0xa05496e2100cc14920d969f918343f863eae209e",
    "symbol": "CCRY",
@@ -19,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0x321c6f45095292e25544ca37750800f071a1379383f820c2ff18e8b029f8e688",
-    "officialSwaps": 1723,
-    "others": 9,
-    "othersHalfFee": 7,
-    "othersSwaps": 0
+    "officialSwaps": 1944,
+    "others": 11,
+    "othersHalfFee": 9,
+    "othersSwaps": 8
    }
   },
   {
@@ -38,7 +95,7 @@
    "phase": 2,
    "pools": {
     "official": "0x1c9a2018472f20d6e542f5dcb3350d0e7c4622aa3d4a405bb1e8c4c8796d45a6",
-    "officialSwaps": 814,
+    "officialSwaps": 1023,
     "others": 6,
     "othersHalfFee": 4,
     "othersSwaps": 2
@@ -57,10 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0xeabce6e77147fe00901a75bc153a68c4e0061951aa5b7f33cc97a71395c88bf2",
-    "officialSwaps": 1207,
-    "others": 9,
+    "officialSwaps": 1816,
+    "others": 12,
     "othersHalfFee": 5,
-    "othersSwaps": 14
+    "othersSwaps": 43
    }
   },
   {
@@ -76,7 +133,7 @@
    "phase": 2,
    "pools": {
     "official": "0xa8df68b399b7ef2a821c7efb582cedf2a19b842780ae7e0a36681d597882c1bc",
-    "officialSwaps": 1149,
+    "officialSwaps": 1247,
     "others": 8,
     "othersHalfFee": 7,
     "othersSwaps": 12
@@ -95,10 +152,10 @@
    "phase": 2,
    "pools": {
     "official": "0xa2a07bf77c5bcb6ba8e616e5bfca8265bfb50562f3d1a5095abaebc5d489f59b",
-    "officialSwaps": 5057,
+    "officialSwaps": 5212,
     "others": 22,
     "othersHalfFee": 14,
-    "othersSwaps": 369
+    "othersSwaps": 382
    }
   },
   {
@@ -114,7 +171,7 @@
    "phase": 2,
    "pools": {
     "official": "0xcdd98e69082d8e5761363bd7e1fcaaa647798de952ac6b9b192469d92359398b",
-    "officialSwaps": 1287,
+    "officialSwaps": 1311,
     "others": 10,
     "othersHalfFee": 8,
     "othersSwaps": 152
@@ -152,10 +209,10 @@
    "phase": 2,
    "pools": {
     "official": "0x0c89c042b72f6a518fa0e659d08a54887eb7e88e6eab0ada8378c3e562066614",
-    "officialSwaps": 3480,
+    "officialSwaps": 3496,
     "others": 15,
     "othersHalfFee": 13,
-    "othersSwaps": 114
+    "othersSwaps": 116
    }
   },
   {
@@ -190,29 +247,10 @@
    "phase": 2,
    "pools": {
     "official": "0x498f4bec66f46a0f47c240c99750aab0b06cc2fe8106a3b79d9b2adc4ee63504",
-    "officialSwaps": 633,
+    "officialSwaps": 652,
     "others": 8,
     "othersHalfFee": 6,
     "othersSwaps": 5
-   }
-  },
-  {
-   "token": "0x97a27ec0fc776e284dec3a36b20ea5e27e69304d",
-   "symbol": "COLLECTIBLE",
-   "name": "Collectible Coin",
-   "deployer": "0x6e5823a9f398549158ad3769b99f1fcb541038b4",
-   "block": 106755345,
-   "tx": "0xa11b3d57aed3b2c55a5d70a98931d16fc8db1b18d13240767e7dae34d9e28a67",
-   "quoteRaw": "8090000068",
-   "pairSymbol": "USDG",
-   "pairDecimals": 6,
-   "phase": 2,
-   "pools": {
-    "official": "0xd5c76aec0e1044cb0640e049e11f0c5f252f05a27449a77004c394712c12fe82",
-    "officialSwaps": 736,
-    "others": 7,
-    "othersHalfFee": 7,
-    "othersSwaps": 16
    }
   }
  ],
