@@ -29,5 +29,17 @@ test('graduations: reject wrong chain, bad shapes, unsafe text and impossible nu
     assert.throws(() => validateGraduations({...snap, graduated: [{...g, ...e}], graduations: 1}), undefined, JSON.stringify(e).slice(0, 60));
   }
   assert.throws(() => validateGraduations({...snap, graduated: [g, g]}), undefined, 'duplicate token');
+});
+
+test('graduations: pool counts from pons-pool-check are optional, and checked when present', () => {
+  const pools = {official: '0x' + 'e'.repeat(64), officialSwaps: 5017, others: 24, othersHalfFee: 16, othersSwaps: 300};
+  const one = (p) => ({...snap, graduations: 1, graduated: [{...g, pools: p}]});
+  assert.equal(validateGraduations(one(pools)).graduated[0].pools.others, 24);
+  assert.equal(validateGraduations(one(null)).graduated[0].pools, null);  // check failed: shown as nothing, not as zero
+  assert.equal(validateGraduations(one(undefined)).graduated[0].pools, undefined);  // snapshots from before this field
+  for (const bad of [{official: '0x12'}, {others: -1}, {others: 1.5}, {othersHalfFee: 25}, {official: null, officialSwaps: 3},
+    {others: 0, othersHalfFee: 0, othersSwaps: 9}, {officialSwaps: '5017'}]) {
+    assert.throws(() => validateGraduations(one({...pools, ...bad})), undefined, JSON.stringify(bad));
+  }
   assert.throws(() => validateGraduations({...snap, graduated: [snap.graduated[1], g]}), undefined, 'not newest first');
 });

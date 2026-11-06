@@ -33,6 +33,8 @@ try {
 // Aeon pull requests by sentinelhood. Fallback only: statuses are refreshed live from GitHub on load.
 type Contribution = { pr: number; title: string; what?: string; state: 'merged' | 'open' | 'closed'; review?: 'approved' | 'changes_requested' | 'review'; when: string };
 const CONTRIBUTIONS: Contribution[] = [
+  { pr: 1336, title: 'docs(packs): update the Sentinel Pack listing to its 10 skills', what: 'Aeon\u2019s registry lists pons-pool-check: which v4 pool is a Pons token\u2019s official one.', state: 'merged', when: '2026-11-05' },
+  { pr: 1333, title: 'docs(packs): update the Sentinel Pack listing to its 9 skills', what: 'Aeon\u2019s registry lists pack-registry-drift: each listed pack checked against its own repo.', state: 'merged', when: '2026-11-04' },
   { pr: 1305, title: "docs(packs): Sentinel Pack token check reports the deployer's launch buy", what: 'Aeon\u2019s listing says the token check now shows whether the deployer still holds its own launch buy.', state: 'merged', when: '2026-11-02' },
   { pr: 1287, title: 'docs(packs): update the Sentinel Pack listing to its 8 skills', what: 'Aeon\u2019s registry lists all eight Sentinel skills, including hook-registry-check.', state: 'merged', when: '2026-10-28' },
   { pr: 1269, title: 'docs(packs): update the Sentinel Pack listing to its 6 skills', what: 'The registry entry catches up with the pack manifest.', state: 'merged', when: '2026-10-26' },
@@ -198,8 +200,9 @@ document.querySelector<HTMLDivElement>('#root')!.innerHTML = `
     </div>
     <ul class="launch-list grad-list" id="gradList" aria-live="polite"><li class="hint">Loading the latest snapshot…</li></ul>
     <p class="hint" id="gradMeta"></p>
+    <p class="hint" id="gradPools"></p>
     <p class="hint">Graduation is a fact about the curve, not a quality signal. Graduations and launches are counted over the same window: a rate, not a cohort.</p>
-    <p class="links"><a href="/graduations.json" target="_blank" rel="noopener">Raw JSON ${arrow}</a><a href="/skills/pons-graduation-watch.md" target="_blank" rel="noopener">Get alerted in Aeon: SKILL.md ${arrow}</a></p>
+    <p class="links"><a href="/graduations.json" target="_blank" rel="noopener">Raw JSON ${arrow}</a><a href="/skills/pons-graduation-watch.md" target="_blank" rel="noopener">Get alerted in Aeon: SKILL.md ${arrow}</a><a href="/skills/pons-pool-check.md" target="_blank" rel="noopener">Which pool is official: SKILL.md ${arrow}</a></p>
   </section>
 
   <section class="card guard reveal" id="guard" aria-labelledby="guardTitle">
@@ -1171,13 +1174,20 @@ async function loadGraduations() {
       const when = hoursAgo < 1 ? `${Math.round(hoursAgo * 60)}m ago` : `${hoursAgo.toFixed(1)}h ago`;
       return `<li style="--d:${i}">
         <div class="who"><strong>${escape(g.symbol || '?')}</strong>${dup ? '<span class="badge wait">Same ticker</span>' : ''}<small>${escape(g.name || 'Unnamed')}</small></div>
-        <span class="facts"><span><b>${escape(displayAmount(g.quoteRaw, g.pairDecimals))}</b> ${escape(g.pairSymbol || '?')} into the pool</span>${g.deployer ? `<span>deployer <code title="${escape(g.deployer)}">${escape(short(g.deployer))}</code></span>` : ''}</span>
+        <span class="facts"><span><b>${escape(displayAmount(g.quoteRaw, g.pairDecimals))}</b> ${escape(g.pairSymbol || '?')} into the pool</span>${g.deployer ? `<span>deployer <code title="${escape(g.deployer)}">${escape(short(g.deployer))}</code></span>` : ''}${g.pools ? `<span class="pools" title="${g.pools.official ? `Official Pons pool ${escape(g.pools.official)}: ${g.pools.officialSwaps} swaps in 24h. ` : ''}Other v4 pools anyone made for this token: ${g.pools.othersSwaps} swaps in 24h.">${g.pools.others ? `<b>${g.pools.others}</b> other v4 pools${g.pools.othersHalfFee ? ` · <b class="warn">${g.pools.othersHalfFee}</b> at 50%+ fee` : ''}` : 'no other v4 pools'}</span>` : ''}</span>
         <span class="facts stage"><span>now <b>${escape(PHASE_SHORT[g.phase as number] || '?')}</b></span></span>
         <span class="meta"><a href="https://robinhoodchain.blockscout.com/tx/${escape(g.tx)}" target="_blank" rel="noopener noreferrer">${escape(when)}</a><code title="${escape(g.token)}">${escape(short(g.token))}</code></span>
         <button class="btn small" data-check-ca="${escape(g.token)}">Check</button>
       </li>`;
     }).join('') || '<li class="empty">No graduations in the window. Most Pons tokens never leave the curve.</li>';
     meta.textContent = `Read at block ${s.block.toLocaleString('en-US')} · ${ago(s.generatedAt) || 'recently'}. Newest first${s.graduations > s.graduated.length ? `, ${s.graduated.length} of ${s.graduations} shown` : ''}.`;
+    const checked = s.graduated.filter((g) => g.pools);
+    const others = checked.reduce((n, g) => n + g.pools!.others, 0);
+    const off = checked.reduce((n, g) => n + g.pools!.officialSwaps, 0), oth = checked.reduce((n, g) => n + g.pools!.othersSwaps, 0);
+    el('gradPools').textContent = checked.length
+      ? `After graduation anyone can open more Uniswap v4 pools for the same token, at any fee. ${checked.filter((g) => g.pools!.others).length} of these ${checked.length} tokens have other pools, ${others} in total` +
+        `${off + oth ? `, taking ${(100 * oth / (off + oth)).toFixed(1)}% of their swaps in 24h` : ''}. The official one uses the Pons hook; Check names it.`
+      : '';
   } catch {
     list.innerHTML = '<li class="error">Snapshot unavailable. Run the pons-graduation-watch skill to read it yourself.</li>';
   }

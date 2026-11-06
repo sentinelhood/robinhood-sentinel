@@ -1,9 +1,9 @@
 {
  "chainId": 4663,
- "block": 107456755,
+ "block": 107541692,
  "windowHours": 24.0,
- "generatedAt": "2026-11-06T09:00:38+00:00",
- "launches": 1203,
+ "generatedAt": "2026-11-06T11:27:58+00:00",
+ "launches": 1216,
  "graduations": 11,
  "graduated": [
   {
@@ -16,7 +16,14 @@
    "quoteRaw": "4200000000000000002",
    "pairSymbol": "ETH",
    "pairDecimals": 18,
-   "phase": 2
+   "phase": 2,
+   "pools": {
+    "official": "0x321c6f45095292e25544ca37750800f071a1379383f820c2ff18e8b029f8e688",
+    "officialSwaps": 1723,
+    "others": 9,
+    "othersHalfFee": 7,
+    "othersSwaps": 0
+   }
   },
   {
    "token": "0xd31e178d7e33694a7f538b5c2698a644556699ee",
@@ -28,7 +35,14 @@
    "quoteRaw": "4200000000000000545",
    "pairSymbol": "ETH",
    "pairDecimals": 18,
-   "phase": 2
+   "phase": 2,
+   "pools": {
+    "official": "0x1c9a2018472f20d6e542f5dcb3350d0e7c4622aa3d4a405bb1e8c4c8796d45a6",
+    "officialSwaps": 814,
+    "others": 6,
+    "othersHalfFee": 4,
+    "othersSwaps": 2
+   }
   },
   {
    "token": "0xa2753fd0bc86b8ceb55ffd2698679c7f214785f1",
@@ -40,7 +54,14 @@
    "quoteRaw": "4200000000000000122",
    "pairSymbol": "ETH",
    "pairDecimals": 18,
-   "phase": 2
+   "phase": 2,
+   "pools": {
+    "official": "0xeabce6e77147fe00901a75bc153a68c4e0061951aa5b7f33cc97a71395c88bf2",
+    "officialSwaps": 1207,
+    "others": 9,
+    "othersHalfFee": 5,
+    "othersSwaps": 14
+   }
   },
   {
    "token": "0x8c4be7763f446df2b5a8c331e7ccf497e7f78b1d",
@@ -52,7 +73,14 @@
    "quoteRaw": "4200000000000000368",
    "pairSymbol": "ETH",
    "pairDecimals": 18,
-   "phase": 2
+   "phase": 2,
+   "pools": {
+    "official": "0xa8df68b399b7ef2a821c7efb582cedf2a19b842780ae7e0a36681d597882c1bc",
+    "officialSwaps": 1149,
+    "others": 8,
+    "othersHalfFee": 7,
+    "othersSwaps": 12
+   }
   },
   {
    "token": "0x7a9194934e9e87689dfbb18a36d844ba737ea731",
@@ -64,7 +92,14 @@
    "quoteRaw": "8090000284",
    "pairSymbol": "USDG",
    "pairDecimals": 6,
-   "phase": 2
+   "phase": 2,
+   "pools": {
+    "official": "0xa2a07bf77c5bcb6ba8e616e5bfca8265bfb50562f3d1a5095abaebc5d489f59b",
+    "officialSwaps": 5057,
+    "others": 22,
+    "othersHalfFee": 14,
+    "othersSwaps": 369
+   }
   },
   {
    "token": "0x981f9967e7e5e9ae94051c08b075c6322bbe4598",
@@ -76,7 +111,14 @@
    "quoteRaw": "4200000000000000028",
    "pairSymbol": "ETH",
    "pairDecimals": 18,
-   "phase": 2
+   "phase": 2,
+   "pools": {
+    "official": "0xcdd98e69082d8e5761363bd7e1fcaaa647798de952ac6b9b192469d92359398b",
+    "officialSwaps": 1287,
+    "others": 10,
+    "othersHalfFee": 8,
+    "othersSwaps": 152
+   }
   },
   {
    "token": "0x412143c9398e8a9419d7f90ef6696d083cfa36a8",
@@ -88,7 +130,14 @@
    "quoteRaw": "8090000107",
    "pairSymbol": "USDG",
    "pairDecimals": 6,
-   "phase": 2
+   "phase": 2,
+   "pools": {
+    "official": "0x953024335625ca8be94f4bc47408906a55c3a72d5bc2ea55466f14f68fad1c6d",
+    "officialSwaps": 868,
+    "others": 8,
+    "othersHalfFee": 7,
+    "othersSwaps": 11
+   }
   },
   {
    "token": "0xec98d315c098e01dbef66eee09ca6d686b3f9cb6",
@@ -100,7 +149,14 @@
    "quoteRaw": "11146474875652736594",
    "pairSymbol": "QQQ",
    "pairDecimals": 18,
-   "phase": 2
+   "phase": 2,
+   "pools": {
+    "official": "0x0c89c042b72f6a518fa0e659d08a54887eb7e88e6eab0ada8378c3e562066614",
+    "officialSwaps": 3480,
+    "others": 15,
+    "othersHalfFee": 13,
+    "othersSwaps": 114
+   }
   },
   {
    "token": "0xdb4aa5e5a6c050adcb7ec973ee6bab5599243892",
@@ -112,7 +168,14 @@
    "quoteRaw": "41600000000000000074",
    "pairSymbol": "NVDA",
    "pairDecimals": 18,
-   "phase": 2
+   "phase": 2,
+   "pools": {
+    "official": "0x7fc4d487da4a7b31669fffe1442f6b3a5ba57ffb952975832bef651c74f2d7a6",
+    "officialSwaps": 466,
+    "others": 7,
+    "othersHalfFee": 5,
+    "othersSwaps": 18
+   }
   },
   {
    "token": "0x476d9e01e2aca0fd57d3d3331f73332810e8230c",
@@ -124,7 +187,14 @@
    "quoteRaw": "4200000000000000036",
    "pairSymbol": "ETH",
    "pairDecimals": 18,
-   "phase": 2
+   "phase": 2,
+   "pools": {
+    "official": "0x498f4bec66f46a0f47c240c99750aab0b06cc2fe8106a3b79d9b2adc4ee63504",
+    "officialSwaps": 633,
+    "others": 8,
+    "othersHalfFee": 6,
+    "othersSwaps": 5
+   }
   },
   {
    "token": "0x97a27ec0fc776e284dec3a36b20ea5e27e69304d",
@@ -136,7 +206,14 @@
    "quoteRaw": "8090000068",
    "pairSymbol": "USDG",
    "pairDecimals": 6,
-   "phase": 2
+   "phase": 2,
+   "pools": {
+    "official": "0xd5c76aec0e1044cb0640e049e11f0c5f252f05a27449a77004c394712c12fe82",
+    "officialSwaps": 736,
+    "others": 7,
+    "othersHalfFee": 7,
+    "othersSwaps": 16
+   }
   }
  ],
  "source": "skills/pons-graduation-watch/pons_graduation_watch.py via rpc.mainnet.chain.robinhood.com"

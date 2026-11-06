@@ -22,6 +22,29 @@ def text(x):
     return x if isinstance(x, str) and 0 < len(x) <= 64 else None
 
 
+POOL_ID = re.compile(r'^0x[0-9a-f]{64}$')
+DYNAMIC_FEE = 0x800000
+
+
+def pools(token):
+    """pons-pool-check for one token -> counts for the site. None when the check fails, so a flaky read never shows as 0."""
+    try:
+        run = subprocess.run([sys.executable, str(ROOT / 'skills/pons-pool-check/pons_pool_check.py'), token, '--json'],
+                             capture_output=True, text=True, timeout=180)
+        if run.returncode != 0:
+            return None
+        r = json.loads(run.stdout)
+    except (subprocess.TimeoutExpired, ValueError):
+        return None
+    o, others = r.get('official'), r.get('others') or []
+    if o is not None and not POOL_ID.match(str(o.get('poolId', ''))):
+        return None
+    fixed = [p['fee'] for p in others if not p['fee'] & DYNAMIC_FEE]
+    return {'official': o['poolId'] if o else None, 'officialSwaps': int(o['swaps']) if o else 0,
+            'others': len(others), 'othersHalfFee': sum(f >= 500_000 for f in fixed),
+            'othersSwaps': sum(int(p['swaps']) for p in others)}
+
+
 def main():
     hours = float(sys.argv[1]) if len(sys.argv) > 1 else 24
     with tempfile.TemporaryDirectory() as d:
@@ -44,6 +67,7 @@ def main():
             'block': int(g['block']), 'tx': g['tx'],
             'quoteRaw': str(int(g['quoteRaw'])), 'pairSymbol': text(g.get('pairSymbol')), 'pairDecimals': g.get('pairDecimals'),
             'phase': g.get('phase') if isinstance(g.get('phase'), int) else None,
+            'pools': pools(g['token']),
         })
     out = {
         'chainId': 4663, 'block': r['block'], 'windowHours': r['windowHours'],
