@@ -1,11 +1,59 @@
 {
  "chainId": 4663,
- "block": 107143646,
+ "block": 107249642,
  "windowHours": 24.0,
- "generatedAt": "2026-11-06T00:00:47+00:00",
- "launches": 1225,
- "graduations": 9,
+ "generatedAt": "2026-11-06T03:00:40+00:00",
+ "launches": 1253,
+ "graduations": 11,
  "graduated": [
+  {
+   "token": "0xa05496e2100cc14920d969f918343f863eae209e",
+   "symbol": "CCRY",
+   "name": "Chancery",
+   "deployer": "0xfc089891fd9650b88b21fb018ab60a1811704b93",
+   "block": 107237641,
+   "tx": "0x7ef07f70bb678be93345eec8fc614efa4c560c4e37ad67dc5cb178faa31adb71",
+   "quoteRaw": "4200000000000000002",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0xd31e178d7e33694a7f538b5c2698a644556699ee",
+   "symbol": "ARCOM",
+   "name": "arcom",
+   "deployer": "0xea47b808dbebeff4a7da7f946c226b0743b8cb5b",
+   "block": 107228275,
+   "tx": "0x710db4f28dfc8c0033a665c2d37cc376661e7ac4b0da5717afad0da2420f801b",
+   "quoteRaw": "4200000000000000545",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0xa2753fd0bc86b8ceb55ffd2698679c7f214785f1",
+   "symbol": "LETRO",
+   "name": "Letronna",
+   "deployer": "0xf836cf3130c0afc83355f87a8db480f720f5f4aa",
+   "block": 107228059,
+   "tx": "0xeaa361546578cd80ecedc1c8676e7558fab924a40589db29f08dedfad536680a",
+   "quoteRaw": "4200000000000000122",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
+  {
+   "token": "0x8c4be7763f446df2b5a8c331e7ccf497e7f78b1d",
+   "symbol": "ASTER",
+   "name": "ASTERRA POOLS",
+   "deployer": "0xd62a316e3a6e6a180271de548a2b01a13070cd97",
+   "block": 107169817,
+   "tx": "0x195e269e537aea507ed303553b36e3db8b89583763ab718fd2191232f2a63982",
+   "quoteRaw": "4200000000000000368",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2
+  },
   {
    "token": "0x7a9194934e9e87689dfbb18a36d844ba737ea731",
    "symbol": "MI",
@@ -88,30 +136,6 @@
    "quoteRaw": "8090000068",
    "pairSymbol": "USDG",
    "pairDecimals": 6,
-   "phase": 2
-  },
-  {
-   "token": "0x775f392231ac4f95b2ab9d21a4a7e50576e05b71",
-   "symbol": "TACKLE",
-   "name": "Tackle",
-   "deployer": "0xf8827c1034ae08e3eea167173028130f39961cc4",
-   "block": 106351734,
-   "tx": "0xbdd1ee50e11670689e75f7c685ff91f714edd76cb2f0773456c9f965d7f7782f",
-   "quoteRaw": "4200000000000000388",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2
-  },
-  {
-   "token": "0x134e52ed8ee01cbb1fb714098b606c57366369fd",
-   "symbol": "MERY",
-   "name": "Meryal",
-   "deployer": "0x1f941ba7008641625c1581d5d82068881cbf5620",
-   "block": 106328659,
-   "tx": "0xa3bb509eae33970ef33ad5587d94c84d1cbd26932a93903edb184f8dfe4deedf",
-   "quoteRaw": "4200000000000000257",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
    "phase": 2
   }
  ],
