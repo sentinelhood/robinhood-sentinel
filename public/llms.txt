@@ -3,7 +3,7 @@
 > Keyless, read-only Robinhood Chain (chainId 4663) reader for agents and humans. GET-only, block-stamped, never signs or broadcasts.
 
 ## API
-- [OpenAPI 3.1 spec](https://sentinelhood.com/openapi.json): one operation, `GET /api/service?action=network|address|transaction|aeon|contributions|token|launches|shiplog|deployer&value=...`. Share links: `https://sentinelhood.com/?ca=0x...` opens the token check for that address.
+- [OpenAPI 3.1 spec](https://sentinelhood.com/openapi.json): one operation, `GET /api/service?action=network|address|transaction|aeon|contributions|token|launches|shiplog|deployer|pools&value=...`. Share links: `https://sentinelhood.com/?ca=0x...` opens the token check for that address.
 
 ## Snapshots
 Static JSON, refreshed by a server cron from the official RPC. Each carries the block it was read at.

@@ -296,6 +296,49 @@ async function deployerHistory(deployer, current, head) {
     warning: 'Counts Pons v2 launches from this address only. Many launches is not proof of bad intent, and one launch is not proof of good intent.'};
 }
 
+// ---------- Uniswap v4 pools for a Pons token: the official one and everyone else's ----------
+// Official = the PoolKey the Pons docs give: meme hook + the record's poolFee and tickSpacing + {token, pairToken} sorted.
+export const MEME_HOOK = '0xe5e702641ea86f4ae6cc3cdaed2b886f976be044'; // docs.ponsfamily.com/v2#contracts
+export const V4_INITIALIZE = '0xdd466e674ea557f56295e2d0218a125ea4b4f0f6f3307b95f85e6110838d6438';
+const DYNAMIC_FEE = 0x800000;
+export function parseInitialize(log) {
+  const t = log?.topics || [];
+  const w = words(log?.data);
+  if (t.length !== 4 || String(t[0]).toLowerCase() !== V4_INITIALIZE || w.length < 3 || log.removed) return null;
+  const int24 = (x) => { const v = Number(wUint(x) & 0xffffffn); return v & 0x800000 ? v - 0x1000000 : v; };
+  return {poolId: String(t[1]).toLowerCase(), currency0: wAddr(String(t[2]).slice(2)), currency1: wAddr(String(t[3]).slice(2)),
+    fee: Number(wUint(w[0]) & 0xffffffn), tickSpacing: int24(w[1]), hooks: wAddr(w[2])};
+}
+export function classifyPools(logs, rec) {
+  const pair = [rec.token.toLowerCase(), rec.pairToken.toLowerCase()].sort();
+  const pools = [...new Map(logs.map(parseInitialize).filter(Boolean).map((p) => [p.poolId, p])).values()];
+  const isOfficial = (p) => p.hooks === MEME_HOOK && p.fee === rec.poolFee && p.tickSpacing === rec.tickSpacing
+    && p.currency0 === pair[0] && p.currency1 === pair[1];
+  const official = pools.find(isOfficial) || null;
+  const others = pools.filter((p) => !isOfficial(p));
+  return {official: official && official.poolId, others: others.length,
+    othersNoHook: others.filter((p) => p.hooks === ZERO_ADDR).length,
+    othersHalfFee: others.filter((p) => !(p.fee & DYNAMIC_FEE) && p.fee >= 500000).length};
+}
+async function poolsFor(token, rec, head) {
+  const filters = [];
+  for (let to = head; to >= PONS_FIRST_BLOCK; to -= HISTORY_WINDOW) {
+    const from = Math.max(PONS_FIRST_BLOCK, to - HISTORY_WINDOW + 1);
+    for (const slot of [2, 3]) {
+      const topics = [V4_INITIALIZE, null, null, null];
+      topics[slot] = '0x' + pad(token);
+      filters.push({address: V4_POOL_MANAGER, topics, fromBlock: '0x' + from.toString(16), toBlock: '0x' + to.toString(16)});
+    }
+  }
+  let logs = await batchLogs(filters);
+  if (!logs) {
+    logs = [];
+    for (const f of filters) { logs.push(...await publicLogs(f)); await sleep(120); }
+  }
+  return {phase: rec.phase, ...classifyPools(logs, rec), hook: MEME_HOOK,
+    warning: 'Anyone can create a Uniswap v4 pool for any token. The official one is built from the Pons factory record and its hook; the rest are listed as facts, not verdicts.'};
+}
+
 // ---------- shipping log: latest commits on this site's own repo ----------
 export function toCommit(c) {
   const sha = c?.sha, msg = c?.commit?.message, date = c?.commit?.committer?.date || c?.commit?.author?.date;
@@ -346,9 +389,9 @@ async function contributions() {
   return {source: 'https://github.com/aeonfun/aeon/pulls?q=author%3Asentinelhood', checkedAt: new Date().toISOString(), prs};
 }
 export function validate(action, value) {
-  if (!['network','address','transaction','aeon','contributions','token','launches','shiplog','deployer'].includes(action)) throw new Error('Unknown action');
+  if (!['network','address','transaction','aeon','contributions','token','launches','shiplog','deployer','pools'].includes(action)) throw new Error('Unknown action');
   // Only plain strings: a one-element array (?value=..&value=..) would otherwise stringify past the regex.
-  if (['address', 'token', 'deployer'].includes(action) && !(typeof value === 'string' && addressPattern.test(value))) throw new Error('Invalid address');
+  if (['address', 'token', 'deployer', 'pools'].includes(action) && !(typeof value === 'string' && addressPattern.test(value))) throw new Error('Invalid address');
   if (action === 'transaction' && !(typeof value === 'string' && hashPattern.test(value))) throw new Error('Invalid transaction hash');
   if (action === 'aeon' && (typeof value !== 'string' || value.trim().length < 2 || value.length > 200)) throw new Error('Query must be 2–200 characters');
 }
@@ -374,6 +417,11 @@ export async function execute(action, value) {
     const rec = decodeLaunch(await rpc('eth_call', [{to: PONS_FACTORY, data: SEL.launch + pad(value)}, block]));
     if (!rec) return {...base, token: value, pons: false};
     return {...base, token: value, pons: true, ...(await deployerHistory(rec.deployer, value, base.block))};
+  }
+  if (action === 'pools') {
+    const rec = decodeLaunch(await rpc('eth_call', [{to: PONS_FACTORY, data: SEL.launch + pad(value)}, block]));
+    if (!rec) return {...base, token: value, pons: false};
+    return {...base, token: value, pons: true, ...(await poolsFor(value, rec, base.block))};
   }
   if (action === 'token') {
     const code = await rpc('eth_getCode', [value, block]);
@@ -401,6 +449,8 @@ export const CACHE = {
   launches: 'public, max-age=0, s-maxage=60, stale-while-revalidate=300',
   // Per token, but the same answer for everyone: ~7 log windows per miss, so cache it.
   deployer: 'public, max-age=0, s-maxage=300, stale-while-revalidate=3600',
+  // Same for everyone; new copy pools appear over hours, not seconds.
+  pools: 'public, max-age=0, s-maxage=600, stale-while-revalidate=3600',
 };
 
 export default async function handler(req, res) {

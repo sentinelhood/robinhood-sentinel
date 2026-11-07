@@ -29,7 +29,7 @@ def render():
         '# Sentinel', '',
         '> Keyless, read-only Robinhood Chain (chainId 4663) reader for agents and humans. GET-only, block-stamped, never signs or broadcasts.', '',
         '## API',
-        f'- [OpenAPI 3.1 spec]({SITE}/openapi.json): one operation, `GET /api/service?action=network|address|transaction|aeon|contributions|token|launches|shiplog|deployer&value=...`. '
+        f'- [OpenAPI 3.1 spec]({SITE}/openapi.json): one operation, `GET /api/service?action=network|address|transaction|aeon|contributions|token|launches|shiplog|deployer|pools&value=...`. '
         f'Share links: `{SITE}/?ca=0x...` opens the token check for that address.', '',
         '## Snapshots',
         'Static JSON, refreshed by a server cron from the official RPC. Each carries the block it was read at.',
