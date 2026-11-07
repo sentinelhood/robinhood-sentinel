@@ -1,11 +1,49 @@
 {
  "chainId": 4663,
- "block": 108494310,
+ "block": 108598187,
  "windowHours": 24.0,
- "generatedAt": "2026-11-07T15:01:48+00:00",
- "launches": 822,
+ "generatedAt": "2026-11-07T18:01:48+00:00",
+ "launches": 810,
  "graduations": 7,
  "graduated": [
+  {
+   "token": "0x7a5cd17c0076a2d87ef7a23a75a03a7e96255cd2",
+   "symbol": "BLIPLT",
+   "name": "Blip Late",
+   "deployer": "0x492088660bbe15cc49b262881d3fb1f7ad76177e",
+   "block": 108576726,
+   "tx": "0xdca82b6ce275c0c0b349b1a0778dfceda32e8c062e2b8861d4f2fdb79018c4d0",
+   "quoteRaw": "4200000000000000053",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x3b6014b4006ae0242514f4a05e80c0688ca372a2b6917dad53582b18e35a457f",
+    "officialSwaps": 223,
+    "others": 2,
+    "othersHalfFee": 2,
+    "othersSwaps": 6
+   }
+  },
+  {
+   "token": "0x8c8378a6a7dea5d0c37ab12aced6682a3bc0919f",
+   "symbol": "ADYROS",
+   "name": "Adyros",
+   "deployer": "0xff83df721c4e32321e763ab253ae97c1ebd9ab44",
+   "block": 108521332,
+   "tx": "0xdc1eda524019411d1a104b243f806e1835024118d3965c5bb50023b7ae1cfe99",
+   "quoteRaw": "4200000000000000129",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x2c346e5022882d2ae0b6bbebeeb556d839e1075784fc84787c120efec8968bd6",
+    "officialSwaps": 860,
+    "others": 6,
+    "othersHalfFee": 5,
+    "othersSwaps": 11
+   }
+  },
   {
    "token": "0x31ced11f076e45da2508da2db4a2f296021a1e21",
    "symbol": "ZENO",
@@ -19,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x834b1800b9b61a5fc7ca2c31fbdfc495b9cfb7eae434494273d0f67c9a636d2d",
-    "officialSwaps": 387,
+    "officialSwaps": 538,
     "others": 6,
     "othersHalfFee": 4,
-    "othersSwaps": 26
+    "othersSwaps": 33
    }
   },
   {
@@ -38,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0x635ba3af9f371b5876a2afebb1f5e06e8ba21c7f63d196a52f99a443d1e9a9ba",
-    "officialSwaps": 1440,
-    "others": 4,
+    "officialSwaps": 1833,
+    "others": 5,
     "othersHalfFee": 2,
-    "othersSwaps": 43
+    "othersSwaps": 79
    }
   },
   {
@@ -57,10 +95,10 @@
    "phase": 2,
    "pools": {
     "official": "0xb1a02ba9d333aaf6dd4ee8cc0fc321eb519492acb00e8276fd98d0b4ce792e61",
-    "officialSwaps": 719,
+    "officialSwaps": 800,
     "others": 8,
     "othersHalfFee": 4,
-    "othersSwaps": 34
+    "othersSwaps": 35
    }
   },
   {
@@ -76,9 +114,9 @@
    "phase": 2,
    "pools": {
     "official": "0x62818cae09d4ea7a89863902c27f389dbb38fee4d3079e3b8599348e77e9abcd",
-    "officialSwaps": 713,
-    "others": 10,
-    "othersHalfFee": 8,
+    "officialSwaps": 766,
+    "others": 12,
+    "othersHalfFee": 9,
     "othersSwaps": 2
    }
   },
@@ -95,48 +133,10 @@
    "phase": 2,
    "pools": {
     "official": "0x8b3e7c52a3e1b6aa48af613760f2b026c413e80362797bbbefbd7def48f0a67f",
-    "officialSwaps": 820,
+    "officialSwaps": 878,
     "others": 11,
     "othersHalfFee": 6,
     "othersSwaps": 10
-   }
-  },
-  {
-   "token": "0x5a6486ba20181b959e3113b800af1e2828ceedc4",
-   "symbol": "Velum",
-   "name": "Velum",
-   "deployer": "0x7243cb7743ddeda2f67c2d505e8612018d23df7d",
-   "block": 107749543,
-   "tx": "0xe012c883a77e8164ed623a1f3f8b7672213b0a0a42b6214341d90f59be298c4e",
-   "quoteRaw": "4200000000000000217",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x0af8ee4cbbab234661711598e21cc7d04573bbe7a5dbda0f380b8c6dcd06b1a1",
-    "officialSwaps": 771,
-    "others": 4,
-    "othersHalfFee": 3,
-    "othersSwaps": 1
-   }
-  },
-  {
-   "token": "0xadce6fd937e5e5955864235e88e08e24846b719c",
-   "symbol": "XARIA",
-   "name": "Nexaria",
-   "deployer": "0x3715696d81b5d54e7e028a6b7b330c1249b6c4bc",
-   "block": 107702453,
-   "tx": "0xf2f22ba2fab0ae38b13a34c660d7d0de0451930315741ae08073a4464c12eec8",
-   "quoteRaw": "4200000000000000003",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0xa08c6e712e47a2cd3f4319b9d9daa7d60e4f1ad049151c6b9c49b0025ffd6306",
-    "officialSwaps": 2755,
-    "others": 9,
-    "othersHalfFee": 7,
-    "othersSwaps": 47
    }
   }
  ],
