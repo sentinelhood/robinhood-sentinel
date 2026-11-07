@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 107984488,
+ "block": 108087305,
  "windowHours": 24.0,
- "generatedAt": "2026-11-07T00:02:29+00:00",
- "launches": 877,
- "graduations": 10,
+ "generatedAt": "2026-11-07T03:01:46+00:00",
+ "launches": 842,
+ "graduations": 7,
  "graduated": [
+  {
+   "token": "0xa01f353b72ef6557359f2c110ab7c738dfd8405d",
+   "symbol": "DEPLOYR",
+   "name": "Deployr",
+   "deployer": "0x01c4e7a45cea0925b7520c43460d408d887633bf",
+   "block": 108051842,
+   "tx": "0x45392c4aa8d88404b7ee5819d7958dd39e770228a552f1d48ed55cd8d22d8386",
+   "quoteRaw": "4200000000000000251",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x62818cae09d4ea7a89863902c27f389dbb38fee4d3079e3b8599348e77e9abcd",
+    "officialSwaps": 347,
+    "others": 6,
+    "othersHalfFee": 6,
+    "othersSwaps": 2
+   }
+  },
   {
    "token": "0x8231fdc77207ede2455259e2d391eb4f026581f4",
    "symbol": "HYPE",
@@ -19,7 +38,7 @@
    "phase": 2,
    "pools": {
     "official": "0x8b3e7c52a3e1b6aa48af613760f2b026c413e80362797bbbefbd7def48f0a67f",
-    "officialSwaps": 666,
+    "officialSwaps": 686,
     "others": 10,
     "othersHalfFee": 6,
     "othersSwaps": 5
@@ -38,7 +57,7 @@
    "phase": 2,
    "pools": {
     "official": "0x0af8ee4cbbab234661711598e21cc7d04573bbe7a5dbda0f380b8c6dcd06b1a1",
-    "officialSwaps": 656,
+    "officialSwaps": 699,
     "others": 4,
     "othersHalfFee": 3,
     "othersSwaps": 1
@@ -57,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0xa08c6e712e47a2cd3f4319b9d9daa7d60e4f1ad049151c6b9c49b0025ffd6306",
-    "officialSwaps": 2281,
+    "officialSwaps": 2375,
     "others": 9,
     "othersHalfFee": 7,
-    "othersSwaps": 30
+    "othersSwaps": 31
    }
   },
   {
@@ -76,7 +95,7 @@
    "phase": 2,
    "pools": {
     "official": "0x83da31f2fa1d872ccbdfd4cc73b13cac58f5269bad7370292fe4fe96e6fb5550",
-    "officialSwaps": 127,
+    "officialSwaps": 131,
     "others": 4,
     "othersHalfFee": 4,
     "othersSwaps": 1
@@ -95,7 +114,7 @@
    "phase": 2,
    "pools": {
     "official": "0xfe50c758d152fbd2638446cf07f3722f648bf19f642579c43857802eb64bd396",
-    "officialSwaps": 1245,
+    "officialSwaps": 1276,
     "others": 8,
     "othersHalfFee": 8,
     "othersSwaps": 12
@@ -114,86 +133,10 @@
    "phase": 2,
    "pools": {
     "official": "0xe25ab929558cc6d69208ac1533224c1885ccedcfdeafefff72ea83887471229e",
-    "officialSwaps": 2453,
+    "officialSwaps": 2646,
     "others": 8,
     "othersHalfFee": 4,
     "othersSwaps": 9
-   }
-  },
-  {
-   "token": "0xa05496e2100cc14920d969f918343f863eae209e",
-   "symbol": "CCRY",
-   "name": "Chancery",
-   "deployer": "0xfc089891fd9650b88b21fb018ab60a1811704b93",
-   "block": 107237641,
-   "tx": "0x7ef07f70bb678be93345eec8fc614efa4c560c4e37ad67dc5cb178faa31adb71",
-   "quoteRaw": "4200000000000000002",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x321c6f45095292e25544ca37750800f071a1379383f820c2ff18e8b029f8e688",
-    "officialSwaps": 2486,
-    "others": 11,
-    "othersHalfFee": 9,
-    "othersSwaps": 38
-   }
-  },
-  {
-   "token": "0xd31e178d7e33694a7f538b5c2698a644556699ee",
-   "symbol": "ARCOM",
-   "name": "arcom",
-   "deployer": "0xea47b808dbebeff4a7da7f946c226b0743b8cb5b",
-   "block": 107228275,
-   "tx": "0x710db4f28dfc8c0033a665c2d37cc376661e7ac4b0da5717afad0da2420f801b",
-   "quoteRaw": "4200000000000000545",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x1c9a2018472f20d6e542f5dcb3350d0e7c4622aa3d4a405bb1e8c4c8796d45a6",
-    "officialSwaps": 1301,
-    "others": 6,
-    "othersHalfFee": 4,
-    "othersSwaps": 15
-   }
-  },
-  {
-   "token": "0xa2753fd0bc86b8ceb55ffd2698679c7f214785f1",
-   "symbol": "LETRO",
-   "name": "Letronna",
-   "deployer": "0xf836cf3130c0afc83355f87a8db480f720f5f4aa",
-   "block": 107228059,
-   "tx": "0xeaa361546578cd80ecedc1c8676e7558fab924a40589db29f08dedfad536680a",
-   "quoteRaw": "4200000000000000122",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0xeabce6e77147fe00901a75bc153a68c4e0061951aa5b7f33cc97a71395c88bf2",
-    "officialSwaps": 2555,
-    "others": 19,
-    "othersHalfFee": 6,
-    "othersSwaps": 305
-   }
-  },
-  {
-   "token": "0x8c4be7763f446df2b5a8c331e7ccf497e7f78b1d",
-   "symbol": "ASTER",
-   "name": "ASTERRA POOLS",
-   "deployer": "0xd62a316e3a6e6a180271de548a2b01a13070cd97",
-   "block": 107169817,
-   "tx": "0x195e269e537aea507ed303553b36e3db8b89583763ab718fd2191232f2a63982",
-   "quoteRaw": "4200000000000000368",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0xa8df68b399b7ef2a821c7efb582cedf2a19b842780ae7e0a36681d597882c1bc",
-    "officialSwaps": 1530,
-    "others": 9,
-    "othersHalfFee": 7,
-    "othersSwaps": 14
    }
   }
  ],
