@@ -1,11 +1,49 @@
 {
  "chainId": 4663,
- "block": 108390984,
+ "block": 108494310,
  "windowHours": 24.0,
- "generatedAt": "2026-11-07T12:02:02+00:00",
- "launches": 845,
- "graduations": 8,
+ "generatedAt": "2026-11-07T15:01:48+00:00",
+ "launches": 822,
+ "graduations": 7,
  "graduated": [
+  {
+   "token": "0x31ced11f076e45da2508da2db4a2f296021a1e21",
+   "symbol": "ZENO",
+   "name": "ZENO MARKETS",
+   "deployer": "0xf1058c4d883e978c13bb87317df32a92ebb1a06a",
+   "block": 108403873,
+   "tx": "0x2c3ef03b22936f17ba8291936f389b7980c18d46d6ce9a7a09b2d95ce0bd5cff",
+   "quoteRaw": "4200000000000000375",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x834b1800b9b61a5fc7ca2c31fbdfc495b9cfb7eae434494273d0f67c9a636d2d",
+    "officialSwaps": 387,
+    "others": 6,
+    "othersHalfFee": 4,
+    "othersSwaps": 26
+   }
+  },
+  {
+   "token": "0x5e09f8fb59a1c336959abc6d74e227806d710ffe",
+   "symbol": "SUNPEAK",
+   "name": "Sunpeak AI",
+   "deployer": "0x84d153bb625fa0509e7df26cd20d3fd7cdf2e9a2",
+   "block": 108399331,
+   "tx": "0xa9f7a0f132ec82840d60fefa5d462cea4e9f1b636c59c13868955bfeb0d741f4",
+   "quoteRaw": "4200000000000000211",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x635ba3af9f371b5876a2afebb1f5e06e8ba21c7f63d196a52f99a443d1e9a9ba",
+    "officialSwaps": 1440,
+    "others": 4,
+    "othersHalfFee": 2,
+    "othersSwaps": 43
+   }
+  },
   {
    "token": "0xb9fd927f8ebdc35a83274324b138a242a8b37674",
    "symbol": "CURVEIL",
@@ -19,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0xb1a02ba9d333aaf6dd4ee8cc0fc321eb519492acb00e8276fd98d0b4ce792e61",
-    "officialSwaps": 366,
+    "officialSwaps": 719,
     "others": 8,
     "othersHalfFee": 4,
-    "othersSwaps": 24
+    "othersSwaps": 34
    }
   },
   {
@@ -38,7 +76,7 @@
    "phase": 2,
    "pools": {
     "official": "0x62818cae09d4ea7a89863902c27f389dbb38fee4d3079e3b8599348e77e9abcd",
-    "officialSwaps": 674,
+    "officialSwaps": 713,
     "others": 10,
     "othersHalfFee": 8,
     "othersSwaps": 2
@@ -57,10 +95,10 @@
    "phase": 2,
    "pools": {
     "official": "0x8b3e7c52a3e1b6aa48af613760f2b026c413e80362797bbbefbd7def48f0a67f",
-    "officialSwaps": 793,
+    "officialSwaps": 820,
     "others": 11,
     "othersHalfFee": 6,
-    "othersSwaps": 8
+    "othersSwaps": 10
    }
   },
   {
@@ -76,7 +114,7 @@
    "phase": 2,
    "pools": {
     "official": "0x0af8ee4cbbab234661711598e21cc7d04573bbe7a5dbda0f380b8c6dcd06b1a1",
-    "officialSwaps": 761,
+    "officialSwaps": 771,
     "others": 4,
     "othersHalfFee": 3,
     "othersSwaps": 1
@@ -95,67 +133,10 @@
    "phase": 2,
    "pools": {
     "official": "0xa08c6e712e47a2cd3f4319b9d9daa7d60e4f1ad049151c6b9c49b0025ffd6306",
-    "officialSwaps": 2648,
+    "officialSwaps": 2755,
     "others": 9,
     "othersHalfFee": 7,
-    "othersSwaps": 46
-   }
-  },
-  {
-   "token": "0x05ab5974839cbef493a0958751185f1a45fb2a3b",
-   "symbol": "FINK",
-   "name": "frong.ink",
-   "deployer": "0x33881254a97a01767978617515961fe54518c0de",
-   "block": 107630512,
-   "tx": "0x1a656badfc2140d5663f9b77c376ef7dd4fd6c228801903cccbb0dfd49c93153",
-   "quoteRaw": "4200000000000000039",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x83da31f2fa1d872ccbdfd4cc73b13cac58f5269bad7370292fe4fe96e6fb5550",
-    "officialSwaps": 210,
-    "others": 4,
-    "othersHalfFee": 4,
-    "othersSwaps": 1
-   }
-  },
-  {
-   "token": "0x78544c8974a41d26246a814da90143c2707ae7eb",
-   "symbol": "AKENO",
-   "name": "Akeno OS",
-   "deployer": "0x2d5f63967f26b4f910de7d4d43994af68f3cd59c",
-   "block": 107604307,
-   "tx": "0xe7a17a42d6f334e444b40ac95d37bf0b29371f8693c2e2084d0a080ee5225d30",
-   "quoteRaw": "4200000000000000083",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0xfe50c758d152fbd2638446cf07f3722f648bf19f642579c43857802eb64bd396",
-    "officialSwaps": 1452,
-    "others": 8,
-    "othersHalfFee": 8,
-    "othersSwaps": 12
-   }
-  },
-  {
-   "token": "0x072d88c2f31f568c0f4b8f613692eb489541ed45",
-   "symbol": "KYTE",
-   "name": "Kyte",
-   "deployer": "0x9e1b43a7068371e0b0b96fd86e219639a951edee",
-   "block": 107581013,
-   "tx": "0x7bd6465cc2b0b1c308358e88344b1598dd2cd497280cde35cbd0a889646a23a2",
-   "quoteRaw": "4200000000000000228",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0xe25ab929558cc6d69208ac1533224c1885ccedcfdeafefff72ea83887471229e",
-    "officialSwaps": 2967,
-    "others": 9,
-    "othersHalfFee": 4,
-    "othersSwaps": 9
+    "othersSwaps": 47
    }
   }
  ],
