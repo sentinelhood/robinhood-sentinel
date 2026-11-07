@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 108598187,
+ "block": 108700960,
  "windowHours": 24.0,
- "generatedAt": "2026-11-07T18:01:48+00:00",
- "launches": 810,
+ "generatedAt": "2026-11-07T21:01:42+00:00",
+ "launches": 831,
  "graduations": 7,
  "graduated": [
+  {
+   "token": "0xcf47ff6d4342a67d0535a08cadee6b2ea9e22e03",
+   "symbol": "OMEN",
+   "name": "Omen Agent",
+   "deployer": "0xf7fb02c56521ee477b9bfb1c8b3a7a68c028e378",
+   "block": 108613627,
+   "tx": "0xe919349a000ffeb4dc6c16fb86e161957257021aff71e94236f81192a7d2b3a3",
+   "quoteRaw": "4200000000000000232",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x0a0609d80a250203539a48826b3b13728488f7bc7ec00c4815539e092314b2fe",
+    "officialSwaps": 1509,
+    "others": 6,
+    "othersHalfFee": 6,
+    "othersSwaps": 5
+   }
+  },
   {
    "token": "0x7a5cd17c0076a2d87ef7a23a75a03a7e96255cd2",
    "symbol": "BLIPLT",
@@ -19,7 +38,7 @@
    "phase": 2,
    "pools": {
     "official": "0x3b6014b4006ae0242514f4a05e80c0688ca372a2b6917dad53582b18e35a457f",
-    "officialSwaps": 223,
+    "officialSwaps": 244,
     "others": 2,
     "othersHalfFee": 2,
     "othersSwaps": 6
@@ -38,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x2c346e5022882d2ae0b6bbebeeb556d839e1075784fc84787c120efec8968bd6",
-    "officialSwaps": 860,
+    "officialSwaps": 1380,
     "others": 6,
     "othersHalfFee": 5,
-    "othersSwaps": 11
+    "othersSwaps": 32
    }
   },
   {
@@ -57,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0x834b1800b9b61a5fc7ca2c31fbdfc495b9cfb7eae434494273d0f67c9a636d2d",
-    "officialSwaps": 538,
+    "officialSwaps": 636,
     "others": 6,
     "othersHalfFee": 4,
-    "othersSwaps": 33
+    "othersSwaps": 43
    }
   },
   {
@@ -76,10 +95,10 @@
    "phase": 2,
    "pools": {
     "official": "0x635ba3af9f371b5876a2afebb1f5e06e8ba21c7f63d196a52f99a443d1e9a9ba",
-    "officialSwaps": 1833,
+    "officialSwaps": 1958,
     "others": 5,
     "othersHalfFee": 2,
-    "othersSwaps": 79
+    "othersSwaps": 94
    }
   },
   {
@@ -95,7 +114,7 @@
    "phase": 2,
    "pools": {
     "official": "0xb1a02ba9d333aaf6dd4ee8cc0fc321eb519492acb00e8276fd98d0b4ce792e61",
-    "officialSwaps": 800,
+    "officialSwaps": 863,
     "others": 8,
     "othersHalfFee": 4,
     "othersSwaps": 35
@@ -114,29 +133,10 @@
    "phase": 2,
    "pools": {
     "official": "0x62818cae09d4ea7a89863902c27f389dbb38fee4d3079e3b8599348e77e9abcd",
-    "officialSwaps": 766,
+    "officialSwaps": 812,
     "others": 12,
     "othersHalfFee": 9,
-    "othersSwaps": 2
-   }
-  },
-  {
-   "token": "0x8231fdc77207ede2455259e2d391eb4f026581f4",
-   "symbol": "HYPE",
-   "name": "Hypest",
-   "deployer": "0x10d7ddfe032a10ce8eb071522d7e0e44a04bccf7",
-   "block": 107772944,
-   "tx": "0x43c4c31701c88c5417eb7108be68cb20341c9c454955ed9ce4cf220d1dd3723c",
-   "quoteRaw": "4200000000000000004",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x8b3e7c52a3e1b6aa48af613760f2b026c413e80362797bbbefbd7def48f0a67f",
-    "officialSwaps": 878,
-    "others": 11,
-    "othersHalfFee": 6,
-    "othersSwaps": 10
+    "othersSwaps": 3
    }
   }
  ],
