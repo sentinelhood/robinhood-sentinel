@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 109210313,
+ "block": 109312823,
  "windowHours": 24.0,
- "generatedAt": "2026-11-08T12:01:48+00:00",
- "launches": 837,
- "graduations": 8,
+ "generatedAt": "2026-11-08T15:01:34+00:00",
+ "launches": 928,
+ "graduations": 6,
  "graduated": [
   {
    "token": "0x71d85b295653d9c3e7dd2fc26f26f2c3db51b2fc",
@@ -19,10 +19,10 @@
    "phase": 2,
    "pools": {
     "official": "0x183e7881705bfa26fd05dfe73122b0533c11eaf88bc880a5de0c02a86916042c",
-    "officialSwaps": 902,
+    "officialSwaps": 1078,
     "others": 8,
     "othersHalfFee": 7,
-    "othersSwaps": 17
+    "othersSwaps": 22
    }
   },
   {
@@ -38,9 +38,9 @@
    "phase": 2,
    "pools": {
     "official": "0x39c4e8a6607675d02c472e1b921a725272053daafacba1fe1cb08a2ea9698eb0",
-    "officialSwaps": 343,
-    "others": 13,
-    "othersHalfFee": 6,
+    "officialSwaps": 369,
+    "others": 15,
+    "othersHalfFee": 8,
     "othersSwaps": 2
    }
   },
@@ -76,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0x0a0609d80a250203539a48826b3b13728488f7bc7ec00c4815539e092314b2fe",
-    "officialSwaps": 2173,
+    "officialSwaps": 2244,
     "others": 8,
     "othersHalfFee": 7,
-    "othersSwaps": 6
+    "othersSwaps": 7
    }
   },
   {
@@ -95,7 +95,7 @@
    "phase": 2,
    "pools": {
     "official": "0x3b6014b4006ae0242514f4a05e80c0688ca372a2b6917dad53582b18e35a457f",
-    "officialSwaps": 256,
+    "officialSwaps": 257,
     "others": 2,
     "othersHalfFee": 2,
     "othersSwaps": 6
@@ -114,48 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0x2c346e5022882d2ae0b6bbebeeb556d839e1075784fc84787c120efec8968bd6",
-    "officialSwaps": 2296,
+    "officialSwaps": 2428,
     "others": 10,
     "othersHalfFee": 8,
-    "othersSwaps": 62
-   }
-  },
-  {
-   "token": "0x31ced11f076e45da2508da2db4a2f296021a1e21",
-   "symbol": "ZENO",
-   "name": "ZENO MARKETS",
-   "deployer": "0xf1058c4d883e978c13bb87317df32a92ebb1a06a",
-   "block": 108403873,
-   "tx": "0x2c3ef03b22936f17ba8291936f389b7980c18d46d6ce9a7a09b2d95ce0bd5cff",
-   "quoteRaw": "4200000000000000375",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x834b1800b9b61a5fc7ca2c31fbdfc495b9cfb7eae434494273d0f67c9a636d2d",
-    "officialSwaps": 957,
-    "others": 6,
-    "othersHalfFee": 4,
-    "othersSwaps": 68
-   }
-  },
-  {
-   "token": "0x5e09f8fb59a1c336959abc6d74e227806d710ffe",
-   "symbol": "SUNPEAK",
-   "name": "Sunpeak AI",
-   "deployer": "0x84d153bb625fa0509e7df26cd20d3fd7cdf2e9a2",
-   "block": 108399331,
-   "tx": "0xa9f7a0f132ec82840d60fefa5d462cea4e9f1b636c59c13868955bfeb0d741f4",
-   "quoteRaw": "4200000000000000211",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x635ba3af9f371b5876a2afebb1f5e06e8ba21c7f63d196a52f99a443d1e9a9ba",
-    "officialSwaps": 2280,
-    "others": 5,
-    "othersHalfFee": 2,
-    "othersSwaps": 108
+    "othersSwaps": 63
    }
   }
  ],
