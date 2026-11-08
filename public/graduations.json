@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 108803595,
+ "block": 108905696,
  "windowHours": 24.0,
- "generatedAt": "2026-11-08T00:01:55+00:00",
- "launches": 781,
+ "generatedAt": "2026-11-08T03:01:55+00:00",
+ "launches": 795,
  "graduations": 8,
  "graduated": [
+  {
+   "token": "0x98dcc6f9b8298ae1a225b8df1519e7565d45672d",
+   "symbol": "GHOSTDEX",
+   "name": "GhostDex",
+   "deployer": "0x1450833e0f5c0d3507084e6afa51358b7630b86c",
+   "block": 108846707,
+   "tx": "0x26275fb0295eb8d7da0766e1680973526012a1088004dfcff219b817ad3f8b4e",
+   "quoteRaw": "4200000000000001542",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x39c4e8a6607675d02c472e1b921a725272053daafacba1fe1cb08a2ea9698eb0",
+    "officialSwaps": 151,
+    "others": 13,
+    "othersHalfFee": 6,
+    "othersSwaps": 2
+   }
+  },
   {
    "token": "0x3dff19a2db018ddbb3459d549d1f4283c3b772a8",
    "symbol": "CIO",
@@ -19,7 +38,7 @@
    "phase": 2,
    "pools": {
     "official": "0x7ef727c7da33fb24af27505ef884d0ee0b35df0fc9a28a82c0f22e402de730c0",
-    "officialSwaps": 174,
+    "officialSwaps": 182,
     "others": 5,
     "othersHalfFee": 4,
     "othersSwaps": 28
@@ -38,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x0a0609d80a250203539a48826b3b13728488f7bc7ec00c4815539e092314b2fe",
-    "officialSwaps": 1762,
-    "others": 7,
+    "officialSwaps": 1921,
+    "others": 8,
     "othersHalfFee": 7,
-    "othersSwaps": 5
+    "othersSwaps": 6
    }
   },
   {
@@ -57,7 +76,7 @@
    "phase": 2,
    "pools": {
     "official": "0x3b6014b4006ae0242514f4a05e80c0688ca372a2b6917dad53582b18e35a457f",
-    "officialSwaps": 252,
+    "officialSwaps": 253,
     "others": 2,
     "othersHalfFee": 2,
     "othersSwaps": 6
@@ -76,10 +95,10 @@
    "phase": 2,
    "pools": {
     "official": "0x2c346e5022882d2ae0b6bbebeeb556d839e1075784fc84787c120efec8968bd6",
-    "officialSwaps": 1677,
-    "others": 9,
+    "officialSwaps": 1873,
+    "others": 10,
     "othersHalfFee": 8,
-    "othersSwaps": 46
+    "othersSwaps": 47
    }
   },
   {
@@ -95,10 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0x834b1800b9b61a5fc7ca2c31fbdfc495b9cfb7eae434494273d0f67c9a636d2d",
-    "officialSwaps": 776,
+    "officialSwaps": 840,
     "others": 6,
     "othersHalfFee": 4,
-    "othersSwaps": 69
+    "othersSwaps": 71
    }
   },
   {
@@ -114,7 +133,7 @@
    "phase": 2,
    "pools": {
     "official": "0x635ba3af9f371b5876a2afebb1f5e06e8ba21c7f63d196a52f99a443d1e9a9ba",
-    "officialSwaps": 2064,
+    "officialSwaps": 2108,
     "others": 5,
     "othersHalfFee": 2,
     "othersSwaps": 107
@@ -133,29 +152,10 @@
    "phase": 2,
    "pools": {
     "official": "0xb1a02ba9d333aaf6dd4ee8cc0fc321eb519492acb00e8276fd98d0b4ce792e61",
-    "officialSwaps": 905,
+    "officialSwaps": 933,
     "others": 8,
     "othersHalfFee": 4,
-    "othersSwaps": 34
-   }
-  },
-  {
-   "token": "0xa01f353b72ef6557359f2c110ab7c738dfd8405d",
-   "symbol": "DEPLOYR",
-   "name": "Deployr",
-   "deployer": "0x01c4e7a45cea0925b7520c43460d408d887633bf",
-   "block": 108051842,
-   "tx": "0x45392c4aa8d88404b7ee5819d7958dd39e770228a552f1d48ed55cd8d22d8386",
-   "quoteRaw": "4200000000000000251",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x62818cae09d4ea7a89863902c27f389dbb38fee4d3079e3b8599348e77e9abcd",
-    "officialSwaps": 837,
-    "others": 13,
-    "othersHalfFee": 10,
-    "othersSwaps": 2
+    "othersSwaps": 32
    }
   }
  ],
