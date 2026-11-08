@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 109416763,
+ "block": 109520785,
  "windowHours": 24.0,
- "generatedAt": "2026-11-08T18:01:46+00:00",
- "launches": 877,
- "graduations": 6,
+ "generatedAt": "2026-11-08T21:01:21+00:00",
+ "launches": 771,
+ "graduations": 4,
  "graduated": [
   {
    "token": "0x0ddcab9ae04bda0c87ecc1640636fa11e8e613e8",
@@ -19,9 +19,9 @@
    "phase": 2,
    "pools": {
     "official": "0x5e73f5892ef5cf4d553fe0cc9b109e884c3c2a52635bf6c4f1dceff9637fe932",
-    "officialSwaps": 378,
-    "others": 5,
-    "othersHalfFee": 4,
+    "officialSwaps": 631,
+    "others": 6,
+    "othersHalfFee": 5,
     "othersSwaps": 2
    }
   },
@@ -38,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x183e7881705bfa26fd05dfe73122b0533c11eaf88bc880a5de0c02a86916042c",
-    "officialSwaps": 1296,
-    "others": 8,
-    "othersHalfFee": 7,
-    "othersSwaps": 34
+    "officialSwaps": 1448,
+    "others": 9,
+    "othersHalfFee": 8,
+    "othersSwaps": 37
    }
   },
   {
@@ -57,7 +57,7 @@
    "phase": 2,
    "pools": {
     "official": "0x39c4e8a6607675d02c472e1b921a725272053daafacba1fe1cb08a2ea9698eb0",
-    "officialSwaps": 417,
+    "officialSwaps": 466,
     "others": 15,
     "othersHalfFee": 8,
     "othersSwaps": 2
@@ -80,44 +80,6 @@
     "others": 5,
     "othersHalfFee": 4,
     "othersSwaps": 28
-   }
-  },
-  {
-   "token": "0xcf47ff6d4342a67d0535a08cadee6b2ea9e22e03",
-   "symbol": "OMEN",
-   "name": "Omen Agent",
-   "deployer": "0xf7fb02c56521ee477b9bfb1c8b3a7a68c028e378",
-   "block": 108613627,
-   "tx": "0xe919349a000ffeb4dc6c16fb86e161957257021aff71e94236f81192a7d2b3a3",
-   "quoteRaw": "4200000000000000232",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x0a0609d80a250203539a48826b3b13728488f7bc7ec00c4815539e092314b2fe",
-    "officialSwaps": 2323,
-    "others": 8,
-    "othersHalfFee": 7,
-    "othersSwaps": 9
-   }
-  },
-  {
-   "token": "0x7a5cd17c0076a2d87ef7a23a75a03a7e96255cd2",
-   "symbol": "BLIPLT",
-   "name": "Blip Late",
-   "deployer": "0x492088660bbe15cc49b262881d3fb1f7ad76177e",
-   "block": 108576726,
-   "tx": "0xdca82b6ce275c0c0b349b1a0778dfceda32e8c062e2b8861d4f2fdb79018c4d0",
-   "quoteRaw": "4200000000000000053",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x3b6014b4006ae0242514f4a05e80c0688ca372a2b6917dad53582b18e35a457f",
-    "officialSwaps": 259,
-    "others": 2,
-    "othersHalfFee": 2,
-    "othersSwaps": 6
    }
   }
  ],
