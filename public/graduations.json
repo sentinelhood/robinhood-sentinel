@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 109110732,
+ "block": 109210313,
  "windowHours": 24.0,
- "generatedAt": "2026-11-08T09:01:50+00:00",
- "launches": 830,
- "graduations": 9,
+ "generatedAt": "2026-11-08T12:01:48+00:00",
+ "launches": 837,
+ "graduations": 8,
  "graduated": [
   {
    "token": "0x71d85b295653d9c3e7dd2fc26f26f2c3db51b2fc",
@@ -19,10 +19,10 @@
    "phase": 2,
    "pools": {
     "official": "0x183e7881705bfa26fd05dfe73122b0533c11eaf88bc880a5de0c02a86916042c",
-    "officialSwaps": 714,
-    "others": 7,
-    "othersHalfFee": 6,
-    "othersSwaps": 9
+    "officialSwaps": 902,
+    "others": 8,
+    "othersHalfFee": 7,
+    "othersSwaps": 17
    }
   },
   {
@@ -38,7 +38,7 @@
    "phase": 2,
    "pools": {
     "official": "0x39c4e8a6607675d02c472e1b921a725272053daafacba1fe1cb08a2ea9698eb0",
-    "officialSwaps": 295,
+    "officialSwaps": 343,
     "others": 13,
     "othersHalfFee": 6,
     "othersSwaps": 2
@@ -76,7 +76,7 @@
    "phase": 2,
    "pools": {
     "official": "0x0a0609d80a250203539a48826b3b13728488f7bc7ec00c4815539e092314b2fe",
-    "officialSwaps": 2101,
+    "officialSwaps": 2173,
     "others": 8,
     "othersHalfFee": 7,
     "othersSwaps": 6
@@ -114,10 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0x2c346e5022882d2ae0b6bbebeeb556d839e1075784fc84787c120efec8968bd6",
-    "officialSwaps": 2171,
+    "officialSwaps": 2296,
     "others": 10,
     "othersHalfFee": 8,
-    "othersSwaps": 57
+    "othersSwaps": 62
    }
   },
   {
@@ -133,10 +133,10 @@
    "phase": 2,
    "pools": {
     "official": "0x834b1800b9b61a5fc7ca2c31fbdfc495b9cfb7eae434494273d0f67c9a636d2d",
-    "officialSwaps": 919,
+    "officialSwaps": 957,
     "others": 6,
     "othersHalfFee": 4,
-    "othersSwaps": 71
+    "othersSwaps": 68
    }
   },
   {
@@ -152,29 +152,10 @@
    "phase": 2,
    "pools": {
     "official": "0x635ba3af9f371b5876a2afebb1f5e06e8ba21c7f63d196a52f99a443d1e9a9ba",
-    "officialSwaps": 2237,
+    "officialSwaps": 2280,
     "others": 5,
     "othersHalfFee": 2,
-    "othersSwaps": 109
-   }
-  },
-  {
-   "token": "0xb9fd927f8ebdc35a83274324b138a242a8b37674",
-   "symbol": "CURVEIL",
-   "name": "CURVEIL",
-   "deployer": "0x1dff56742b33aaf42e12a651435e6993437015e8",
-   "block": 108301713,
-   "tx": "0x7425775fe108eeb77a6eb96670d406c3e23c24717333f7568bbfc8a50aad5fda",
-   "quoteRaw": "4200000000000000736",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0xb1a02ba9d333aaf6dd4ee8cc0fc321eb519492acb00e8276fd98d0b4ce792e61",
-    "officialSwaps": 978,
-    "others": 8,
-    "othersHalfFee": 4,
-    "othersSwaps": 33
+    "othersSwaps": 108
    }
   }
  ],
