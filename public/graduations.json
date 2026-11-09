@@ -1,11 +1,49 @@
 {
  "chainId": 4663,
- "block": 110252266,
+ "block": 110357374,
  "windowHours": 24.0,
- "generatedAt": "2026-11-09T18:02:31+00:00",
- "launches": 833,
- "graduations": 9,
+ "generatedAt": "2026-11-09T21:02:36+00:00",
+ "launches": 858,
+ "graduations": 11,
  "graduated": [
+  {
+   "token": "0xc928115d65ba633c806ea14ff6d35b9163e0e2b1",
+   "symbol": "KALYX",
+   "name": "Kalyx",
+   "deployer": "0xdc71993aa5fb7bb2b5b2a415b7c64df470bf9951",
+   "block": 110317497,
+   "tx": "0x7d6ff62e2dd7dd1062a75a82c647ff48c7cd04e13aa566a6520bfed41322e05c",
+   "quoteRaw": "4200000000000000171",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0xd551411161a8b3b2a27a961707502043e72fe8e64816f3b466ba464f49d59117",
+    "officialSwaps": 194,
+    "others": 7,
+    "othersHalfFee": 6,
+    "othersSwaps": 7
+   }
+  },
+  {
+   "token": "0xb406249c7350e6384ce15ec2cd95afd9ebbe7cbb",
+   "symbol": "ONION",
+   "name": "Onion Exchange",
+   "deployer": "0x5322b81936125ff52f7aefec9b5258a1b70c7680",
+   "block": 110269030,
+   "tx": "0x1374a7c5a37481ac4fc1ea5eb56a61eba1ac1b834fe9f3ab5822c87cfe556ae9",
+   "quoteRaw": "4200000000000000022",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0xbc5ba99682c8ccfe0d1782d432950ed89d263c128365395a3486805db062d0c3",
+    "officialSwaps": 2207,
+    "others": 3,
+    "othersHalfFee": 2,
+    "othersSwaps": 7
+   }
+  },
   {
    "token": "0x688d8c004af3c292330fea8af8a594adc8c3b0c8",
    "symbol": "AGENTDOM",
@@ -19,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x84f4152bd8b38ae9f075ae2c07008fa59bb0b394e69eec0c0c40330e6c038405",
-    "officialSwaps": 400,
-    "others": 7,
+    "officialSwaps": 877,
+    "others": 9,
     "othersHalfFee": 6,
-    "othersSwaps": 11
+    "othersSwaps": 47
    }
   },
   {
@@ -38,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0x4207c21e03ea89c2aac3aa5030ee0b9fbb13d7800165471cbd019e968bac6dd7",
-    "officialSwaps": 1170,
+    "officialSwaps": 1475,
     "others": 8,
     "othersHalfFee": 6,
-    "othersSwaps": 211
+    "othersSwaps": 236
    }
   },
   {
@@ -57,10 +95,10 @@
    "phase": 2,
    "pools": {
     "official": "0x415f54ecb03e7e0a8707b3a685b8e2b55cda93b7782648c04434eab204b90d00",
-    "officialSwaps": 2462,
-    "others": 11,
-    "othersHalfFee": 8,
-    "othersSwaps": 9
+    "officialSwaps": 2555,
+    "others": 12,
+    "othersHalfFee": 9,
+    "othersSwaps": 11
    }
   },
   {
@@ -76,7 +114,7 @@
    "phase": 2,
    "pools": {
     "official": "0xd4c2040cdca2b0d4a49386fb3e3d63c39c59d0fdbe3b64b470c6b8325dd3589a",
-    "officialSwaps": 1760,
+    "officialSwaps": 1801,
     "others": 10,
     "othersHalfFee": 9,
     "othersSwaps": 10
@@ -95,10 +133,10 @@
    "phase": 2,
    "pools": {
     "official": "0xcd7b9efdd7461128fe1388e021d27ad8f944e1341483e979041c8104b265257e",
-    "officialSwaps": 1237,
+    "officialSwaps": 1365,
     "others": 7,
     "othersHalfFee": 6,
-    "othersSwaps": 28
+    "othersSwaps": 31
    }
   },
   {
@@ -114,10 +152,10 @@
    "phase": 2,
    "pools": {
     "official": "0xbef36c82859224d04f22af644f244c67d9f01c2b1a24d1fae8b1482f3ab8aae5",
-    "officialSwaps": 73,
+    "officialSwaps": 79,
     "others": 3,
     "othersHalfFee": 3,
-    "othersSwaps": 0
+    "othersSwaps": 1
    }
   },
   {
@@ -133,10 +171,10 @@
    "phase": 2,
    "pools": {
     "official": "0x479c91ed5f48e892bb9ca38384ad495b86bf75ab2543f393cb379b2931f08006",
-    "officialSwaps": 1476,
+    "officialSwaps": 1532,
     "others": 8,
     "othersHalfFee": 7,
-    "othersSwaps": 0
+    "othersSwaps": 1
    }
   },
   {
@@ -152,7 +190,7 @@
    "phase": 2,
    "pools": {
     "official": "0xbcb1ba4f455bcaab0b3ec98d2c86f162f1ad2a32c78159cb947478f4895728c9",
-    "officialSwaps": 1342,
+    "officialSwaps": 1381,
     "others": 10,
     "othersHalfFee": 9,
     "othersSwaps": 37
@@ -171,7 +209,7 @@
    "phase": 2,
    "pools": {
     "official": "0x5922bcb67de506bde6a21b81acd1e7994a90ec921d26dc159862433ab20c64e8",
-    "officialSwaps": 380,
+    "officialSwaps": 381,
     "others": 6,
     "othersHalfFee": 6,
     "othersSwaps": 21
