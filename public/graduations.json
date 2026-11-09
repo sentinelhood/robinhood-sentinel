@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 110040514,
+ "block": 110146179,
  "windowHours": 24.0,
- "generatedAt": "2026-11-09T12:01:48+00:00",
- "launches": 754,
- "graduations": 7,
+ "generatedAt": "2026-11-09T15:02:27+00:00",
+ "launches": 755,
+ "graduations": 8,
  "graduated": [
+  {
+   "token": "0x8c214b77f7ededa453ebd43df848cc02ecc1b431",
+   "symbol": "LGND",
+   "name": "Tiny Legends",
+   "deployer": "0x76369028ab355bbbc778000983afb1352a6d84fc",
+   "block": 110109669,
+   "tx": "0xe452bb1b97d0d0cf6081f575abfa668621a233cbc8aade58e19b78f1c19ba6c1",
+   "quoteRaw": "4200000000000000002",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x415f54ecb03e7e0a8707b3a685b8e2b55cda93b7782648c04434eab204b90d00",
+    "officialSwaps": 2111,
+    "others": 10,
+    "othersHalfFee": 8,
+    "othersSwaps": 7
+   }
+  },
   {
    "token": "0xf6de8b3b7db6eaba4d0ecdc374e56be5eeb6b2f2",
    "symbol": "AGI",
@@ -19,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0xd4c2040cdca2b0d4a49386fb3e3d63c39c59d0fdbe3b64b470c6b8325dd3589a",
-    "officialSwaps": 1380,
-    "others": 9,
-    "othersHalfFee": 8,
-    "othersSwaps": 5
+    "officialSwaps": 1693,
+    "others": 10,
+    "othersHalfFee": 9,
+    "othersSwaps": 8
    }
   },
   {
@@ -38,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0xcd7b9efdd7461128fe1388e021d27ad8f944e1341483e979041c8104b265257e",
-    "officialSwaps": 768,
+    "officialSwaps": 1092,
     "others": 7,
     "othersHalfFee": 6,
-    "othersSwaps": 14
+    "othersSwaps": 25
    }
   },
   {
@@ -76,7 +95,7 @@
    "phase": 2,
    "pools": {
     "official": "0x479c91ed5f48e892bb9ca38384ad495b86bf75ab2543f393cb379b2931f08006",
-    "officialSwaps": 1123,
+    "officialSwaps": 1372,
     "others": 8,
     "othersHalfFee": 7,
     "othersSwaps": 0
@@ -95,10 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0xbcb1ba4f455bcaab0b3ec98d2c86f162f1ad2a32c78159cb947478f4895728c9",
-    "officialSwaps": 1045,
+    "officialSwaps": 1245,
     "others": 10,
     "othersHalfFee": 9,
-    "othersSwaps": 35
+    "othersSwaps": 36
    }
   },
   {
@@ -114,10 +133,10 @@
    "phase": 2,
    "pools": {
     "official": "0x5922bcb67de506bde6a21b81acd1e7994a90ec921d26dc159862433ab20c64e8",
-    "officialSwaps": 368,
+    "officialSwaps": 378,
     "others": 6,
     "othersHalfFee": 6,
-    "othersSwaps": 20
+    "othersSwaps": 21
    }
   },
   {
@@ -133,10 +152,10 @@
    "phase": 2,
    "pools": {
     "official": "0x5e73f5892ef5cf4d553fe0cc9b109e884c3c2a52635bf6c4f1dceff9637fe932",
-    "officialSwaps": 1518,
+    "officialSwaps": 1676,
     "others": 11,
     "othersHalfFee": 7,
-    "othersSwaps": 24
+    "othersSwaps": 26
    }
   }
  ],
