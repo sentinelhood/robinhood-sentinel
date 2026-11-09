@@ -1,11 +1,49 @@
 {
  "chainId": 4663,
- "block": 109624362,
+ "block": 109729276,
  "windowHours": 24.0,
- "generatedAt": "2026-11-09T00:01:34+00:00",
- "launches": 736,
- "graduations": 3,
+ "generatedAt": "2026-11-09T03:01:18+00:00",
+ "launches": 757,
+ "graduations": 4,
  "graduated": [
+  {
+   "token": "0x767e31c8ba121aa381eda90abeab5c4289d08853",
+   "symbol": "ACTUARY",
+   "name": "Actuary AI",
+   "deployer": "0xde80d2ef39a399b69ae635e2fd497fc513ddce05",
+   "block": 109654562,
+   "tx": "0x765b1eb646d308901e828500b8f293b1ddf908d4e01508548d4726b565601d60",
+   "quoteRaw": "4200000000000000220",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0xbcb1ba4f455bcaab0b3ec98d2c86f162f1ad2a32c78159cb947478f4895728c9",
+    "officialSwaps": 588,
+    "others": 8,
+    "othersHalfFee": 7,
+    "othersSwaps": 18
+   }
+  },
+  {
+   "token": "0x1382c204ba4e3785f05ea0d48c3cc666365b446b",
+   "symbol": "PUSSY",
+   "name": "Pussycoin",
+   "deployer": "0x89c030914b562628618e68bcda49f8ed617dae08",
+   "block": 109642196,
+   "tx": "0xf0e1f8f1ea564e0eea6e5ba0e698ab0d39b58ddf8e94555e8b3d463563279a3f",
+   "quoteRaw": "41600000000000000062",
+   "pairSymbol": "NVDA",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x5922bcb67de506bde6a21b81acd1e7994a90ec921d26dc159862433ab20c64e8",
+    "officialSwaps": 302,
+    "others": 6,
+    "othersHalfFee": 6,
+    "othersSwaps": 20
+   }
+  },
   {
    "token": "0x0ddcab9ae04bda0c87ecc1640636fa11e8e613e8",
    "symbol": "TEXEL",
@@ -19,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x5e73f5892ef5cf4d553fe0cc9b109e884c3c2a52635bf6c4f1dceff9637fe932",
-    "officialSwaps": 791,
-    "others": 6,
-    "othersHalfFee": 5,
-    "othersSwaps": 2
+    "officialSwaps": 935,
+    "others": 8,
+    "othersHalfFee": 6,
+    "othersSwaps": 3
    }
   },
   {
@@ -38,29 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0x183e7881705bfa26fd05dfe73122b0533c11eaf88bc880a5de0c02a86916042c",
-    "officialSwaps": 1564,
+    "officialSwaps": 1780,
     "others": 9,
     "othersHalfFee": 8,
-    "othersSwaps": 45
-   }
-  },
-  {
-   "token": "0x98dcc6f9b8298ae1a225b8df1519e7565d45672d",
-   "symbol": "GHOSTDEX",
-   "name": "GhostDex",
-   "deployer": "0x1450833e0f5c0d3507084e6afa51358b7630b86c",
-   "block": 108846707,
-   "tx": "0x26275fb0295eb8d7da0766e1680973526012a1088004dfcff219b817ad3f8b4e",
-   "quoteRaw": "4200000000000001542",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x39c4e8a6607675d02c472e1b921a725272053daafacba1fe1cb08a2ea9698eb0",
-    "officialSwaps": 491,
-    "others": 15,
-    "othersHalfFee": 8,
-    "othersSwaps": 2
+    "othersSwaps": 59
    }
   }
  ],
