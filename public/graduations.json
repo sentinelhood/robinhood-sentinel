@@ -1,11 +1,49 @@
 {
  "chainId": 4663,
- "block": 109729276,
+ "block": 109832389,
  "windowHours": 24.0,
- "generatedAt": "2026-11-09T03:01:18+00:00",
- "launches": 757,
- "graduations": 4,
+ "generatedAt": "2026-11-09T06:01:27+00:00",
+ "launches": 836,
+ "graduations": 5,
  "graduated": [
+  {
+   "token": "0x859d1a7ce265c24996a95630dc35a4fecb5a5ad0",
+   "symbol": "HEAT",
+   "name": "Vice City Heat",
+   "deployer": "0x0e388b3fcaf2685931269df7577f29968c2f5c18",
+   "block": 109808748,
+   "tx": "0xb13e42ad1384a22a6e5f8ad7f1d599dc7302d987d218ce7d3dadb436ddac5b5a",
+   "quoteRaw": "26639006882017848440",
+   "pairSymbol": "TTWO",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0xbef36c82859224d04f22af644f244c67d9f01c2b1a24d1fae8b1482f3ab8aae5",
+    "officialSwaps": 55,
+    "others": 2,
+    "othersHalfFee": 2,
+    "othersSwaps": 0
+   }
+  },
+  {
+   "token": "0x0cfa417ee7748a13de76389d861abd1307ae1fa2",
+   "symbol": "IFSO",
+   "name": "IfSoFinance",
+   "deployer": "0xf0679d193e6fd3ae284f627aaa084a48ad477f45",
+   "block": 109730194,
+   "tx": "0xf23f1d2e6a2a0e8436ce2066f810575f501c6743a408bc382259da823400070f",
+   "quoteRaw": "4200000000000000004",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x479c91ed5f48e892bb9ca38384ad495b86bf75ab2543f393cb379b2931f08006",
+    "officialSwaps": 779,
+    "others": 8,
+    "othersHalfFee": 7,
+    "othersSwaps": 0
+   }
+  },
   {
    "token": "0x767e31c8ba121aa381eda90abeab5c4289d08853",
    "symbol": "ACTUARY",
@@ -19,7 +57,7 @@
    "phase": 2,
    "pools": {
     "official": "0xbcb1ba4f455bcaab0b3ec98d2c86f162f1ad2a32c78159cb947478f4895728c9",
-    "officialSwaps": 588,
+    "officialSwaps": 664,
     "others": 8,
     "othersHalfFee": 7,
     "othersSwaps": 18
@@ -38,7 +76,7 @@
    "phase": 2,
    "pools": {
     "official": "0x5922bcb67de506bde6a21b81acd1e7994a90ec921d26dc159862433ab20c64e8",
-    "officialSwaps": 302,
+    "officialSwaps": 321,
     "others": 6,
     "othersHalfFee": 6,
     "othersSwaps": 20
@@ -57,29 +95,10 @@
    "phase": 2,
    "pools": {
     "official": "0x5e73f5892ef5cf4d553fe0cc9b109e884c3c2a52635bf6c4f1dceff9637fe932",
-    "officialSwaps": 935,
+    "officialSwaps": 1132,
     "others": 8,
     "othersHalfFee": 6,
-    "othersSwaps": 3
-   }
-  },
-  {
-   "token": "0x71d85b295653d9c3e7dd2fc26f26f2c3db51b2fc",
-   "symbol": "QUERO",
-   "name": "Quero",
-   "deployer": "0x6db6c58888c175b8ff55b60b72807d8459ce8c86",
-   "block": 108968191,
-   "tx": "0x9e9bd9957a0ec142f0ada635c7620b7cff555e43b2be7b7dc910012299d5b7d7",
-   "quoteRaw": "4200000000000000133",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x183e7881705bfa26fd05dfe73122b0533c11eaf88bc880a5de0c02a86916042c",
-    "officialSwaps": 1780,
-    "others": 9,
-    "othersHalfFee": 8,
-    "othersSwaps": 59
+    "othersSwaps": 5
    }
   }
  ],
