@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 109520785,
+ "block": 109624362,
  "windowHours": 24.0,
- "generatedAt": "2026-11-08T21:01:21+00:00",
- "launches": 771,
- "graduations": 4,
+ "generatedAt": "2026-11-09T00:01:34+00:00",
+ "launches": 736,
+ "graduations": 3,
  "graduated": [
   {
    "token": "0x0ddcab9ae04bda0c87ecc1640636fa11e8e613e8",
@@ -19,7 +19,7 @@
    "phase": 2,
    "pools": {
     "official": "0x5e73f5892ef5cf4d553fe0cc9b109e884c3c2a52635bf6c4f1dceff9637fe932",
-    "officialSwaps": 631,
+    "officialSwaps": 791,
     "others": 6,
     "othersHalfFee": 5,
     "othersSwaps": 2
@@ -38,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x183e7881705bfa26fd05dfe73122b0533c11eaf88bc880a5de0c02a86916042c",
-    "officialSwaps": 1448,
+    "officialSwaps": 1564,
     "others": 9,
     "othersHalfFee": 8,
-    "othersSwaps": 37
+    "othersSwaps": 45
    }
   },
   {
@@ -57,29 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x39c4e8a6607675d02c472e1b921a725272053daafacba1fe1cb08a2ea9698eb0",
-    "officialSwaps": 466,
+    "officialSwaps": 491,
     "others": 15,
     "othersHalfFee": 8,
     "othersSwaps": 2
-   }
-  },
-  {
-   "token": "0x3dff19a2db018ddbb3459d549d1f4283c3b772a8",
-   "symbol": "CIO",
-   "name": "Chigga Its Over",
-   "deployer": "0xbf642fc4eb8e873be25c9d1dc14c3ec8dedad45c",
-   "block": 108752667,
-   "tx": "0x317ec7dc8d25a0eddfdcbf156ce773d3ee0ff952fedb4306066dd10b300f9eb5",
-   "quoteRaw": "4200000000000000008",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x7ef727c7da33fb24af27505ef884d0ee0b35df0fc9a28a82c0f22e402de730c0",
-    "officialSwaps": 192,
-    "others": 5,
-    "othersHalfFee": 4,
-    "othersSwaps": 28
    }
   }
  ],
