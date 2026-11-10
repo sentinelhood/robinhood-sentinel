@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 110969341,
+ "block": 111075333,
  "windowHours": 24.0,
- "generatedAt": "2026-11-10T15:03:01+00:00",
- "launches": 838,
- "graduations": 11,
+ "generatedAt": "2026-11-10T18:02:50+00:00",
+ "launches": 831,
+ "graduations": 10,
  "graduated": [
+  {
+   "token": "0x8e04549484d0612be8373a0263b11928a5f7681f",
+   "symbol": "ZOLVA",
+   "name": "Zolva Agent",
+   "deployer": "0xfad91c6e726c7ea196653e0784a0b209410a80d4",
+   "block": 111005949,
+   "tx": "0xf24af8bff2297aaa3e639fd53c9fe6f53ee074033af3e1d0d7e8c9b7c9d0e7bf",
+   "quoteRaw": "4200000000000000168",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x417e1f5361a5296f93a133142651e07d203f7a4ddecaa2de4460f1fb182e6d74",
+    "officialSwaps": 876,
+    "others": 10,
+    "othersHalfFee": 7,
+    "othersSwaps": 89
+   }
+  },
   {
    "token": "0xdc1ea590c071a688d21abbca82c7bd84080fc243",
    "symbol": "ROBOT",
@@ -19,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x8d96a6e5d3ba10aad1bff2de26845b3bc6f3f0a62d49e13df5bdf2edd7abf1a1",
-    "officialSwaps": 695,
-    "others": 3,
-    "othersHalfFee": 3,
-    "othersSwaps": 0
+    "officialSwaps": 1069,
+    "others": 6,
+    "othersHalfFee": 5,
+    "othersSwaps": 3
    }
   },
   {
@@ -38,7 +57,7 @@
    "phase": 2,
    "pools": {
     "official": "0xc1f153f5141d755c167064b8a7f3ad4178e4ae5cac18b63502935c482b69a81a",
-    "officialSwaps": 541,
+    "officialSwaps": 562,
     "others": 3,
     "othersHalfFee": 3,
     "othersSwaps": 6
@@ -57,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0xf477980a3658928180cb8830d7156df607b520c400d3ae758b634ccef0a5c038",
-    "officialSwaps": 1109,
+    "officialSwaps": 1268,
     "others": 8,
     "othersHalfFee": 4,
-    "othersSwaps": 29
+    "othersSwaps": 42
    }
   },
   {
@@ -76,10 +95,10 @@
    "phase": 2,
    "pools": {
     "official": "0x029aa87f007b9a27d5aed577eaaa8a9fd706530c4c06d5937b9d238514aeef86",
-    "officialSwaps": 647,
+    "officialSwaps": 688,
     "others": 7,
     "othersHalfFee": 6,
-    "othersSwaps": 1
+    "othersSwaps": 5
    }
   },
   {
@@ -95,10 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0xc60e00c4e89c1f8320c8976fdb98568f1ad4807a381df53558eebce007b5eb1d",
-    "officialSwaps": 900,
+    "officialSwaps": 1152,
     "others": 6,
     "othersHalfFee": 4,
-    "othersSwaps": 173
+    "othersSwaps": 184
    }
   },
   {
@@ -114,7 +133,7 @@
    "phase": 2,
    "pools": {
     "official": "0x1a7b3df0d9daf1f1264194a25c267b854d05b17679aabef6e236ba9a18cd64f0",
-    "officialSwaps": 525,
+    "officialSwaps": 591,
     "others": 17,
     "othersHalfFee": 15,
     "othersSwaps": 148
@@ -133,9 +152,9 @@
    "phase": 2,
    "pools": {
     "official": "0x86aa517204de762fcd7c9f30625a3281d4cd32e2ea6db6577aba13a6aa9f6968",
-    "officialSwaps": 315,
-    "others": 7,
-    "othersHalfFee": 6,
+    "officialSwaps": 321,
+    "others": 8,
+    "othersHalfFee": 7,
     "othersSwaps": 3
    }
   },
@@ -152,7 +171,7 @@
    "phase": 2,
    "pools": {
     "official": "0xd551411161a8b3b2a27a961707502043e72fe8e64816f3b466ba464f49d59117",
-    "officialSwaps": 854,
+    "officialSwaps": 905,
     "others": 8,
     "othersHalfFee": 6,
     "othersSwaps": 13
@@ -171,48 +190,10 @@
    "phase": 2,
    "pools": {
     "official": "0xbc5ba99682c8ccfe0d1782d432950ed89d263c128365395a3486805db062d0c3",
-    "officialSwaps": 3609,
+    "officialSwaps": 3771,
     "others": 6,
     "othersHalfFee": 3,
-    "othersSwaps": 47
-   }
-  },
-  {
-   "token": "0x688d8c004af3c292330fea8af8a594adc8c3b0c8",
-   "symbol": "AGENTDOM",
-   "name": "Agentdom",
-   "deployer": "0x8c1a87c0bc4d3545d4475916c42a60d3c51a68b3",
-   "block": 110225739,
-   "tx": "0xb61b11edafc07f8fb2bab55ded0e68c5397c37b68c9f34d503716670b105d7a6",
-   "quoteRaw": "4200000000000000092",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x84f4152bd8b38ae9f075ae2c07008fa59bb0b394e69eec0c0c40330e6c038405",
-    "officialSwaps": 1414,
-    "others": 12,
-    "othersHalfFee": 7,
-    "othersSwaps": 172
-   }
-  },
-  {
-   "token": "0x608de3e89a6506b881125f67463623d7eb063fba",
-   "symbol": "NOVASI",
-   "name": "Nova Intelligence",
-   "deployer": "0x1351f883cc4140032a913b345ca8bf9599341f29",
-   "block": 110174319,
-   "tx": "0xb6c765ec15a49a48c4e3a80ff0ebdb2daaebfc0b619c84bcda28d729b9eabb84",
-   "quoteRaw": "4200000000000000200",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x4207c21e03ea89c2aac3aa5030ee0b9fbb13d7800165471cbd019e968bac6dd7",
-    "officialSwaps": 1988,
-    "others": 8,
-    "othersHalfFee": 6,
-    "othersSwaps": 283
+    "othersSwaps": 49
    }
   }
  ],
