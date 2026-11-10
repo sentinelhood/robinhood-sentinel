@@ -52,7 +52,7 @@ The helper `skills/pons-pool-check/pons_pool_check.py` uses the Python standard 
 ## Reading the output
 
 - **Official Pons pool** - the pool id built from the factory record and the Pons hook. Its own fee field is 0% because the Pons hook charges the Pons fee, the same rate as on the curve. Its liquidity is locked.
-- **No official pool yet** - the token is still on its bonding curve. Trading happens on the curve, not in any v4 pool.
+- **No official pool yet** - the token is still on its bonding curve. Trading happens on the curve, not in any v4 pool. Pons creates its pool only at graduation, so any v4 pool listed for a token in this phase was made by someone else. On 2026-11-10, 5 of the 9 busiest curves already had such pools, most with a pool fee of 50% or more.
 - **Other Uniswap v4 pools** - pools anyone created for the same token. Each line shows the pool fee, the hook (or `none`), the pair, whether it holds liquidity now, and swaps in the last 24 hours. Most active first.
 - A pool's existence or activity says nothing about who made it or why. Report what the chain shows.
 

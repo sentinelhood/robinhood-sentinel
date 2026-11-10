@@ -135,6 +135,8 @@ def to_markdown(r):
                      f"liquidity {'locked, non-zero' if o['liquidity'] else 'zero'} · {o['swaps']} swaps in {r['windowHours']}h")
     elif r['phase'] == 0:
         lines.append('No official pool yet: the token still trades on its Pons bonding curve. Buy and sell there.')
+        if r['others']:
+            lines.append('Pons opens its pool only at graduation, so every v4 pool below was made by someone else.')
     else:
         lines.append('No pool matches the factory record. Treat any v4 pool for this token with care.')
     lines.append('')

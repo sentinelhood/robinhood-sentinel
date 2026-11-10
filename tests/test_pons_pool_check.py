@@ -123,6 +123,15 @@ class EndToEnd(unittest.TestCase):
         _, r = self.run_main(record(phase=0), [])
         self.assertIsNone(r['official'])
         self.assertIn('still trades on its Pons bonding curve', ppc.to_markdown(r))
+        self.assertNotIn('made by someone else', ppc.to_markdown(r))
+
+    def test_pools_before_graduation_are_never_official(self):
+        # Live 2026-11-10: 5 of the 9 busiest curves already had v4 pools, most at a 50%+ fee.
+        logs = [init_log('0x' + '4' * 64, ppc.ZERO, TOKEN, 990000, 60, ppc.ZERO)]
+        _, r = self.run_main(record(phase=0), logs)
+        self.assertIsNone(r['official'])
+        self.assertEqual(len(r['others']), 1)
+        self.assertIn('every v4 pool below was made by someone else', ppc.to_markdown(r))
 
     def test_graduated_but_no_matching_pool_is_said_plainly(self):
         _, r = self.run_main(record(), [init_log('0x' + '1' * 64, ppc.ZERO, TOKEN, 790000, 60, ppc.ZERO)])

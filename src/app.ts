@@ -434,11 +434,18 @@ async function poolStatus(token: string) {
     const n = (v: unknown) => Number.isSafeInteger(v) && (v as number) >= 0;
     if (!d.pons || ![d.others, d.othersNoHook, d.othersHalfFee].every(n) || d.othersHalfFee > d.others || d.othersNoHook > d.others
       || !(d.official === null || /^0x[\da-f]{64}$/.test(d.official))) throw new Error('bad');
+    const half = d.othersHalfFee ? `, <b class="warn">${d.othersHalfFee}</b> at 50%+ fee` : '';
+    // On the curve Pons has made no pool yet, so every v4 pool for the token was made by someone else.
+    if (d.phase === 0) {
+      cell.innerHTML = d.others === 0 ? 'None yet: it trades on its bonding curve'
+        : `<span class="badge wait">Not from Pons</span> <b>${d.others}</b> v4 pool${d.others === 1 ? '' : 's'} already exist${d.others === 1 ? 's' : ''}${half}. `
+          + 'Pons opens its pool only at graduation; until then the curve is the Pons market.<small> (read now)</small>';
+      return;
+    }
     const official = d.official
       ? `<b>Official:</b> <code title="${escape(d.official)}">${escape(d.official.slice(0, 10))}…${escape(d.official.slice(-6))}</code> <small>(Pons hook)</small>`
       : '<span class="badge wait">No pool matches the factory record</span>';
-    const others = d.others === 0 ? ' · no other v4 pools'
-      : ` · <b>${d.others}</b> other v4 pools anyone made${d.othersHalfFee ? `, <b class="warn">${d.othersHalfFee}</b> at 50%+ fee` : ''}`;
+    const others = d.others === 0 ? ' · no other v4 pools' : ` · <b>${d.others}</b> other v4 pools anyone made${half}`;
     cell.innerHTML = official + others + '<small title="Check the pool id your wallet or router uses before you trade."> (read now)</small>';
   } catch {
     cell.innerHTML = '<span class="hint">Pool read unavailable right now</span>';
@@ -504,14 +511,14 @@ async function tokenCheck(address: string, pending?: { token: Promise<any>; depl
       ${row('Deployer', `<a href="https://robinhoodchain.blockscout.com/address/${escape(p.deployer)}" target="_blank" rel="noopener noreferrer">${escape(short(p.deployer))}</a>`)}
       <div><dt>Deployer history</dt><dd id="deployerHistory"><span class="hint">Reading every Pons launch…</span></dd></div>
       <div><dt>Other launches</dt><dd id="pastLaunches"><span class="hint">Reading the deployer's other launches…</span></dd></div>
-      <div><dt>Uniswap v4 pool</dt><dd id="poolStatus"><span class="hint">${p.phase === 0 ? 'None yet: it trades on its bonding curve' : 'Finding the official pool…'}</span></dd></div>
+      <div><dt>Uniswap v4 pool</dt><dd id="poolStatus"><span class="hint">${p.phase === 0 ? 'Checking for v4 pools made before graduation…' : 'Finding the official pool…'}</span></dd></div>
       <div><dt>Sentinel Guard</dt><dd id="guardStatus"><span class="hint">Checking…</span></dd></div>
       ${holders}${meta}
     </dl><p class="hint">Tax is fixed at launch and cannot be raised. ${p.phase === 2 ? 'Pool liquidity is locked by the Pons locker. ' : ''}${escape(d.warning)}</p>
     <div class="cmd share"><code id="shareUrl">${escape(shareLink(address))}</code><button class="btn small" id="copyShare">Copy link</button></div>`;
     history.replaceState(null, '', `/?ca=${address}`);
     void deployerHistory(address, pending?.deployer);
-    if (p.phase !== 0) void poolStatus(address);
+    void poolStatus(address);
     void guardStatus(address);
     el('copyShare').addEventListener('click', () => copyText(el<HTMLButtonElement>('copyShare'), shareLink(address), el('shareUrl')));
   } catch (e) {
