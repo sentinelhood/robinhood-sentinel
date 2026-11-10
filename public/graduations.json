@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 110662141,
+ "block": 110761833,
  "windowHours": 24.0,
- "generatedAt": "2026-11-10T06:02:47+00:00",
+ "generatedAt": "2026-11-10T09:02:36+00:00",
  "launches": 774,
- "graduations": 11,
+ "graduations": 10,
  "graduated": [
   {
    "token": "0xae6b67f396b437ecc19c6e1f95b9f51b563605b9",
@@ -19,8 +19,8 @@
    "phase": 2,
    "pools": {
     "official": "0x029aa87f007b9a27d5aed577eaaa8a9fd706530c4c06d5937b9d238514aeef86",
-    "officialSwaps": 557,
-    "others": 6,
+    "officialSwaps": 599,
+    "others": 7,
     "othersHalfFee": 6,
     "othersSwaps": 1
    }
@@ -38,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0xc60e00c4e89c1f8320c8976fdb98568f1ad4807a381df53558eebce007b5eb1d",
-    "officialSwaps": 513,
+    "officialSwaps": 632,
     "others": 6,
     "othersHalfFee": 4,
-    "othersSwaps": 144
+    "othersSwaps": 157
    }
   },
   {
@@ -57,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x1a7b3df0d9daf1f1264194a25c267b854d05b17679aabef6e236ba9a18cd64f0",
-    "officialSwaps": 352,
+    "officialSwaps": 404,
     "others": 17,
     "othersHalfFee": 15,
-    "othersSwaps": 126
+    "othersSwaps": 138
    }
   },
   {
@@ -76,7 +76,7 @@
    "phase": 2,
    "pools": {
     "official": "0x86aa517204de762fcd7c9f30625a3281d4cd32e2ea6db6577aba13a6aa9f6968",
-    "officialSwaps": 300,
+    "officialSwaps": 310,
     "others": 7,
     "othersHalfFee": 6,
     "othersSwaps": 3
@@ -95,7 +95,7 @@
    "phase": 2,
    "pools": {
     "official": "0xd551411161a8b3b2a27a961707502043e72fe8e64816f3b466ba464f49d59117",
-    "officialSwaps": 621,
+    "officialSwaps": 663,
     "others": 8,
     "othersHalfFee": 6,
     "othersSwaps": 13
@@ -114,10 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0xbc5ba99682c8ccfe0d1782d432950ed89d263c128365395a3486805db062d0c3",
-    "officialSwaps": 2951,
-    "others": 5,
+    "officialSwaps": 3236,
+    "others": 6,
     "othersHalfFee": 3,
-    "othersSwaps": 12
+    "othersSwaps": 32
    }
   },
   {
@@ -133,10 +133,10 @@
    "phase": 2,
    "pools": {
     "official": "0x84f4152bd8b38ae9f075ae2c07008fa59bb0b394e69eec0c0c40330e6c038405",
-    "officialSwaps": 1312,
+    "officialSwaps": 1369,
     "others": 12,
     "othersHalfFee": 7,
-    "othersSwaps": 155
+    "othersSwaps": 162
    }
   },
   {
@@ -152,10 +152,10 @@
    "phase": 2,
    "pools": {
     "official": "0x4207c21e03ea89c2aac3aa5030ee0b9fbb13d7800165471cbd019e968bac6dd7",
-    "officialSwaps": 1733,
+    "officialSwaps": 1862,
     "others": 8,
     "othersHalfFee": 6,
-    "othersSwaps": 259
+    "othersSwaps": 279
    }
   },
   {
@@ -171,7 +171,7 @@
    "phase": 2,
    "pools": {
     "official": "0x415f54ecb03e7e0a8707b3a685b8e2b55cda93b7782648c04434eab204b90d00",
-    "officialSwaps": 2751,
+    "officialSwaps": 2815,
     "others": 12,
     "othersHalfFee": 9,
     "othersSwaps": 11
@@ -190,29 +190,10 @@
    "phase": 2,
    "pools": {
     "official": "0xd4c2040cdca2b0d4a49386fb3e3d63c39c59d0fdbe3b64b470c6b8325dd3589a",
-    "officialSwaps": 1856,
+    "officialSwaps": 1871,
     "others": 10,
     "othersHalfFee": 9,
-    "othersSwaps": 10
-   }
-  },
-  {
-   "token": "0xa41eeaeba92f79b25237d05244e81e528b3f2062",
-   "symbol": "ORGENT",
-   "name": "Orbio Agents",
-   "deployer": "0x7734432539ddf346791485e117f27c4160130df4",
-   "block": 109896153,
-   "tx": "0x3fd54ef9d5404f6d353e7e64d425572662c5e1a6bba042f01d510fa408ab8c05",
-   "quoteRaw": "4200000000000000480",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0xcd7b9efdd7461128fe1388e021d27ad8f944e1341483e979041c8104b265257e",
-    "officialSwaps": 1535,
-    "others": 8,
-    "othersHalfFee": 7,
-    "othersSwaps": 31
+    "othersSwaps": 13
    }
   }
  ],
