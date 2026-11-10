@@ -1,11 +1,49 @@
 {
  "chainId": 4663,
- "block": 110864376,
+ "block": 110969341,
  "windowHours": 24.0,
- "generatedAt": "2026-11-10T12:02:38+00:00",
- "launches": 786,
- "graduations": 10,
+ "generatedAt": "2026-11-10T15:03:01+00:00",
+ "launches": 838,
+ "graduations": 11,
  "graduated": [
+  {
+   "token": "0xdc1ea590c071a688d21abbca82c7bd84080fc243",
+   "symbol": "ROBOT",
+   "name": "Robot",
+   "deployer": "0x13d4f1adc39f80eb382d67acd6bf3c7b5339462c",
+   "block": 110930320,
+   "tx": "0x59fefae26d015aded7da2215917232ba36bb42f65bd6250b4159e954d5dc2bc2",
+   "quoteRaw": "8090000143",
+   "pairSymbol": "USDG",
+   "pairDecimals": 6,
+   "phase": 2,
+   "pools": {
+    "official": "0x8d96a6e5d3ba10aad1bff2de26845b3bc6f3f0a62d49e13df5bdf2edd7abf1a1",
+    "officialSwaps": 695,
+    "others": 3,
+    "othersHalfFee": 3,
+    "othersSwaps": 0
+   }
+  },
+  {
+   "token": "0xb6f2e3d5f9f1bfb0363f3aecec26b5b9bdbeedc1",
+   "symbol": "BP",
+   "name": "BLACKPOOL",
+   "deployer": "0x0e1651aec67b2a049a4fa6aeb6c1c305aabfc35b",
+   "block": 110878705,
+   "tx": "0x21c942d7dbb31f2909757c5286581630c9714cfa5a9c4b173506424e1db0c94a",
+   "quoteRaw": "193502872457166537181058",
+   "pairSymbol": "ORBIO",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0xc1f153f5141d755c167064b8a7f3ad4178e4ae5cac18b63502935c482b69a81a",
+    "officialSwaps": 541,
+    "others": 3,
+    "othersHalfFee": 3,
+    "othersSwaps": 6
+   }
+  },
   {
    "token": "0xaf98e6f7f22560e4591184f828a280a6e986041d",
    "symbol": "AGESIC",
@@ -19,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0xf477980a3658928180cb8830d7156df607b520c400d3ae758b634ccef0a5c038",
-    "officialSwaps": 836,
+    "officialSwaps": 1109,
     "others": 8,
     "othersHalfFee": 4,
-    "othersSwaps": 24
+    "othersSwaps": 29
    }
   },
   {
@@ -38,7 +76,7 @@
    "phase": 2,
    "pools": {
     "official": "0x029aa87f007b9a27d5aed577eaaa8a9fd706530c4c06d5937b9d238514aeef86",
-    "officialSwaps": 634,
+    "officialSwaps": 647,
     "others": 7,
     "othersHalfFee": 6,
     "othersSwaps": 1
@@ -57,10 +95,10 @@
    "phase": 2,
    "pools": {
     "official": "0xc60e00c4e89c1f8320c8976fdb98568f1ad4807a381df53558eebce007b5eb1d",
-    "officialSwaps": 782,
+    "officialSwaps": 900,
     "others": 6,
     "othersHalfFee": 4,
-    "othersSwaps": 167
+    "othersSwaps": 173
    }
   },
   {
@@ -76,10 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0x1a7b3df0d9daf1f1264194a25c267b854d05b17679aabef6e236ba9a18cd64f0",
-    "officialSwaps": 473,
+    "officialSwaps": 525,
     "others": 17,
     "othersHalfFee": 15,
-    "othersSwaps": 141
+    "othersSwaps": 148
    }
   },
   {
@@ -95,7 +133,7 @@
    "phase": 2,
    "pools": {
     "official": "0x86aa517204de762fcd7c9f30625a3281d4cd32e2ea6db6577aba13a6aa9f6968",
-    "officialSwaps": 313,
+    "officialSwaps": 315,
     "others": 7,
     "othersHalfFee": 6,
     "othersSwaps": 3
@@ -114,7 +152,7 @@
    "phase": 2,
    "pools": {
     "official": "0xd551411161a8b3b2a27a961707502043e72fe8e64816f3b466ba464f49d59117",
-    "officialSwaps": 759,
+    "officialSwaps": 854,
     "others": 8,
     "othersHalfFee": 6,
     "othersSwaps": 13
@@ -133,10 +171,10 @@
    "phase": 2,
    "pools": {
     "official": "0xbc5ba99682c8ccfe0d1782d432950ed89d263c128365395a3486805db062d0c3",
-    "officialSwaps": 3471,
+    "officialSwaps": 3609,
     "others": 6,
     "othersHalfFee": 3,
-    "othersSwaps": 46
+    "othersSwaps": 47
    }
   },
   {
@@ -152,10 +190,10 @@
    "phase": 2,
    "pools": {
     "official": "0x84f4152bd8b38ae9f075ae2c07008fa59bb0b394e69eec0c0c40330e6c038405",
-    "officialSwaps": 1392,
+    "officialSwaps": 1414,
     "others": 12,
     "othersHalfFee": 7,
-    "othersSwaps": 166
+    "othersSwaps": 172
    }
   },
   {
@@ -171,29 +209,10 @@
    "phase": 2,
    "pools": {
     "official": "0x4207c21e03ea89c2aac3aa5030ee0b9fbb13d7800165471cbd019e968bac6dd7",
-    "officialSwaps": 1927,
+    "officialSwaps": 1988,
     "others": 8,
     "othersHalfFee": 6,
-    "othersSwaps": 281
-   }
-  },
-  {
-   "token": "0x8c214b77f7ededa453ebd43df848cc02ecc1b431",
-   "symbol": "LGND",
-   "name": "Tiny Legends",
-   "deployer": "0x76369028ab355bbbc778000983afb1352a6d84fc",
-   "block": 110109669,
-   "tx": "0xe452bb1b97d0d0cf6081f575abfa668621a233cbc8aade58e19b78f1c19ba6c1",
-   "quoteRaw": "4200000000000000002",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x415f54ecb03e7e0a8707b3a685b8e2b55cda93b7782648c04434eab204b90d00",
-    "officialSwaps": 2854,
-    "others": 12,
-    "othersHalfFee": 9,
-    "othersSwaps": 13
+    "othersSwaps": 283
    }
   }
  ],
