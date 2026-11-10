@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 110761833,
+ "block": 110864376,
  "windowHours": 24.0,
- "generatedAt": "2026-11-10T09:02:36+00:00",
- "launches": 774,
+ "generatedAt": "2026-11-10T12:02:38+00:00",
+ "launches": 786,
  "graduations": 10,
  "graduated": [
+  {
+   "token": "0xaf98e6f7f22560e4591184f828a280a6e986041d",
+   "symbol": "AGESIC",
+   "name": "Agesic",
+   "deployer": "0x5f1d26647eccf69999bd774f9cedec40ac1918a2",
+   "block": 110775019,
+   "tx": "0x57b0b08dd364a77d0a6897682193ac5a679291a86c0d2ea482d20578edc9ce1a",
+   "quoteRaw": "4200000000000000215",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0xf477980a3658928180cb8830d7156df607b520c400d3ae758b634ccef0a5c038",
+    "officialSwaps": 836,
+    "others": 8,
+    "othersHalfFee": 4,
+    "othersSwaps": 24
+   }
+  },
   {
    "token": "0xae6b67f396b437ecc19c6e1f95b9f51b563605b9",
    "symbol": "ZEN",
@@ -19,7 +38,7 @@
    "phase": 2,
    "pools": {
     "official": "0x029aa87f007b9a27d5aed577eaaa8a9fd706530c4c06d5937b9d238514aeef86",
-    "officialSwaps": 599,
+    "officialSwaps": 634,
     "others": 7,
     "othersHalfFee": 6,
     "othersSwaps": 1
@@ -38,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0xc60e00c4e89c1f8320c8976fdb98568f1ad4807a381df53558eebce007b5eb1d",
-    "officialSwaps": 632,
+    "officialSwaps": 782,
     "others": 6,
     "othersHalfFee": 4,
-    "othersSwaps": 157
+    "othersSwaps": 167
    }
   },
   {
@@ -57,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0x1a7b3df0d9daf1f1264194a25c267b854d05b17679aabef6e236ba9a18cd64f0",
-    "officialSwaps": 404,
+    "officialSwaps": 473,
     "others": 17,
     "othersHalfFee": 15,
-    "othersSwaps": 138
+    "othersSwaps": 141
    }
   },
   {
@@ -76,7 +95,7 @@
    "phase": 2,
    "pools": {
     "official": "0x86aa517204de762fcd7c9f30625a3281d4cd32e2ea6db6577aba13a6aa9f6968",
-    "officialSwaps": 310,
+    "officialSwaps": 313,
     "others": 7,
     "othersHalfFee": 6,
     "othersSwaps": 3
@@ -95,7 +114,7 @@
    "phase": 2,
    "pools": {
     "official": "0xd551411161a8b3b2a27a961707502043e72fe8e64816f3b466ba464f49d59117",
-    "officialSwaps": 663,
+    "officialSwaps": 759,
     "others": 8,
     "othersHalfFee": 6,
     "othersSwaps": 13
@@ -114,10 +133,10 @@
    "phase": 2,
    "pools": {
     "official": "0xbc5ba99682c8ccfe0d1782d432950ed89d263c128365395a3486805db062d0c3",
-    "officialSwaps": 3236,
+    "officialSwaps": 3471,
     "others": 6,
     "othersHalfFee": 3,
-    "othersSwaps": 32
+    "othersSwaps": 46
    }
   },
   {
@@ -133,10 +152,10 @@
    "phase": 2,
    "pools": {
     "official": "0x84f4152bd8b38ae9f075ae2c07008fa59bb0b394e69eec0c0c40330e6c038405",
-    "officialSwaps": 1369,
+    "officialSwaps": 1392,
     "others": 12,
     "othersHalfFee": 7,
-    "othersSwaps": 162
+    "othersSwaps": 166
    }
   },
   {
@@ -152,10 +171,10 @@
    "phase": 2,
    "pools": {
     "official": "0x4207c21e03ea89c2aac3aa5030ee0b9fbb13d7800165471cbd019e968bac6dd7",
-    "officialSwaps": 1862,
+    "officialSwaps": 1927,
     "others": 8,
     "othersHalfFee": 6,
-    "othersSwaps": 279
+    "othersSwaps": 281
    }
   },
   {
@@ -171,27 +190,8 @@
    "phase": 2,
    "pools": {
     "official": "0x415f54ecb03e7e0a8707b3a685b8e2b55cda93b7782648c04434eab204b90d00",
-    "officialSwaps": 2815,
+    "officialSwaps": 2854,
     "others": 12,
-    "othersHalfFee": 9,
-    "othersSwaps": 11
-   }
-  },
-  {
-   "token": "0xf6de8b3b7db6eaba4d0ecdc374e56be5eeb6b2f2",
-   "symbol": "AGI",
-   "name": "Artificial Girlfriend Inu",
-   "deployer": "0x1127fa866bbbbf6026afb60cf32eaf2e6cf48bcc",
-   "block": 109915959,
-   "tx": "0xfd5871eecd07915667a41efd758072cd7f3da0a76e231bb51d4bae162585a5ef",
-   "quoteRaw": "41600000000000000078",
-   "pairSymbol": "NVDA",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0xd4c2040cdca2b0d4a49386fb3e3d63c39c59d0fdbe3b64b470c6b8325dd3589a",
-    "officialSwaps": 1871,
-    "others": 10,
     "othersHalfFee": 9,
     "othersSwaps": 13
    }
