@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 111179637,
+ "block": 111281577,
  "windowHours": 24.0,
- "generatedAt": "2026-11-10T21:02:04+00:00",
- "launches": 750,
- "graduations": 8,
+ "generatedAt": "2026-11-11T00:01:56+00:00",
+ "launches": 737,
+ "graduations": 6,
  "graduated": [
   {
    "token": "0x8e04549484d0612be8373a0263b11928a5f7681f",
@@ -19,10 +19,10 @@
    "phase": 2,
    "pools": {
     "official": "0x417e1f5361a5296f93a133142651e07d203f7a4ddecaa2de4460f1fb182e6d74",
-    "officialSwaps": 1471,
-    "others": 11,
-    "othersHalfFee": 8,
-    "othersSwaps": 199
+    "officialSwaps": 1722,
+    "others": 14,
+    "othersHalfFee": 9,
+    "othersSwaps": 252
    }
   },
   {
@@ -38,9 +38,9 @@
    "phase": 2,
    "pools": {
     "official": "0x8d96a6e5d3ba10aad1bff2de26845b3bc6f3f0a62d49e13df5bdf2edd7abf1a1",
-    "officialSwaps": 1162,
-    "others": 6,
-    "othersHalfFee": 5,
+    "officialSwaps": 1318,
+    "others": 8,
+    "othersHalfFee": 6,
     "othersSwaps": 3
    }
   },
@@ -57,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0xc1f153f5141d755c167064b8a7f3ad4178e4ae5cac18b63502935c482b69a81a",
-    "officialSwaps": 571,
+    "officialSwaps": 578,
     "others": 3,
     "othersHalfFee": 3,
-    "othersSwaps": 6
+    "othersSwaps": 7
    }
   },
   {
@@ -76,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0xf477980a3658928180cb8830d7156df607b520c400d3ae758b634ccef0a5c038",
-    "officialSwaps": 1353,
+    "officialSwaps": 1414,
     "others": 8,
     "othersHalfFee": 4,
-    "othersSwaps": 43
+    "othersSwaps": 46
    }
   },
   {
@@ -95,7 +95,7 @@
    "phase": 2,
    "pools": {
     "official": "0x029aa87f007b9a27d5aed577eaaa8a9fd706530c4c06d5937b9d238514aeef86",
-    "officialSwaps": 694,
+    "officialSwaps": 696,
     "others": 7,
     "othersHalfFee": 6,
     "othersSwaps": 5
@@ -114,48 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0xc60e00c4e89c1f8320c8976fdb98568f1ad4807a381df53558eebce007b5eb1d",
-    "officialSwaps": 1424,
+    "officialSwaps": 1596,
     "others": 9,
     "othersHalfFee": 5,
-    "othersSwaps": 190
-   }
-  },
-  {
-   "token": "0x5eb674dcf0d6b4398d143a90642a905391e91c92",
-   "symbol": "Metrion",
-   "name": "Metrion",
-   "deployer": "0xd7cdbd82e852b8f81f036b5f280e6ef085e7bce7",
-   "block": 110429795,
-   "tx": "0x7ece7f8c74a3a491159b3c6f25ed405a62f70b10b0c08a17815165e5b7442792",
-   "quoteRaw": "4200000000000000806",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x1a7b3df0d9daf1f1264194a25c267b854d05b17679aabef6e236ba9a18cd64f0",
-    "officialSwaps": 636,
-    "others": 17,
-    "othersHalfFee": 15,
-    "othersSwaps": 148
-   }
-  },
-  {
-   "token": "0xc9e1e87d8bb3632589e324db6f37001427e07134",
-   "symbol": "SUNFIRE",
-   "name": "SUNFIRE",
-   "deployer": "0x3b76bbbeeef2fe1332f1bab80c23d3bc721b0b4e",
-   "block": 110419754,
-   "tx": "0x54495d8c67f4890fdc7f07c4426aa2829790f4e0b5b2bd5d7d5c78165e620580",
-   "quoteRaw": "4200000000000000002",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x86aa517204de762fcd7c9f30625a3281d4cd32e2ea6db6577aba13a6aa9f6968",
-    "officialSwaps": 325,
-    "others": 8,
-    "othersHalfFee": 7,
-    "othersSwaps": 3
+    "othersSwaps": 204
    }
   }
  ],
