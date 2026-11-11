@@ -1,11 +1,87 @@
 {
  "chainId": 4663,
- "block": 111787888,
+ "block": 111893817,
  "windowHours": 24.0,
- "generatedAt": "2026-11-11T15:01:15+00:00",
- "launches": 840,
- "graduations": 3,
+ "generatedAt": "2026-11-11T18:01:59+00:00",
+ "launches": 895,
+ "graduations": 6,
  "graduated": [
+  {
+   "token": "0x1ead1942232dae5a296eea527b7feb871941d960",
+   "symbol": "CLOVER",
+   "name": "Clover",
+   "deployer": "0xbdcd86b506cf21ff85a7942008d4d35f29c09f5e",
+   "block": 111890958,
+   "tx": "0x35a9e5a0fd8aa65cd9830d157632fad50ead230f2d6ccbcdb64f56c0ff95a6f0",
+   "quoteRaw": "4200000000000000002",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x45ca7b22433b6c4bd3c7ac50179e585ebbb15a1ef0cd9cf4060b0c03097bdca7",
+    "officialSwaps": 170,
+    "others": 2,
+    "othersHalfFee": 2,
+    "othersSwaps": 1
+   }
+  },
+  {
+   "token": "0x87362bd644256f45274346ab6367c19ae0ea2546",
+   "symbol": "COASTR",
+   "name": "Coastr",
+   "deployer": "0x07cf22f02e0fd09e89d2e7acbe51949b37bba138",
+   "block": 111844739,
+   "tx": "0x1c9f92b5fbf55fef75568faccc9f667b1a82d1aaa0f02c3e9d710118bb988e60",
+   "quoteRaw": "4200000000000000200",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x4c8704462f5c657c018cd72c923572da283ac6930fbdfe5dad44a4acfcb273e6",
+    "officialSwaps": 2035,
+    "others": 8,
+    "othersHalfFee": 7,
+    "othersSwaps": 116
+   }
+  },
+  {
+   "token": "0xe436b775239d381471d70d3cef4b336abcf98283",
+   "symbol": "CASHCOW",
+   "name": "Cash Cow",
+   "deployer": "0x6e5823a9f398549158ad3769b99f1fcb541038b4",
+   "block": 111826669,
+   "tx": "0xccaf4f051458f1bec5dafe0aee3cd8342ed2421587ba9666d19db75d8a98a5b4",
+   "quoteRaw": "354892004153686420907",
+   "pairSymbol": "HIMS",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x58c2549d9c53f12dc50f97b39dacd45d01a9cb9e49ee29c0e332ab56414ee135",
+    "officialSwaps": 1156,
+    "others": 7,
+    "othersHalfFee": 6,
+    "othersSwaps": 66
+   }
+  },
+  {
+   "token": "0xb0b5bb465b3dcd5757e7bd30bdc85c3415bf4e42",
+   "symbol": "SHERWOOD",
+   "name": "Sherwood",
+   "deployer": "0x414a6392ee302267330de5dc389436093cf60cba",
+   "block": 111795073,
+   "tx": "0xd24853262477c92c4399967d868331745780fd7459f03be45580ca8a08cd8a0a",
+   "quoteRaw": "4200000000000000275",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0xb2650720177eae99f370d339d1e1565caac720733dcbdf80337759b69a346272",
+    "officialSwaps": 256,
+    "others": 7,
+    "othersHalfFee": 7,
+    "othersSwaps": 13
+   }
+  },
   {
    "token": "0x8665f6e7ce1df1abe042d4b044e681be98a62974",
    "symbol": "FHERUM",
@@ -19,10 +95,10 @@
    "phase": 2,
    "pools": {
     "official": "0x0fe9464df01e5056cced12ce078e065cf94e45eefd01182df1158757b528e5eb",
-    "officialSwaps": 141,
+    "officialSwaps": 275,
     "others": 5,
     "othersHalfFee": 5,
-    "othersSwaps": 3
+    "othersSwaps": 5
    }
   },
   {
@@ -38,29 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0x9b7103f36c6f0e9d65f2edb78b9f2d44a46a27dd09253ee7119a6dfceba6cf9e",
-    "officialSwaps": 567,
+    "officialSwaps": 644,
     "others": 6,
     "othersHalfFee": 3,
     "othersSwaps": 15
-   }
-  },
-  {
-   "token": "0x8e04549484d0612be8373a0263b11928a5f7681f",
-   "symbol": "ZOLVA",
-   "name": "Zolva Agent",
-   "deployer": "0xfad91c6e726c7ea196653e0784a0b209410a80d4",
-   "block": 111005949,
-   "tx": "0xf24af8bff2297aaa3e639fd53c9fe6f53ee074033af3e1d0d7e8c9b7c9d0e7bf",
-   "quoteRaw": "4200000000000000168",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x417e1f5361a5296f93a133142651e07d203f7a4ddecaa2de4460f1fb182e6d74",
-    "officialSwaps": 2431,
-    "others": 15,
-    "othersHalfFee": 9,
-    "othersSwaps": 356
    }
   }
  ],
