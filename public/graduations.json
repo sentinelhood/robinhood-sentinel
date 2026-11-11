@@ -1,9 +1,9 @@
 {
  "chainId": 4663,
- "block": 111893817,
+ "block": 111998726,
  "windowHours": 24.0,
- "generatedAt": "2026-11-11T18:01:59+00:00",
- "launches": 895,
+ "generatedAt": "2026-11-11T21:02:03+00:00",
+ "launches": 1019,
  "graduations": 6,
  "graduated": [
   {
@@ -19,10 +19,10 @@
    "phase": 2,
    "pools": {
     "official": "0x45ca7b22433b6c4bd3c7ac50179e585ebbb15a1ef0cd9cf4060b0c03097bdca7",
-    "officialSwaps": 170,
-    "others": 2,
-    "othersHalfFee": 2,
-    "othersSwaps": 1
+    "officialSwaps": 831,
+    "others": 8,
+    "othersHalfFee": 5,
+    "othersSwaps": 41
    }
   },
   {
@@ -38,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x4c8704462f5c657c018cd72c923572da283ac6930fbdfe5dad44a4acfcb273e6",
-    "officialSwaps": 2035,
+    "officialSwaps": 2441,
     "others": 8,
     "othersHalfFee": 7,
-    "othersSwaps": 116
+    "othersSwaps": 176
    }
   },
   {
@@ -57,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x58c2549d9c53f12dc50f97b39dacd45d01a9cb9e49ee29c0e332ab56414ee135",
-    "officialSwaps": 1156,
+    "officialSwaps": 1256,
     "others": 7,
     "othersHalfFee": 6,
-    "othersSwaps": 66
+    "othersSwaps": 72
    }
   },
   {
@@ -76,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0xb2650720177eae99f370d339d1e1565caac720733dcbdf80337759b69a346272",
-    "officialSwaps": 256,
+    "officialSwaps": 335,
     "others": 7,
     "othersHalfFee": 7,
-    "othersSwaps": 13
+    "othersSwaps": 17
    }
   },
   {
@@ -95,10 +95,10 @@
    "phase": 2,
    "pools": {
     "official": "0x0fe9464df01e5056cced12ce078e065cf94e45eefd01182df1158757b528e5eb",
-    "officialSwaps": 275,
+    "officialSwaps": 356,
     "others": 5,
     "othersHalfFee": 5,
-    "othersSwaps": 5
+    "othersSwaps": 6
    }
   },
   {
@@ -114,7 +114,7 @@
    "phase": 2,
    "pools": {
     "official": "0x9b7103f36c6f0e9d65f2edb78b9f2d44a46a27dd09253ee7119a6dfceba6cf9e",
-    "officialSwaps": 644,
+    "officialSwaps": 718,
     "others": 6,
     "othersHalfFee": 3,
     "othersSwaps": 15
