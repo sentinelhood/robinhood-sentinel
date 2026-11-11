@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 111582044,
+ "block": 111683615,
  "windowHours": 24.0,
- "generatedAt": "2026-11-11T09:01:27+00:00",
- "launches": 770,
+ "generatedAt": "2026-11-11T12:01:27+00:00",
+ "launches": 798,
  "graduations": 4,
  "graduated": [
+  {
+   "token": "0x839d6dea3de497ee5a8338410cb2865afa51141e",
+   "symbol": "PAYOLA",
+   "name": "Payola.Promo",
+   "deployer": "0x8c022f856d18522d29b7b701e96b5a79948cf9a9",
+   "block": 111592975,
+   "tx": "0x5c45821a75e1b408763753b793f2ac86c6c75040582e6dad95cb05da7980b2ac",
+   "quoteRaw": "4200000000000000181",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x9b7103f36c6f0e9d65f2edb78b9f2d44a46a27dd09253ee7119a6dfceba6cf9e",
+    "officialSwaps": 341,
+    "others": 6,
+    "othersHalfFee": 3,
+    "othersSwaps": 2
+   }
+  },
   {
    "token": "0x8e04549484d0612be8373a0263b11928a5f7681f",
    "symbol": "ZOLVA",
@@ -19,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x417e1f5361a5296f93a133142651e07d203f7a4ddecaa2de4460f1fb182e6d74",
-    "officialSwaps": 2185,
-    "others": 14,
+    "officialSwaps": 2302,
+    "others": 15,
     "othersHalfFee": 9,
-    "othersSwaps": 309
+    "othersSwaps": 330
    }
   },
   {
@@ -38,7 +57,7 @@
    "phase": 2,
    "pools": {
     "official": "0x8d96a6e5d3ba10aad1bff2de26845b3bc6f3f0a62d49e13df5bdf2edd7abf1a1",
-    "officialSwaps": 1584,
+    "officialSwaps": 1648,
     "others": 8,
     "othersHalfFee": 6,
     "othersSwaps": 4
@@ -57,29 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0xc1f153f5141d755c167064b8a7f3ad4178e4ae5cac18b63502935c482b69a81a",
-    "officialSwaps": 587,
+    "officialSwaps": 590,
     "others": 3,
     "othersHalfFee": 3,
     "othersSwaps": 7
-   }
-  },
-  {
-   "token": "0xaf98e6f7f22560e4591184f828a280a6e986041d",
-   "symbol": "AGESIC",
-   "name": "Agesic",
-   "deployer": "0x5f1d26647eccf69999bd774f9cedec40ac1918a2",
-   "block": 110775019,
-   "tx": "0x57b0b08dd364a77d0a6897682193ac5a679291a86c0d2ea482d20578edc9ce1a",
-   "quoteRaw": "4200000000000000215",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0xf477980a3658928180cb8830d7156df607b520c400d3ae758b634ccef0a5c038",
-    "officialSwaps": 1581,
-    "others": 8,
-    "othersHalfFee": 4,
-    "othersSwaps": 42
    }
   }
  ],
