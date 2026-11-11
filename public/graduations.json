@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 111683615,
+ "block": 111787888,
  "windowHours": 24.0,
- "generatedAt": "2026-11-11T12:01:27+00:00",
- "launches": 798,
- "graduations": 4,
+ "generatedAt": "2026-11-11T15:01:15+00:00",
+ "launches": 840,
+ "graduations": 3,
  "graduated": [
+  {
+   "token": "0x8665f6e7ce1df1abe042d4b044e681be98a62974",
+   "symbol": "FHERUM",
+   "name": "FHERUM",
+   "deployer": "0xb2e9503964778fcdacc17843b15b78bd08f1d73b",
+   "block": 111687456,
+   "tx": "0xc3edf10fc2514a9f6fa6deadd5669e9c9aa38b790b5eaefd136be3301aed6b57",
+   "quoteRaw": "4200000000000000372",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x0fe9464df01e5056cced12ce078e065cf94e45eefd01182df1158757b528e5eb",
+    "officialSwaps": 141,
+    "others": 5,
+    "othersHalfFee": 5,
+    "othersSwaps": 3
+   }
+  },
   {
    "token": "0x839d6dea3de497ee5a8338410cb2865afa51141e",
    "symbol": "PAYOLA",
@@ -19,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x9b7103f36c6f0e9d65f2edb78b9f2d44a46a27dd09253ee7119a6dfceba6cf9e",
-    "officialSwaps": 341,
+    "officialSwaps": 567,
     "others": 6,
     "othersHalfFee": 3,
-    "othersSwaps": 2
+    "othersSwaps": 15
    }
   },
   {
@@ -38,48 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x417e1f5361a5296f93a133142651e07d203f7a4ddecaa2de4460f1fb182e6d74",
-    "officialSwaps": 2302,
+    "officialSwaps": 2431,
     "others": 15,
     "othersHalfFee": 9,
-    "othersSwaps": 330
-   }
-  },
-  {
-   "token": "0xdc1ea590c071a688d21abbca82c7bd84080fc243",
-   "symbol": "ROBOT",
-   "name": "Robot",
-   "deployer": "0x13d4f1adc39f80eb382d67acd6bf3c7b5339462c",
-   "block": 110930320,
-   "tx": "0x59fefae26d015aded7da2215917232ba36bb42f65bd6250b4159e954d5dc2bc2",
-   "quoteRaw": "8090000143",
-   "pairSymbol": "USDG",
-   "pairDecimals": 6,
-   "phase": 2,
-   "pools": {
-    "official": "0x8d96a6e5d3ba10aad1bff2de26845b3bc6f3f0a62d49e13df5bdf2edd7abf1a1",
-    "officialSwaps": 1648,
-    "others": 8,
-    "othersHalfFee": 6,
-    "othersSwaps": 4
-   }
-  },
-  {
-   "token": "0xb6f2e3d5f9f1bfb0363f3aecec26b5b9bdbeedc1",
-   "symbol": "BP",
-   "name": "BLACKPOOL",
-   "deployer": "0x0e1651aec67b2a049a4fa6aeb6c1c305aabfc35b",
-   "block": 110878705,
-   "tx": "0x21c942d7dbb31f2909757c5286581630c9714cfa5a9c4b173506424e1db0c94a",
-   "quoteRaw": "193502872457166537181058",
-   "pairSymbol": "ORBIO",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0xc1f153f5141d755c167064b8a7f3ad4178e4ae5cac18b63502935c482b69a81a",
-    "officialSwaps": 590,
-    "others": 3,
-    "othersHalfFee": 3,
-    "othersSwaps": 7
+    "othersSwaps": 356
    }
   }
  ],
