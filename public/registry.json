@@ -1,12 +1,12 @@
 {
- "generatedAt": "2026-11-11T09:01:46+00:00",
+ "generatedAt": "2026-11-12T09:02:27+00:00",
  "summary": {
-  "addresses": 53,
-  "hooks": 15,
-  "chains": 7,
-  "withCode": 43,
+  "addresses": 55,
+  "hooks": 16,
+  "chains": 8,
+  "withCode": 44,
   "noCode": 0,
-  "unchecked": 10,
+  "unchecked": 11,
   "flagMismatch": 0
  },
  "chains": [
@@ -14,28 +14,35 @@
    "chain": "arbitrum",
    "chainId": 42161,
    "addresses": 2,
-   "block": 523234387,
+   "block": 523519962,
    "checked": true
   },
   {
    "chain": "base",
    "chainId": 8453,
-   "addresses": 15,
-   "block": 55986578,
+   "addresses": 16,
+   "block": 56418774,
    "checked": true
   },
   {
    "chain": "bnb",
    "chainId": 56,
    "addresses": 2,
-   "block": 132940725,
+   "block": 133132677,
    "checked": true
+  },
+  {
+   "chain": "elysium",
+   "chainId": 99901,
+   "addresses": 1,
+   "block": null,
+   "checked": false
   },
   {
    "chain": "ethereum",
    "chainId": 1,
    "addresses": 10,
-   "block": 26390649,
+   "block": 26397832,
    "checked": true
   },
   {
@@ -49,14 +56,14 @@
    "chain": "robinhood",
    "chainId": 4663,
    "addresses": 12,
-   "block": 111582607,
+   "block": 112407307,
    "checked": true
   },
   {
    "chain": "unichain",
    "chainId": 130,
    "addresses": 2,
-   "block": 63639344,
+   "block": 63725785,
    "checked": true
   }
  ],
@@ -402,6 +409,26 @@
    "selectorsMatch": true
   },
   {
+   "hook": "PerpRegimeFee",
+   "stage": "deployed",
+   "chains": [
+    {
+     "chain": "base",
+     "address": "0x190d7f16f9385026cb243bd78f1181427d4cc0c4",
+     "status": "code",
+     "flagsOk": true
+    },
+    {
+     "chain": "elysium",
+     "address": "0x1df778efb0116cccfa92c613703d4f3a66bc00c4",
+     "status": "no-rpc",
+     "flagsOk": true
+    }
+   ],
+   "builds": 1,
+   "selectorsMatch": true
+  },
+  {
    "hook": "TailTwins",
    "stage": "deployed",
    "chains": [
@@ -509,6 +536,7 @@
   "HeavierHand@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked",
   "LegacyLedger@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked",
   "NoOp@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked",
+  "PerpRegimeFee@elysium: chain not in deploy-uni-hook chains.tsv, cannot be checked",
   "TailTwins@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked",
   "TotalizerTrap@monad: chain not in deploy-uni-hook chains.tsv, cannot be checked"
  ],
