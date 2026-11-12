@@ -1,9 +1,9 @@
 {
  "chainId": 4663,
- "block": 112103295,
+ "block": 112206280,
  "windowHours": 24.0,
- "generatedAt": "2026-11-12T00:01:52+00:00",
- "launches": 1023,
+ "generatedAt": "2026-11-12T03:01:55+00:00",
+ "launches": 1025,
  "graduations": 7,
  "graduated": [
   {
@@ -19,10 +19,10 @@
    "phase": 2,
    "pools": {
     "official": "0x872f5f82dbcc52fdc6e547706d04dd97dd9b8c575d855bb4d5ea21282aa5f337",
-    "officialSwaps": 418,
-    "others": 11,
-    "othersHalfFee": 8,
-    "othersSwaps": 33
+    "officialSwaps": 1356,
+    "others": 17,
+    "othersHalfFee": 12,
+    "othersSwaps": 82
    }
   },
   {
@@ -38,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x45ca7b22433b6c4bd3c7ac50179e585ebbb15a1ef0cd9cf4060b0c03097bdca7",
-    "officialSwaps": 846,
+    "officialSwaps": 851,
     "others": 9,
     "othersHalfFee": 6,
-    "othersSwaps": 41
+    "othersSwaps": 42
    }
   },
   {
@@ -57,7 +57,7 @@
    "phase": 2,
    "pools": {
     "official": "0x4c8704462f5c657c018cd72c923572da283ac6930fbdfe5dad44a4acfcb273e6",
-    "officialSwaps": 2545,
+    "officialSwaps": 2559,
     "others": 9,
     "othersHalfFee": 8,
     "othersSwaps": 186
@@ -76,7 +76,7 @@
    "phase": 2,
    "pools": {
     "official": "0x58c2549d9c53f12dc50f97b39dacd45d01a9cb9e49ee29c0e332ab56414ee135",
-    "officialSwaps": 1278,
+    "officialSwaps": 1281,
     "others": 7,
     "othersHalfFee": 6,
     "othersSwaps": 72
@@ -95,7 +95,7 @@
    "phase": 2,
    "pools": {
     "official": "0xb2650720177eae99f370d339d1e1565caac720733dcbdf80337759b69a346272",
-    "officialSwaps": 361,
+    "officialSwaps": 370,
     "others": 7,
     "othersHalfFee": 7,
     "othersSwaps": 18
@@ -114,7 +114,7 @@
    "phase": 2,
    "pools": {
     "official": "0x0fe9464df01e5056cced12ce078e065cf94e45eefd01182df1158757b528e5eb",
-    "officialSwaps": 424,
+    "officialSwaps": 457,
     "others": 5,
     "othersHalfFee": 5,
     "othersSwaps": 6
@@ -133,10 +133,10 @@
    "phase": 2,
    "pools": {
     "official": "0x9b7103f36c6f0e9d65f2edb78b9f2d44a46a27dd09253ee7119a6dfceba6cf9e",
-    "officialSwaps": 791,
+    "officialSwaps": 932,
     "others": 6,
     "othersHalfFee": 3,
-    "othersSwaps": 15
+    "othersSwaps": 27
    }
   }
  ],
