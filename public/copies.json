@@ -6,10 +6,10 @@
   "Sentinel"
  ],
  "windowHours": 24,
- "block": 112616164,
- "generatedAt": "2026-11-12T15:00:30+00:00",
- "launches": 1037,
- "sharedTickerLaunches": 507,
+ "block": 112722016,
+ "generatedAt": "2026-11-12T18:00:13+00:00",
+ "launches": 927,
+ "sharedTickerLaunches": 437,
  "copies": [],
  "copyCount": 0,
  "source": "skills/pons-launch-watch/pons_launch_watch.py via rpc.mainnet.chain.robinhood.com"
