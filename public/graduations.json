@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 112406357,
+ "block": 112510757,
  "windowHours": 24.0,
- "generatedAt": "2026-11-12T09:02:05+00:00",
- "launches": 1029,
- "graduations": 7,
+ "generatedAt": "2026-11-12T12:01:46+00:00",
+ "launches": 1002,
+ "graduations": 6,
  "graduated": [
   {
    "token": "0x534b76f46d69caee896c4f993a86ea2e12248b90",
@@ -19,10 +19,10 @@
    "phase": 2,
    "pools": {
     "official": "0x872f5f82dbcc52fdc6e547706d04dd97dd9b8c575d855bb4d5ea21282aa5f337",
-    "officialSwaps": 1711,
+    "officialSwaps": 1793,
     "others": 17,
     "othersHalfFee": 12,
-    "othersSwaps": 144
+    "othersSwaps": 153
    }
   },
   {
@@ -38,7 +38,7 @@
    "phase": 2,
    "pools": {
     "official": "0x45ca7b22433b6c4bd3c7ac50179e585ebbb15a1ef0cd9cf4060b0c03097bdca7",
-    "officialSwaps": 855,
+    "officialSwaps": 856,
     "others": 9,
     "othersHalfFee": 6,
     "othersSwaps": 42
@@ -57,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x4c8704462f5c657c018cd72c923572da283ac6930fbdfe5dad44a4acfcb273e6",
-    "officialSwaps": 2584,
+    "officialSwaps": 2595,
     "others": 9,
     "othersHalfFee": 8,
-    "othersSwaps": 192
+    "othersSwaps": 193
    }
   },
   {
@@ -76,7 +76,7 @@
    "phase": 2,
    "pools": {
     "official": "0x58c2549d9c53f12dc50f97b39dacd45d01a9cb9e49ee29c0e332ab56414ee135",
-    "officialSwaps": 1299,
+    "officialSwaps": 1302,
     "others": 8,
     "othersHalfFee": 7,
     "othersSwaps": 72
@@ -95,7 +95,7 @@
    "phase": 2,
    "pools": {
     "official": "0xb2650720177eae99f370d339d1e1565caac720733dcbdf80337759b69a346272",
-    "officialSwaps": 382,
+    "officialSwaps": 391,
     "others": 7,
     "othersHalfFee": 7,
     "othersSwaps": 16
@@ -114,29 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0x0fe9464df01e5056cced12ce078e065cf94e45eefd01182df1158757b528e5eb",
-    "officialSwaps": 617,
-    "others": 7,
+    "officialSwaps": 666,
+    "others": 8,
     "othersHalfFee": 5,
-    "othersSwaps": 9
-   }
-  },
-  {
-   "token": "0x839d6dea3de497ee5a8338410cb2865afa51141e",
-   "symbol": "PAYOLA",
-   "name": "Payola.Promo",
-   "deployer": "0x8c022f856d18522d29b7b701e96b5a79948cf9a9",
-   "block": 111592975,
-   "tx": "0x5c45821a75e1b408763753b793f2ac86c6c75040582e6dad95cb05da7980b2ac",
-   "quoteRaw": "4200000000000000181",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x9b7103f36c6f0e9d65f2edb78b9f2d44a46a27dd09253ee7119a6dfceba6cf9e",
-    "officialSwaps": 1063,
-    "others": 6,
-    "othersHalfFee": 3,
-    "othersSwaps": 26
+    "othersSwaps": 36
    }
   }
  ],
