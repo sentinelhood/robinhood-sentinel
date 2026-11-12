@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 112510757,
+ "block": 112616651,
  "windowHours": 24.0,
- "generatedAt": "2026-11-12T12:01:46+00:00",
- "launches": 1002,
+ "generatedAt": "2026-11-12T15:02:45+00:00",
+ "launches": 1036,
  "graduations": 6,
  "graduated": [
+  {
+   "token": "0x20b25da8785990cc89330af56310024bb199cd36",
+   "symbol": "GIRAFF",
+   "name": "Giraffies Valley",
+   "deployer": "0x1ea5c9a61bba9e02a806ec97659a8c15a510a8e0",
+   "block": 112589655,
+   "tx": "0x575b52c96aed12c26af84cc3e1105dfe3dab7eacfb093bbe0af3c2cb04baa071",
+   "quoteRaw": "4200000000000000002",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x9aee7ac9e0723bfaa66fdc5f415d98a4efcc5b50e4fc5baecbb1e8707bc131a2",
+    "officialSwaps": 730,
+    "others": 7,
+    "othersHalfFee": 2,
+    "othersSwaps": 12
+   }
+  },
   {
    "token": "0x534b76f46d69caee896c4f993a86ea2e12248b90",
    "symbol": "PLOG",
@@ -19,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x872f5f82dbcc52fdc6e547706d04dd97dd9b8c575d855bb4d5ea21282aa5f337",
-    "officialSwaps": 1793,
-    "others": 17,
+    "officialSwaps": 1977,
+    "others": 19,
     "othersHalfFee": 12,
-    "othersSwaps": 153
+    "othersSwaps": 163
    }
   },
   {
@@ -38,7 +57,7 @@
    "phase": 2,
    "pools": {
     "official": "0x45ca7b22433b6c4bd3c7ac50179e585ebbb15a1ef0cd9cf4060b0c03097bdca7",
-    "officialSwaps": 856,
+    "officialSwaps": 857,
     "others": 9,
     "othersHalfFee": 6,
     "othersSwaps": 42
@@ -57,7 +76,7 @@
    "phase": 2,
    "pools": {
     "official": "0x4c8704462f5c657c018cd72c923572da283ac6930fbdfe5dad44a4acfcb273e6",
-    "officialSwaps": 2595,
+    "officialSwaps": 2600,
     "others": 9,
     "othersHalfFee": 8,
     "othersSwaps": 193
@@ -76,7 +95,7 @@
    "phase": 2,
    "pools": {
     "official": "0x58c2549d9c53f12dc50f97b39dacd45d01a9cb9e49ee29c0e332ab56414ee135",
-    "officialSwaps": 1302,
+    "officialSwaps": 1305,
     "others": 8,
     "othersHalfFee": 7,
     "othersSwaps": 72
@@ -95,29 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0xb2650720177eae99f370d339d1e1565caac720733dcbdf80337759b69a346272",
-    "officialSwaps": 391,
+    "officialSwaps": 397,
     "others": 7,
     "othersHalfFee": 7,
-    "othersSwaps": 16
-   }
-  },
-  {
-   "token": "0x8665f6e7ce1df1abe042d4b044e681be98a62974",
-   "symbol": "FHERUM",
-   "name": "FHERUM",
-   "deployer": "0xb2e9503964778fcdacc17843b15b78bd08f1d73b",
-   "block": 111687456,
-   "tx": "0xc3edf10fc2514a9f6fa6deadd5669e9c9aa38b790b5eaefd136be3301aed6b57",
-   "quoteRaw": "4200000000000000372",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x0fe9464df01e5056cced12ce078e065cf94e45eefd01182df1158757b528e5eb",
-    "officialSwaps": 666,
-    "others": 8,
-    "othersHalfFee": 5,
-    "othersSwaps": 36
+    "othersSwaps": 13
    }
   }
  ],
