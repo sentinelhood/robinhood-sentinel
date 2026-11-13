@@ -1,9 +1,9 @@
 {
  "chainId": 4663,
- "block": 113548144,
+ "block": 113650975,
  "windowHours": 24.0,
- "generatedAt": "2026-11-13T18:01:45+00:00",
- "launches": 664,
+ "generatedAt": "2026-11-13T21:01:28+00:00",
+ "launches": 658,
  "graduations": 4,
  "graduated": [
   {
@@ -19,10 +19,10 @@
    "phase": 2,
    "pools": {
     "official": "0x00871721b77647e774f7416301a2a5a08bd93ab4d9d015be5e224696b4540840",
-    "officialSwaps": 781,
-    "others": 11,
-    "othersHalfFee": 9,
-    "othersSwaps": 17
+    "officialSwaps": 849,
+    "others": 12,
+    "othersHalfFee": 10,
+    "othersSwaps": 30
    }
   },
   {
@@ -38,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x5319851a9fa5f5a5227ff0a98ea2bf726d7073433af9df6929e4a13189abfbbc",
-    "officialSwaps": 3712,
+    "officialSwaps": 3859,
     "others": 13,
     "othersHalfFee": 5,
-    "othersSwaps": 383
+    "othersSwaps": 400
    }
   },
   {
@@ -57,7 +57,7 @@
    "phase": 2,
    "pools": {
     "official": "0x36fa0f98924da0b9dc185ae5cc2c3c1eb16dbc70b7cdf9531781240adf2fc99a",
-    "officialSwaps": 500,
+    "officialSwaps": 531,
     "others": 11,
     "othersHalfFee": 9,
     "othersSwaps": 15
@@ -76,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0x921fdaeed6ddc20f4bf05401a936721f983af39c3558df7f68ea29bc40036db2",
-    "officialSwaps": 805,
+    "officialSwaps": 1028,
     "others": 8,
     "othersHalfFee": 6,
-    "othersSwaps": 11
+    "othersSwaps": 10
    }
   }
  ],
