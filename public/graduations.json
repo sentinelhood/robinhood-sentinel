@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 113234486,
+ "block": 113337659,
  "windowHours": 24.0,
- "generatedAt": "2026-11-13T09:01:19+00:00",
+ "generatedAt": "2026-11-13T12:01:29+00:00",
  "launches": 733,
- "graduations": 3,
+ "graduations": 4,
  "graduated": [
+  {
+   "token": "0x30768b5482e5dd8a2487ce0be61e01fa03af37ff",
+   "symbol": "BULL",
+   "name": "Bull",
+   "deployer": "0x0c8b90a78510acb7ed84f181609c0cac4251a613",
+   "block": 113255222,
+   "tx": "0x0a010199893567c003e537a593864b4f204783b3cddc9b475560e8f13a3caf94",
+   "quoteRaw": "4200000000000000052",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x5319851a9fa5f5a5227ff0a98ea2bf726d7073433af9df6929e4a13189abfbbc",
+    "officialSwaps": 2942,
+    "others": 8,
+    "othersHalfFee": 3,
+    "othersSwaps": 243
+   }
+  },
   {
    "token": "0x9258a4c8ffa26683390686355def8c5ad380c3ee",
    "symbol": "APESHIT",
@@ -19,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x36fa0f98924da0b9dc185ae5cc2c3c1eb16dbc70b7cdf9531781240adf2fc99a",
-    "officialSwaps": 298,
+    "officialSwaps": 384,
     "others": 11,
     "othersHalfFee": 9,
-    "othersSwaps": 4
+    "othersSwaps": 8
    }
   },
   {
@@ -38,7 +57,7 @@
    "phase": 2,
    "pools": {
     "official": "0x921fdaeed6ddc20f4bf05401a936721f983af39c3558df7f68ea29bc40036db2",
-    "officialSwaps": 471,
+    "officialSwaps": 529,
     "others": 7,
     "othersHalfFee": 6,
     "othersSwaps": 9
@@ -57,7 +76,7 @@
    "phase": 2,
    "pools": {
     "official": "0x9aee7ac9e0723bfaa66fdc5f415d98a4efcc5b50e4fc5baecbb1e8707bc131a2",
-    "officialSwaps": 1371,
+    "officialSwaps": 1406,
     "others": 11,
     "othersHalfFee": 2,
     "othersSwaps": 38
