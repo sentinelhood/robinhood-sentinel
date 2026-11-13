@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 112826166,
+ "block": 112926327,
  "windowHours": 24.0,
- "generatedAt": "2026-11-12T21:01:08+00:00",
- "launches": 800,
- "graduations": 2,
+ "generatedAt": "2026-11-13T00:01:29+00:00",
+ "launches": 751,
+ "graduations": 3,
  "graduated": [
+  {
+   "token": "0x56f316047b358c0d3c04540ff47ff4373df48ec0",
+   "symbol": "ROOQ",
+   "name": "ROOQ",
+   "deployer": "0xd91d50dc647555d9283c2f15e1849d99753f8aaa",
+   "block": 112833386,
+   "tx": "0x2f9f886af964caaf98cc774aa9ce67c583598943c027b593d3cdbdd778d5ae45",
+   "quoteRaw": "4200000000000000647",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x921fdaeed6ddc20f4bf05401a936721f983af39c3558df7f68ea29bc40036db2",
+    "officialSwaps": 257,
+    "others": 7,
+    "othersHalfFee": 6,
+    "othersSwaps": 8
+   }
+  },
   {
    "token": "0x20b25da8785990cc89330af56310024bb199cd36",
    "symbol": "GIRAFF",
@@ -19,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x9aee7ac9e0723bfaa66fdc5f415d98a4efcc5b50e4fc5baecbb1e8707bc131a2",
-    "officialSwaps": 1201,
+    "officialSwaps": 1255,
     "others": 8,
     "othersHalfFee": 2,
-    "othersSwaps": 28
+    "othersSwaps": 30
    }
   },
   {
@@ -38,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x872f5f82dbcc52fdc6e547706d04dd97dd9b8c575d855bb4d5ea21282aa5f337",
-    "officialSwaps": 2177,
-    "others": 19,
-    "othersHalfFee": 12,
-    "othersSwaps": 187
+    "officialSwaps": 2244,
+    "others": 20,
+    "othersHalfFee": 13,
+    "othersSwaps": 194
    }
   }
  ],
