@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 112926327,
+ "block": 113028598,
  "windowHours": 24.0,
- "generatedAt": "2026-11-13T00:01:29+00:00",
- "launches": 751,
+ "generatedAt": "2026-11-13T03:01:18+00:00",
+ "launches": 742,
  "graduations": 3,
  "graduated": [
+  {
+   "token": "0x9258a4c8ffa26683390686355def8c5ad380c3ee",
+   "symbol": "APESHIT",
+   "name": "Apeshit Coalition",
+   "deployer": "0xa472bca6ef05d1a8125e5b9026d4f7c6e6d4b184",
+   "block": 112983896,
+   "tx": "0x638d294ec05b1c99bd7fd57413d9a509e71bb1ac0796ad4e73a3afa84e06266c",
+   "quoteRaw": "4200000000000000127",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x36fa0f98924da0b9dc185ae5cc2c3c1eb16dbc70b7cdf9531781240adf2fc99a",
+    "officialSwaps": 166,
+    "others": 6,
+    "othersHalfFee": 5,
+    "othersSwaps": 2
+   }
+  },
   {
    "token": "0x56f316047b358c0d3c04540ff47ff4373df48ec0",
    "symbol": "ROOQ",
@@ -19,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x921fdaeed6ddc20f4bf05401a936721f983af39c3558df7f68ea29bc40036db2",
-    "officialSwaps": 257,
+    "officialSwaps": 331,
     "others": 7,
     "othersHalfFee": 6,
-    "othersSwaps": 8
+    "othersSwaps": 9
    }
   },
   {
@@ -38,29 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x9aee7ac9e0723bfaa66fdc5f415d98a4efcc5b50e4fc5baecbb1e8707bc131a2",
-    "officialSwaps": 1255,
-    "others": 8,
+    "officialSwaps": 1301,
+    "others": 11,
     "othersHalfFee": 2,
-    "othersSwaps": 30
-   }
-  },
-  {
-   "token": "0x534b76f46d69caee896c4f993a86ea2e12248b90",
-   "symbol": "PLOG",
-   "name": "PLOG",
-   "deployer": "0x3f26db089e1a92659d4c0e1d5cf9f2578a017da1",
-   "block": 112084714,
-   "tx": "0x78e23b08002d889af49650467eaf78d06c101614e2cb3f2517a87471301fa36d",
-   "quoteRaw": "4200000000000000119",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x872f5f82dbcc52fdc6e547706d04dd97dd9b8c575d855bb4d5ea21282aa5f337",
-    "officialSwaps": 2244,
-    "others": 20,
-    "othersHalfFee": 13,
-    "othersSwaps": 194
+    "othersSwaps": 31
    }
   }
  ],
