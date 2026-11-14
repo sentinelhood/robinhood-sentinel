@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 114344447,
+ "block": 114445279,
  "windowHours": 24.0,
- "generatedAt": "2026-11-14T18:01:49+00:00",
- "launches": 633,
- "graduations": 6,
+ "generatedAt": "2026-11-14T21:01:45+00:00",
+ "launches": 617,
+ "graduations": 5,
  "graduated": [
   {
    "token": "0x6437614ea1efba0eb4b43bc1af53808722b1cf13",
@@ -19,10 +19,10 @@
    "phase": 2,
    "pools": {
     "official": "0xd54d76e613edab6ce33145ca85cfe685edcb1cc7a7dce332c333b0f6f0158256",
-    "officialSwaps": 988,
-    "others": 7,
-    "othersHalfFee": 6,
-    "othersSwaps": 7
+    "officialSwaps": 1138,
+    "others": 8,
+    "othersHalfFee": 7,
+    "othersSwaps": 13
    }
   },
   {
@@ -38,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x402bceef7c5340ae7e18033ed135cf15eada9d56802e8f8bac3345f34a88cc90",
-    "officialSwaps": 679,
+    "officialSwaps": 784,
     "others": 10,
     "othersHalfFee": 8,
-    "othersSwaps": 12
+    "othersSwaps": 20
    }
   },
   {
@@ -57,7 +57,7 @@
    "phase": 2,
    "pools": {
     "official": "0x7b0387269da3492dd2e0d66a0af8fc0ff1b3c01f4a938ddc2f43b02a22d184be",
-    "officialSwaps": 1929,
+    "officialSwaps": 2044,
     "others": 12,
     "othersHalfFee": 8,
     "othersSwaps": 85
@@ -76,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0x91b2f56d5939cb27b3431ab0913c1f17229e3e528fe4de4961d27484c7b2a216",
-    "officialSwaps": 1980,
+    "officialSwaps": 2018,
     "others": 11,
     "othersHalfFee": 7,
-    "othersSwaps": 153
+    "othersSwaps": 162
    }
   },
   {
@@ -95,29 +95,10 @@
    "phase": 2,
    "pools": {
     "official": "0x3d51da970e62e8ce0f8d9d54b38de89d01b208e93d070ab893cc1a15ad8d8850",
-    "officialSwaps": 179,
+    "officialSwaps": 181,
     "others": 5,
     "othersHalfFee": 4,
     "othersSwaps": 5
-   }
-  },
-  {
-   "token": "0xa78557b829215d36c88303ce2f34448dda9b46fa",
-   "symbol": "EGL",
-   "name": "Egglo",
-   "deployer": "0xa543a0e4241ccec84118ec5c85a0d26480a4e3f7",
-   "block": 113512212,
-   "tx": "0x2f14c1a240091756b67fceb4485b75a5925cc622b019d882658b768a621edd32",
-   "quoteRaw": "4200000000000000003",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x00871721b77647e774f7416301a2a5a08bd93ab4d9d015be5e224696b4540840",
-    "officialSwaps": 970,
-    "others": 12,
-    "othersHalfFee": 10,
-    "othersSwaps": 42
    }
   }
  ],
