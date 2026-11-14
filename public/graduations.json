@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 113851405,
+ "block": 113950390,
  "windowHours": 24.0,
- "generatedAt": "2026-11-14T03:01:29+00:00",
- "launches": 610,
- "graduations": 5,
+ "generatedAt": "2026-11-14T06:01:54+00:00",
+ "launches": 598,
+ "graduations": 6,
  "graduated": [
+  {
+   "token": "0x0f8110b99bc4c5c0b22aa7dcf17a06935f7b8f4a",
+   "symbol": "BULW",
+   "name": "BULWARK SCORE",
+   "deployer": "0xe5c0cd13758943a98e4b5ba1b6f52030d64f8c10",
+   "block": 113891587,
+   "tx": "0xab572ebe3f97da9edafb14988c5643d0b2b95f08733203f3f9d0c6f4d6d7aafd",
+   "quoteRaw": "4200000000000000510",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x402bceef7c5340ae7e18033ed135cf15eada9d56802e8f8bac3345f34a88cc90",
+    "officialSwaps": 228,
+    "others": 4,
+    "othersHalfFee": 4,
+    "othersSwaps": 8
+   }
+  },
   {
    "token": "0x6dbe95076584f869dd09a44131e9a3c13f34d7d6",
    "symbol": "MORPH",
@@ -19,9 +38,9 @@
    "phase": 2,
    "pools": {
     "official": "0x7b0387269da3492dd2e0d66a0af8fc0ff1b3c01f4a938ddc2f43b02a22d184be",
-    "officialSwaps": 939,
-    "others": 10,
-    "othersHalfFee": 7,
+    "officialSwaps": 1156,
+    "others": 11,
+    "othersHalfFee": 8,
     "othersSwaps": 64
    }
   },
@@ -38,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x91b2f56d5939cb27b3431ab0913c1f17229e3e528fe4de4961d27484c7b2a216",
-    "officialSwaps": 1298,
-    "others": 10,
+    "officialSwaps": 1436,
+    "others": 11,
     "othersHalfFee": 7,
-    "othersSwaps": 33
+    "othersSwaps": 44
    }
   },
   {
@@ -57,7 +76,7 @@
    "phase": 2,
    "pools": {
     "official": "0x3d51da970e62e8ce0f8d9d54b38de89d01b208e93d070ab893cc1a15ad8d8850",
-    "officialSwaps": 132,
+    "officialSwaps": 141,
     "others": 4,
     "othersHalfFee": 3,
     "othersSwaps": 3
@@ -76,7 +95,7 @@
    "phase": 2,
    "pools": {
     "official": "0x00871721b77647e774f7416301a2a5a08bd93ab4d9d015be5e224696b4540840",
-    "officialSwaps": 883,
+    "officialSwaps": 896,
     "others": 12,
     "othersHalfFee": 10,
     "othersSwaps": 32
@@ -95,10 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0x5319851a9fa5f5a5227ff0a98ea2bf726d7073433af9df6929e4a13189abfbbc",
-    "officialSwaps": 4009,
+    "officialSwaps": 4055,
     "others": 13,
     "othersHalfFee": 5,
-    "othersSwaps": 408
+    "othersSwaps": 410
    }
   }
  ],
