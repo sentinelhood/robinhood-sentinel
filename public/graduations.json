@@ -1,11 +1,30 @@
 {
  "chainId": 4663,
- "block": 113950390,
+ "block": 114045781,
  "windowHours": 24.0,
- "generatedAt": "2026-11-14T06:01:54+00:00",
- "launches": 598,
- "graduations": 6,
+ "generatedAt": "2026-11-14T09:01:49+00:00",
+ "launches": 599,
+ "graduations": 7,
  "graduated": [
+  {
+   "token": "0x6437614ea1efba0eb4b43bc1af53808722b1cf13",
+   "symbol": "MRDN",
+   "name": "Meridian Desk",
+   "deployer": "0x6cb3c81b450853e29f35792a9d530c1710f09e0c",
+   "block": 114041290,
+   "tx": "0xb70a4a5eca916877796dd9be2ee598dfc0aa81047ae6b6f0f70cf1c07c34011a",
+   "quoteRaw": "4200000000000000210",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0xd54d76e613edab6ce33145ca85cfe685edcb1cc7a7dce332c333b0f6f0158256",
+    "officialSwaps": 104,
+    "others": 2,
+    "othersHalfFee": 2,
+    "othersSwaps": 5
+   }
+  },
   {
    "token": "0x0f8110b99bc4c5c0b22aa7dcf17a06935f7b8f4a",
    "symbol": "BULW",
@@ -19,10 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x402bceef7c5340ae7e18033ed135cf15eada9d56802e8f8bac3345f34a88cc90",
-    "officialSwaps": 228,
-    "others": 4,
-    "othersHalfFee": 4,
-    "othersSwaps": 8
+    "officialSwaps": 404,
+    "others": 9,
+    "othersHalfFee": 7,
+    "othersSwaps": 11
    }
   },
   {
@@ -38,10 +57,10 @@
    "phase": 2,
    "pools": {
     "official": "0x7b0387269da3492dd2e0d66a0af8fc0ff1b3c01f4a938ddc2f43b02a22d184be",
-    "officialSwaps": 1156,
+    "officialSwaps": 1373,
     "others": 11,
     "othersHalfFee": 8,
-    "othersSwaps": 64
+    "othersSwaps": 77
    }
   },
   {
@@ -57,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0x91b2f56d5939cb27b3431ab0913c1f17229e3e528fe4de4961d27484c7b2a216",
-    "officialSwaps": 1436,
+    "officialSwaps": 1613,
     "others": 11,
     "othersHalfFee": 7,
-    "othersSwaps": 44
+    "othersSwaps": 77
    }
   },
   {
@@ -76,7 +95,7 @@
    "phase": 2,
    "pools": {
     "official": "0x3d51da970e62e8ce0f8d9d54b38de89d01b208e93d070ab893cc1a15ad8d8850",
-    "officialSwaps": 141,
+    "officialSwaps": 145,
     "others": 4,
     "othersHalfFee": 3,
     "othersSwaps": 3
@@ -95,10 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0x00871721b77647e774f7416301a2a5a08bd93ab4d9d015be5e224696b4540840",
-    "officialSwaps": 896,
+    "officialSwaps": 924,
     "others": 12,
     "othersHalfFee": 10,
-    "othersSwaps": 32
+    "othersSwaps": 33
    }
   },
   {
@@ -114,7 +133,7 @@
    "phase": 2,
    "pools": {
     "official": "0x5319851a9fa5f5a5227ff0a98ea2bf726d7073433af9df6929e4a13189abfbbc",
-    "officialSwaps": 4055,
+    "officialSwaps": 4099,
     "others": 13,
     "othersHalfFee": 5,
     "othersSwaps": 410
