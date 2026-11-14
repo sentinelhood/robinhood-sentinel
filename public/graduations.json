@@ -1,11 +1,68 @@
 {
  "chainId": 4663,
- "block": 113650975,
+ "block": 113752686,
  "windowHours": 24.0,
- "generatedAt": "2026-11-13T21:01:28+00:00",
- "launches": 658,
- "graduations": 4,
+ "generatedAt": "2026-11-14T00:02:11+00:00",
+ "launches": 624,
+ "graduations": 6,
  "graduated": [
+  {
+   "token": "0x6dbe95076584f869dd09a44131e9a3c13f34d7d6",
+   "symbol": "MORPH",
+   "name": "alphamorph",
+   "deployer": "0x4fb8922d7e276d144128cf89b7d65f0718eeb0e4",
+   "block": 113721495,
+   "tx": "0xf34680187b87440cc0380104a046d06fc89993449acbf444cae9342c342c8a2d",
+   "quoteRaw": "4200000000000000347",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x7b0387269da3492dd2e0d66a0af8fc0ff1b3c01f4a938ddc2f43b02a22d184be",
+    "officialSwaps": 319,
+    "others": 8,
+    "othersHalfFee": 6,
+    "othersSwaps": 17
+   }
+  },
+  {
+   "token": "0x113f06cdc9305167e1ec74ba1652c9ecdfe93114",
+   "symbol": "GLINT",
+   "name": "Glint",
+   "deployer": "0xf9bad6b196c358b932cc6f5ea6ca18c670aba44f",
+   "block": 113715959,
+   "tx": "0xcb3d685f4271f4e7b4907dfd93a79addc252da9aef387d14005290be2a455bc7",
+   "quoteRaw": "4200000000000000185",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x91b2f56d5939cb27b3431ab0913c1f17229e3e528fe4de4961d27484c7b2a216",
+    "officialSwaps": 947,
+    "others": 9,
+    "othersHalfFee": 6,
+    "othersSwaps": 18
+   }
+  },
+  {
+   "token": "0xd281bf1649c5db6744d23f61bb25b05b4d1dff35",
+   "symbol": "ACAT",
+   "name": "Agentic Cat",
+   "deployer": "0xaaa6e4ed401d90dc4026d62bbe3a31cbae0df140",
+   "block": 113701034,
+   "tx": "0x46154ad552c75dbb39532d9d9c0ec83a02b0645d33edd779a716e91ff9cd984e",
+   "quoteRaw": "4200000000000000005",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x3d51da970e62e8ce0f8d9d54b38de89d01b208e93d070ab893cc1a15ad8d8850",
+    "officialSwaps": 122,
+    "others": 4,
+    "othersHalfFee": 3,
+    "othersSwaps": 3
+   }
+  },
   {
    "token": "0xa78557b829215d36c88303ce2f34448dda9b46fa",
    "symbol": "EGL",
@@ -19,10 +76,10 @@
    "phase": 2,
    "pools": {
     "official": "0x00871721b77647e774f7416301a2a5a08bd93ab4d9d015be5e224696b4540840",
-    "officialSwaps": 849,
+    "officialSwaps": 870,
     "others": 12,
     "othersHalfFee": 10,
-    "othersSwaps": 30
+    "othersSwaps": 31
    }
   },
   {
@@ -38,10 +95,10 @@
    "phase": 2,
    "pools": {
     "official": "0x5319851a9fa5f5a5227ff0a98ea2bf726d7073433af9df6929e4a13189abfbbc",
-    "officialSwaps": 3859,
+    "officialSwaps": 3932,
     "others": 13,
     "othersHalfFee": 5,
-    "othersSwaps": 400
+    "othersSwaps": 405
    }
   },
   {
@@ -57,29 +114,10 @@
    "phase": 2,
    "pools": {
     "official": "0x36fa0f98924da0b9dc185ae5cc2c3c1eb16dbc70b7cdf9531781240adf2fc99a",
-    "officialSwaps": 531,
+    "officialSwaps": 568,
     "others": 11,
     "othersHalfFee": 9,
     "othersSwaps": 15
-   }
-  },
-  {
-   "token": "0x56f316047b358c0d3c04540ff47ff4373df48ec0",
-   "symbol": "ROOQ",
-   "name": "ROOQ",
-   "deployer": "0xd91d50dc647555d9283c2f15e1849d99753f8aaa",
-   "block": 112833386,
-   "tx": "0x2f9f886af964caaf98cc774aa9ce67c583598943c027b593d3cdbdd778d5ae45",
-   "quoteRaw": "4200000000000000647",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x921fdaeed6ddc20f4bf05401a936721f983af39c3558df7f68ea29bc40036db2",
-    "officialSwaps": 1028,
-    "others": 8,
-    "othersHalfFee": 6,
-    "othersSwaps": 10
    }
   }
  ],
