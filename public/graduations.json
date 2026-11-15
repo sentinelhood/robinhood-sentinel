@@ -1,11 +1,49 @@
 {
  "chainId": 4663,
- "block": 114748096,
+ "block": 114846402,
  "windowHours": 24.0,
- "generatedAt": "2026-11-15T06:00:49+00:00",
- "launches": 569,
- "graduations": 1,
+ "generatedAt": "2026-11-15T09:01:14+00:00",
+ "launches": 587,
+ "graduations": 3,
  "graduated": [
+  {
+   "token": "0xf98be3a7980c66b0f4d9aabcecebad0dd3c9a5a1",
+   "symbol": "NIFTY",
+   "name": "Nifty Protocol",
+   "deployer": "0xecca0e58656ab59ef234fb5a23c14e9e1104e649",
+   "block": 114815318,
+   "tx": "0x6d93ed38de974d033fffa774c5a830c5c2dd9df9f2e909ea05a0fa8f75f89740",
+   "quoteRaw": "4200000000000000168",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x68127aa08380d73a940d96c3bef9866152185a3213c4f94b67f37a5243d02922",
+    "officialSwaps": 884,
+    "others": 9,
+    "othersHalfFee": 6,
+    "othersSwaps": 34
+   }
+  },
+  {
+   "token": "0x14c0a77e792f6c9818888630e95c50cf3b48c979",
+   "symbol": "NOMAD",
+   "name": "Nomad",
+   "deployer": "0x8b47c9d6214512c1b7b66a96af1032027bae8376",
+   "block": 114757789,
+   "tx": "0x47e4fe6b4c795162b1d0b271adb2d23ff72491a676f357e72e0d12a6d313ff5e",
+   "quoteRaw": "4200000000000000395",
+   "pairSymbol": "ETH",
+   "pairDecimals": 18,
+   "phase": 2,
+   "pools": {
+    "official": "0x35a5dda7164981b4ed5b7d1e4a5e73c401eff3a265a230c8ca07a08745021b4d",
+    "officialSwaps": 138,
+    "others": 8,
+    "othersHalfFee": 4,
+    "othersSwaps": 62
+   }
+  },
   {
    "token": "0x6437614ea1efba0eb4b43bc1af53808722b1cf13",
    "symbol": "MRDN",
@@ -19,7 +57,7 @@
    "phase": 2,
    "pools": {
     "official": "0xd54d76e613edab6ce33145ca85cfe685edcb1cc7a7dce332c333b0f6f0158256",
-    "officialSwaps": 1215,
+    "officialSwaps": 1232,
     "others": 8,
     "othersHalfFee": 7,
     "othersSwaps": 16

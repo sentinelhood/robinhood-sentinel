@@ -1,12 +1,12 @@
 {
- "generatedAt": "2026-11-14T09:02:09+00:00",
+ "generatedAt": "2026-11-15T09:01:31+00:00",
  "summary": {
   "addresses": 55,
   "hooks": 16,
   "chains": 8,
-  "withCode": 44,
+  "withCode": 37,
   "noCode": 0,
-  "unchecked": 11,
+  "unchecked": 18,
   "flagMismatch": 0
  },
  "chains": [
@@ -14,21 +14,21 @@
    "chain": "arbitrum",
    "chainId": 42161,
    "addresses": 2,
-   "block": 524112831,
+   "block": 524415851,
    "checked": true
   },
   {
    "chain": "base",
    "chainId": 8453,
    "addresses": 16,
-   "block": 57282687,
+   "block": 57714508,
    "checked": true
   },
   {
    "chain": "bnb",
    "chainId": 56,
    "addresses": 2,
-   "block": 133516203,
+   "block": 133708063,
    "checked": true
   },
   {
@@ -42,7 +42,7 @@
    "chain": "ethereum",
    "chainId": 1,
    "addresses": 10,
-   "block": 26412192,
+   "block": 26419370,
    "checked": true
   },
   {
@@ -56,14 +56,14 @@
    "chain": "robinhood",
    "chainId": 4663,
    "addresses": 12,
-   "block": 114046532,
+   "block": 114846833,
    "checked": true
   },
   {
    "chain": "unichain",
    "chainId": 130,
    "addresses": 2,
-   "block": 63898567,
+   "block": 63984929,
    "checked": true
   }
  ],
@@ -209,7 +209,7 @@
     {
      "chain": "ethereum",
      "address": "0x80f48fdca095d081a3fe7843ab234c5533a450c4",
-     "status": "code",
+     "status": "rpc-error",
      "flagsOk": true
     },
     {
@@ -225,7 +225,7 @@
      "flagsOk": true
     }
    ],
-   "builds": 2,
+   "builds": 1,
    "selectorsMatch": true
   },
   {
@@ -241,7 +241,7 @@
     {
      "chain": "ethereum",
      "address": "0x95c9fa3cd4067a0fd69fb41d291c79193b5500c4",
-     "status": "code",
+     "status": "rpc-error",
      "flagsOk": true
     },
     {
@@ -257,7 +257,7 @@
      "flagsOk": true
     }
    ],
-   "builds": 2,
+   "builds": 1,
    "selectorsMatch": true
   },
   {
@@ -285,7 +285,7 @@
     {
      "chain": "ethereum",
      "address": "0xbc674333e0f06c24b164dee6bde1caa3e44710c4",
-     "status": "code",
+     "status": "rpc-error",
      "flagsOk": true
     },
     {
@@ -343,7 +343,7 @@
     {
      "chain": "ethereum",
      "address": "0x9c9f5e18c8530e96c735704471542e72a7a00044",
-     "status": "code",
+     "status": "rpc-error",
      "flagsOk": true
     },
     {
@@ -359,7 +359,7 @@
      "flagsOk": true
     }
    ],
-   "builds": 2,
+   "builds": 1,
    "selectorsMatch": true
   },
   {
@@ -389,7 +389,7 @@
     {
      "chain": "ethereum",
      "address": "0xc8fa143077d632a056a9a970ce71e3bdcf01c0c4",
-     "status": "code",
+     "status": "rpc-error",
      "flagsOk": true
     },
     {
@@ -405,7 +405,7 @@
      "flagsOk": true
     }
    ],
-   "builds": 2,
+   "builds": 1,
    "selectorsMatch": true
   },
   {
@@ -441,7 +441,7 @@
     {
      "chain": "ethereum",
      "address": "0x50220c80da4280afb2d86ad4a6b28f9dff46c0c4",
-     "status": "code",
+     "status": "rpc-error",
      "flagsOk": true
     },
     {
@@ -457,7 +457,7 @@
      "flagsOk": true
     }
    ],
-   "builds": 2,
+   "builds": 1,
    "selectorsMatch": true
   },
   {
@@ -493,7 +493,7 @@
     {
      "chain": "ethereum",
      "address": "0x190bca1a2f6cad09efae5d0bab9564553ba640c4",
-     "status": "code",
+     "status": "rpc-error",
      "flagsOk": true
     },
     {
@@ -509,7 +509,7 @@
      "flagsOk": true
     }
    ],
-   "builds": 2,
+   "builds": 1,
    "selectorsMatch": true
   },
   {
