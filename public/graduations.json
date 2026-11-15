@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 114650413,
+ "block": 114748096,
  "windowHours": 24.0,
- "generatedAt": "2026-11-15T03:01:06+00:00",
- "launches": 574,
- "graduations": 2,
+ "generatedAt": "2026-11-15T06:00:49+00:00",
+ "launches": 569,
+ "graduations": 1,
  "graduated": [
   {
    "token": "0x6437614ea1efba0eb4b43bc1af53808722b1cf13",
@@ -19,29 +19,10 @@
    "phase": 2,
    "pools": {
     "official": "0xd54d76e613edab6ce33145ca85cfe685edcb1cc7a7dce332c333b0f6f0158256",
-    "officialSwaps": 1208,
+    "officialSwaps": 1215,
     "others": 8,
     "othersHalfFee": 7,
     "othersSwaps": 16
-   }
-  },
-  {
-   "token": "0x0f8110b99bc4c5c0b22aa7dcf17a06935f7b8f4a",
-   "symbol": "BULW",
-   "name": "BULWARK SCORE",
-   "deployer": "0xe5c0cd13758943a98e4b5ba1b6f52030d64f8c10",
-   "block": 113891587,
-   "tx": "0xab572ebe3f97da9edafb14988c5643d0b2b95f08733203f3f9d0c6f4d6d7aafd",
-   "quoteRaw": "4200000000000000510",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x402bceef7c5340ae7e18033ed135cf15eada9d56802e8f8bac3345f34a88cc90",
-    "officialSwaps": 954,
-    "others": 10,
-    "othersHalfFee": 8,
-    "othersSwaps": 23
    }
   }
  ],
