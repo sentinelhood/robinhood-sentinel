@@ -1,10 +1,10 @@
 {
  "chainId": 4663,
- "block": 114548387,
+ "block": 114650413,
  "windowHours": 24.0,
- "generatedAt": "2026-11-15T00:01:44+00:00",
- "launches": 581,
- "graduations": 4,
+ "generatedAt": "2026-11-15T03:01:06+00:00",
+ "launches": 574,
+ "graduations": 2,
  "graduated": [
   {
    "token": "0x6437614ea1efba0eb4b43bc1af53808722b1cf13",
@@ -19,10 +19,10 @@
    "phase": 2,
    "pools": {
     "official": "0xd54d76e613edab6ce33145ca85cfe685edcb1cc7a7dce332c333b0f6f0158256",
-    "officialSwaps": 1191,
+    "officialSwaps": 1208,
     "others": 8,
     "othersHalfFee": 7,
-    "othersSwaps": 15
+    "othersSwaps": 16
    }
   },
   {
@@ -38,48 +38,10 @@
    "phase": 2,
    "pools": {
     "official": "0x402bceef7c5340ae7e18033ed135cf15eada9d56802e8f8bac3345f34a88cc90",
-    "officialSwaps": 920,
+    "officialSwaps": 954,
     "others": 10,
     "othersHalfFee": 8,
     "othersSwaps": 23
-   }
-  },
-  {
-   "token": "0x6dbe95076584f869dd09a44131e9a3c13f34d7d6",
-   "symbol": "MORPH",
-   "name": "alphamorph",
-   "deployer": "0x4fb8922d7e276d144128cf89b7d65f0718eeb0e4",
-   "block": 113721495,
-   "tx": "0xf34680187b87440cc0380104a046d06fc89993449acbf444cae9342c342c8a2d",
-   "quoteRaw": "4200000000000000347",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x7b0387269da3492dd2e0d66a0af8fc0ff1b3c01f4a938ddc2f43b02a22d184be",
-    "officialSwaps": 2173,
-    "others": 12,
-    "othersHalfFee": 8,
-    "othersSwaps": 85
-   }
-  },
-  {
-   "token": "0x113f06cdc9305167e1ec74ba1652c9ecdfe93114",
-   "symbol": "GLINT",
-   "name": "Glint",
-   "deployer": "0xf9bad6b196c358b932cc6f5ea6ca18c670aba44f",
-   "block": 113715959,
-   "tx": "0xcb3d685f4271f4e7b4907dfd93a79addc252da9aef387d14005290be2a455bc7",
-   "quoteRaw": "4200000000000000185",
-   "pairSymbol": "ETH",
-   "pairDecimals": 18,
-   "phase": 2,
-   "pools": {
-    "official": "0x91b2f56d5939cb27b3431ab0913c1f17229e3e528fe4de4961d27484c7b2a216",
-    "officialSwaps": 2042,
-    "others": 11,
-    "othersHalfFee": 7,
-    "othersSwaps": 165
    }
   }
  ],
